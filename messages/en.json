@@ -1,0 +1,86 @@
+{
+  "HomePage": {
+    "title": "Mawedly",
+    "description": "A professional booking system for your business — salon, clinic, consulting office, or any appointment-based service — with a deposit that protects your appointments, in Arabic and English.",
+    "directionNote": "This text is aligned to the left, with the side bar on the left, because English reads left-to-right (LTR)."
+  },
+  "LocaleSwitcher": {
+    "label": "Switch language",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "Login": {
+    "title": "Sign in",
+    "subtitle": "Enter your email and we'll send you a sign-in link.",
+    "emailLabel": "Email",
+    "submit": "Send sign-in link",
+    "sending": "Sending…",
+    "messages": {
+      "checkEmail": "Check your email — we sent you a sign-in link.",
+      "invalidEmail": "Please enter a valid email address.",
+      "sendFailed": "Couldn't send the link. Please try again.",
+      "authError": "Sign-in confirmation failed — the link is invalid or expired."
+    }
+  },
+  "Dashboard": {
+    "brand": "Mawedly",
+    "settingsNav": "Settings",
+    "welcomeTitle": "Welcome to your dashboard",
+    "signedInAs": "Signed in as {email}",
+    "currentBusiness": "Your business: {name}",
+    "noBusiness": "You haven't set up your business yet.",
+    "completeSetup": "Complete your setup",
+    "signOut": "Sign out"
+  },
+  "Settings": {
+    "title": "Business settings",
+    "subtitle": "Your business details, public link, and bank account for receiving deposits.",
+    "sections": {
+      "business": "Business details",
+      "bank": "Bank details"
+    },
+    "fields": {
+      "name": "Business name",
+      "slug": "Public link (slug)",
+      "phone": "WhatsApp number",
+      "notificationEmail": "Notification email",
+      "defaultLanguage": "Default dashboard language",
+      "bankName": "Bank name",
+      "bankIban": "IBAN",
+      "bankAccountName": "Account holder name",
+      "qr": "Bank transfer QR image"
+    },
+    "hints": {
+      "slug": "Lowercase letters, numbers, and hyphens only, e.g. my-salon",
+      "phone": "Digits only in international format without +, e.g. 9665XXXXXXXX",
+      "qr": "PNG, JPG, or WEBP, up to 5 MB."
+    },
+    "langOptions": {
+      "ar": "العربية",
+      "en": "English"
+    },
+    "save": "Save",
+    "saving": "Saving…",
+    "errors": {
+      "nameRequired": "Business name is required.",
+      "nameLong": "Business name is too long.",
+      "slugShort": "The link is too short.",
+      "slugLong": "The link is too long.",
+      "slugFormat": "Lowercase letters, numbers, and hyphens only.",
+      "phone": "Invalid phone number.",
+      "email": "Invalid email address.",
+      "iban": "Invalid IBAN format.",
+      "tooLong": "Value is too long."
+    },
+    "messages": {
+      "saved": "Settings saved.",
+      "slugTaken": "This link is taken, please choose another.",
+      "saveFailed": "Couldn't save. Please try again.",
+      "uploadFailed": "Couldn't upload the image. Please try again.",
+      "fileType": "Unsupported file type.",
+      "fileTooLarge": "The image exceeds the allowed size.",
+      "validationFailed": "Please check the entered fields.",
+      "unauthorized": "Your session expired. Please sign in again."
+    }
+  }
+}
