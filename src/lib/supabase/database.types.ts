@@ -29,6 +29,8 @@ export type Database = {
           bank_qr_path: string | null;
           is_active: boolean | null;
           plan: string;
+          work_start: string;
+          work_end: string;
           trial_ends_at: string | null;
           created_at: string | null;
         };
@@ -47,6 +49,8 @@ export type Database = {
           bank_qr_path?: string | null;
           is_active?: boolean | null;
           plan?: string;
+          work_start?: string;
+          work_end?: string;
           trial_ends_at?: string | null;
           created_at?: string | null;
         };
@@ -65,6 +69,8 @@ export type Database = {
           bank_qr_path?: string | null;
           is_active?: boolean | null;
           plan?: string;
+          work_start?: string;
+          work_end?: string;
           trial_ends_at?: string | null;
           created_at?: string | null;
         };

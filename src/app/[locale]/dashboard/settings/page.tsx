@@ -41,6 +41,8 @@ export default async function SettingsPage({
     notification_email: business?.notification_email ?? "",
     default_language:
       (business?.default_language as "ar" | "en" | undefined) ?? fallbackLang,
+    work_start: business?.work_start?.slice(0, 5) ?? "09:00",
+    work_end: business?.work_end?.slice(0, 5) ?? "21:00",
     bank_name: business?.bank_name ?? "",
     bank_iban: business?.bank_iban ?? "",
     bank_account_name: business?.bank_account_name ?? "",

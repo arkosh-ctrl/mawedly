@@ -47,6 +47,8 @@
       "phone": "WhatsApp number",
       "notificationEmail": "Notification email",
       "defaultLanguage": "Default dashboard language",
+      "workStart": "Opening time",
+      "workEnd": "Closing time",
       "bankName": "Bank name",
       "bankIban": "IBAN",
       "bankAccountName": "Account holder name",
@@ -72,6 +74,8 @@
       "phone": "Invalid phone number.",
       "email": "Invalid email address.",
       "iban": "Invalid IBAN format.",
+      "workTime": "Invalid time format.",
+      "workRange": "Closing time must be after opening time.",
       "tooLong": "Value is too long."
     },
     "messages": {

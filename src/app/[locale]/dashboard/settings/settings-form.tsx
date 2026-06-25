@@ -102,6 +102,34 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
             <option value="en">{t("langOptions.en")}</option>
           </select>
         </label>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <label className={`${labelClass} flex-1`}>
+            <span>{t("fields.workStart")}</span>
+            <input
+              type="time"
+              className={inputClass}
+              dir="ltr"
+              {...register("work_start")}
+            />
+            {errors.work_start && (
+              <span className={errorClass}>{t(errors.work_start.message!)}</span>
+            )}
+          </label>
+
+          <label className={`${labelClass} flex-1`}>
+            <span>{t("fields.workEnd")}</span>
+            <input
+              type="time"
+              className={inputClass}
+              dir="ltr"
+              {...register("work_end")}
+            />
+            {errors.work_end && (
+              <span className={errorClass}>{t(errors.work_end.message!)}</span>
+            )}
+          </label>
+        </div>
       </section>
 
       {/* Bank details */}
