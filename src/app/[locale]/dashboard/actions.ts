@@ -14,7 +14,13 @@ export async function signOut(formData: FormData) {
     : routing.defaultLocale;
 
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  // Keep the redirect OUTSIDE try/catch — redirect() throws NEXT_REDIRECT by
+  // design and must not be swallowed.
+  try {
+    await supabase.auth.signOut();
+  } catch {
+    // Ignore sign-out failures; we still send the user back to login.
+  }
 
   redirect(`/${locale}/login`);
 }

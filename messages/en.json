@@ -130,6 +130,7 @@
       "archived": "Service archived.",
       "validationFailed": "Please check the entered fields.",
       "saveFailed": "Couldn't save. Please try again.",
+      "notFound": "Item not found or you don't have permission to edit it.",
       "noBusiness": "Create your business in Settings first.",
       "unauthorized": "Your session expired. Please sign in again."
     }
@@ -167,6 +168,7 @@
       "archived": "Provider archived.",
       "validationFailed": "Please check the entered fields.",
       "saveFailed": "Couldn't save. Please try again.",
+      "notFound": "Item not found or you don't have permission to edit it.",
       "noBusiness": "Create your business in Settings first.",
       "unauthorized": "Your session expired. Please sign in again."
     }

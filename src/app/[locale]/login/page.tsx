@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { safeNextPath } from "@/lib/safe-redirect";
 import { MagicLinkForm } from "./magic-link-form";
 
 export default async function LoginPage({
@@ -15,9 +16,8 @@ export default async function LoginPage({
   const { next, error } = await searchParams;
   const t = await getTranslations("Login");
 
-  // Only allow internal redirect targets.
-  const safeNext =
-    next && next.startsWith("/") ? next : `/${locale}/dashboard`;
+  // Only allow internal, locale-prefixed redirect targets.
+  const safeNext = safeNextPath(next) ?? `/${locale}/dashboard`;
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-start gap-6 px-6 py-16">

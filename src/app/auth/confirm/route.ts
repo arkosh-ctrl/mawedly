@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { routing } from "@/i18n/routing";
+import { safeNextPath } from "@/lib/safe-redirect";
 
 // Locale-agnostic auth callback. Handles both flows:
 //   - PKCE (default magic-link email): a `code` is exchanged for a session.
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get("next");
 
   const redirectTo =
-    next && next.startsWith("/") ? next : `/${routing.defaultLocale}/dashboard`;
+    safeNextPath(next) ?? `/${routing.defaultLocale}/dashboard`;
 
   const supabase = await createClient();
 
