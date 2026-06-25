@@ -71,6 +71,7 @@
       "slugShort": "The link is too short.",
       "slugLong": "The link is too long.",
       "slugFormat": "Lowercase letters, numbers, and hyphens only.",
+      "slugReserved": "This link is reserved, please choose another.",
       "phone": "Invalid phone number.",
       "email": "Invalid email address.",
       "iban": "Invalid IBAN format.",
@@ -175,6 +176,47 @@
       "notFound": "Item not found or you don't have permission to edit it.",
       "noBusiness": "Create your business in Settings first.",
       "unauthorized": "Your session expired. Please sign in again."
+    }
+  },
+  "Booking": {
+    "subtitle": "Book your appointment in a few steps.",
+    "notBookable": "This business is not accepting bookings right now.",
+    "currency": "SAR",
+    "minutesShort": "min",
+    "loadingSlots": "Loading times…",
+    "noSlots": "No available times on this day.",
+    "submit": "Confirm booking",
+    "submitting": "Booking…",
+    "fields": {
+      "service": "Service",
+      "provider": "Provider",
+      "date": "Date",
+      "time": "Available time",
+      "name": "Name",
+      "phone": "Phone number",
+      "emailOptional": "Email (optional)",
+      "bankName": "Bank",
+      "accountName": "Account holder",
+      "iban": "IBAN",
+      "qr": "Transfer QR code"
+    },
+    "placeholders": {
+      "service": "Choose a service",
+      "provider": "Choose a provider"
+    },
+    "success": {
+      "title": "Your booking is pending",
+      "instructions": "To confirm your appointment, transfer the deposit to the account below. The merchant will review the transfer and confirm your booking.",
+      "deposit": "Deposit amount"
+    },
+    "errors": {
+      "rateLimited": "Too many attempts. Please wait a moment and try again.",
+      "invalidInput": "Please check the entered details.",
+      "pastDate": "You can't book a date in the past.",
+      "notFound": "Business not found.",
+      "slotTaken": "This time is no longer available. Please choose another.",
+      "saveFailed": "Couldn't complete the booking. Please try again.",
+      "generic": "Something went wrong. Please try again."
     }
   }
 }

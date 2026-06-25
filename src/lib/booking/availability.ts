@@ -29,15 +29,18 @@ export function computeAvailableSlots(params: {
   durationMinutes: number;
   booked: MinuteRange[]; // existing blocking appointments for the provider/date
   stepMinutes?: number;
+  minStartMinutes?: number; // hide slots starting before this (e.g. earlier today)
 }): string[] {
   const { workStart, workEnd, durationMinutes, booked } = params;
   const step = params.stepMinutes ?? DEFAULT_STEP_MINUTES;
+  const minStart = params.minStartMinutes ?? 0;
 
   const windowStart = timeToMinutes(workStart);
   const windowEnd = timeToMinutes(workEnd);
 
   const slots: string[] = [];
   for (let start = windowStart; start + durationMinutes <= windowEnd; start += step) {
+    if (start < minStart) continue;
     const end = start + durationMinutes;
     // Half-open overlap test: [start,end) overlaps [b.start,b.end) iff
     // start < b.end AND end > b.start. Back-to-back slots do not collide —
@@ -46,4 +49,18 @@ export function computeAvailableSlots(params: {
     if (!overlaps) slots.push(minutesToTime(start));
   }
   return slots;
+}
+
+// Current date/time in Gulf Standard Time (UTC+3, no DST). Used to hide past
+// slots for "today" and to reject past-date bookings. The target market is the
+// Gulf, so a fixed offset is correct here.
+export const GULF_OFFSET_MINUTES = 3 * 60;
+
+export function gulfNow(): { date: string; minutes: number } {
+  const shifted = new Date(Date.now() + GULF_OFFSET_MINUTES * 60_000);
+  const iso = shifted.toISOString();
+  return {
+    date: iso.slice(0, 10),
+    minutes: Number(iso.slice(11, 13)) * 60 + Number(iso.slice(14, 16)),
+  };
 }

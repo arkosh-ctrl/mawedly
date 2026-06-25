@@ -1,0 +1,19 @@
+// Slugs that collide with real app routes (or are otherwise unsafe) and must
+// not be usable as a business slug — otherwise the static route would shadow the
+// public booking page /[locale]/[slug].
+export const RESERVED_SLUGS = new Set<string>([
+  "ar",
+  "en",
+  "api",
+  "auth",
+  "dashboard",
+  "login",
+  "_next",
+  "favicon.ico",
+  "robots.txt",
+  "sitemap.xml",
+]);
+
+export function isReservedSlug(slug: string): boolean {
+  return RESERVED_SLUGS.has(slug.trim().toLowerCase());
+}

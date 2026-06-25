@@ -245,6 +245,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      booking_attempts: {
+        Row: {
+          id: string;
+          ip: string | null;
+          slug: string | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          ip?: string | null;
+          slug?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          ip?: string | null;
+          slug?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

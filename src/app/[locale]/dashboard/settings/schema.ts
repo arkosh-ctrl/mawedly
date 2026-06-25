@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isReservedSlug } from "@/lib/booking/reserved-slugs";
 
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 
@@ -54,6 +55,10 @@ export const settingsSchema = z
   .refine((d) => toMinutes(d.work_start) < toMinutes(d.work_end), {
     path: ["work_end"],
     message: "errors.workRange",
+  })
+  .refine((d) => !isReservedSlug(d.slug), {
+    path: ["slug"],
+    message: "errors.slugReserved",
   });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;
