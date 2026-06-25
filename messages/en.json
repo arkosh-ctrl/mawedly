@@ -24,6 +24,8 @@
   },
   "Dashboard": {
     "brand": "Mawedly",
+    "servicesNav": "Services",
+    "providersNav": "Providers",
     "settingsNav": "Settings",
     "welcomeTitle": "Welcome to your dashboard",
     "signedInAs": "Signed in as {email}",
@@ -80,6 +82,92 @@
       "fileType": "Unsupported file type.",
       "fileTooLarge": "The image exceeds the allowed size.",
       "validationFailed": "Please check the entered fields.",
+      "unauthorized": "Your session expired. Please sign in again."
+    }
+  },
+  "Services": {
+    "title": "Services",
+    "subtitle": "Your services, their duration, prices, and deposits.",
+    "add": "Add service",
+    "empty": "No services yet. Add your first service.",
+    "noBusiness": "Create your business in Settings first to add services.",
+    "goToSettings": "Go to Settings",
+    "addTitle": "Add service",
+    "editTitle": "Edit service",
+    "fields": {
+      "name": "Service name",
+      "duration": "Duration (minutes)",
+      "price": "Price",
+      "deposit": "Deposit"
+    },
+    "units": {
+      "minutes": "{n} min",
+      "currency": "SAR"
+    },
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "archive": "Archive",
+    "activate": "Activate",
+    "archiveConfirmTitle": "Archive service",
+    "archiveConfirmBody": "The service will be hidden from the public booking page. You can re-activate it later.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "errors": {
+      "nameRequired": "Service name is required.",
+      "nameLong": "Service name is too long.",
+      "durationInt": "Duration must be a whole number.",
+      "durationMin": "Duration must be at least 5 minutes.",
+      "durationMax": "Duration must be at most 600 minutes.",
+      "priceMin": "Price must be a positive number.",
+      "priceMax": "Price is too large.",
+      "depositMin": "Deposit must be a positive number.",
+      "depositGtPrice": "Deposit cannot exceed the price."
+    },
+    "messages": {
+      "saved": "Service saved.",
+      "activated": "Service activated.",
+      "archived": "Service archived.",
+      "validationFailed": "Please check the entered fields.",
+      "saveFailed": "Couldn't save. Please try again.",
+      "noBusiness": "Create your business in Settings first.",
+      "unauthorized": "Your session expired. Please sign in again."
+    }
+  },
+  "Providers": {
+    "title": "Providers",
+    "subtitle": "The staff or specialists who deliver services at your business.",
+    "add": "Add provider",
+    "empty": "No providers yet. Add your first one.",
+    "noBusiness": "Create your business in Settings first to add providers.",
+    "goToSettings": "Go to Settings",
+    "addTitle": "Add provider",
+    "editTitle": "Edit provider",
+    "fields": {
+      "name": "Name",
+      "title": "Title (optional)"
+    },
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "archive": "Archive",
+    "activate": "Activate",
+    "archiveConfirmTitle": "Archive provider",
+    "archiveConfirmBody": "The provider will be hidden from the public booking page. You can re-activate them later.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "errors": {
+      "nameRequired": "Name is required.",
+      "nameLong": "Name is too long.",
+      "tooLong": "Value is too long."
+    },
+    "messages": {
+      "saved": "Provider saved.",
+      "activated": "Provider activated.",
+      "archived": "Provider archived.",
+      "validationFailed": "Please check the entered fields.",
+      "saveFailed": "Couldn't save. Please try again.",
+      "noBusiness": "Create your business in Settings first.",
       "unauthorized": "Your session expired. Please sign in again."
     }
   }
