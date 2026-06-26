@@ -210,6 +210,8 @@
       "instructions": "To confirm your appointment, transfer the deposit to the account below. The merchant will review the transfer and confirm your booking.",
       "deposit": "Deposit amount"
     },
+    "whatsappButton": "Contact via WhatsApp",
+    "whatsappMessage": "Hello, I booked a {service} appointment on {date} at {time}, booking reference {ref}. I'll send you the transfer receipt shortly.",
     "errors": {
       "rateLimited": "Too many attempts. Please wait a moment and try again.",
       "invalidInput": "Please check the entered details.",

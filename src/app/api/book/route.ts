@@ -133,10 +133,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "saveFailed" }, { status: 500 });
   }
 
-  // 7) Transfer details — fetched ONLY now that a real appointment exists.
+  // 7) Transfer + contact details — fetched ONLY now that a real appointment
+  // exists. phone is the merchant's WhatsApp number (for the wa.me button).
   const { data: bank } = await supabase
     .from("businesses")
-    .select("bank_name, bank_iban, bank_account_name, bank_qr_path")
+    .select("bank_name, bank_iban, bank_account_name, bank_qr_path, phone")
     .eq("id", business.id)
     .single();
 
@@ -152,6 +153,7 @@ export async function POST(request: NextRequest) {
     ok: true,
     appointmentId: appointment.id,
     deposit: Number(service.deposit_amount),
+    whatsappPhone: bank?.phone ?? null,
     transfer: {
       bankName: bank?.bank_name ?? null,
       iban: bank?.bank_iban ?? null,

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { PublicProvider, PublicService } from "@/lib/booking/queries";
+import { buildWhatsappLink } from "@/lib/whatsapp";
 
 type TransferInfo = {
   bankName: string | null;
@@ -14,6 +15,7 @@ type TransferInfo = {
 type BookingResult = {
   appointmentId: string;
   deposit: number;
+  whatsappPhone: string | null;
   transfer: TransferInfo;
 };
 
@@ -107,6 +109,19 @@ export function BookingWidget({
   }
 
   if (result) {
+    const service = services.find((s) => s.id === serviceId);
+    const whatsappLink = result.whatsappPhone
+      ? buildWhatsappLink(
+          result.whatsappPhone,
+          t("whatsappMessage", {
+            service: service?.name ?? "",
+            date,
+            time: slot,
+            ref: result.appointmentId.slice(0, 8),
+          }),
+        )
+      : null;
+
     return (
       <div className="flex flex-col gap-4 rounded-md border border-green-300 bg-green-50 p-5">
         <h2 className="text-lg font-semibold text-green-800">
@@ -134,6 +149,19 @@ export function BookingWidget({
             alt={t("fields.qr")}
             className="size-40 self-start rounded-md border border-neutral-200 object-contain"
           />
+        )}
+
+        {/* Opens the merchant's WhatsApp with a prefilled message (wa.me only).
+            Hidden quietly when the merchant has no usable number. */}
+        {whatsappLink && (
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="self-start rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+          >
+            {t("whatsappButton")}
+          </a>
         )}
       </div>
     );
