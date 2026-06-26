@@ -24,6 +24,7 @@
   },
   "Dashboard": {
     "brand": "Mawedly",
+    "appointmentsNav": "Appointments",
     "servicesNav": "Services",
     "providersNav": "Providers",
     "settingsNav": "Settings",
@@ -217,6 +218,55 @@
       "slotTaken": "This time is no longer available. Please choose another.",
       "saveFailed": "Couldn't complete the booking. Please try again.",
       "generic": "Something went wrong. Please try again."
+    }
+  },
+  "Appointments": {
+    "title": "Appointments",
+    "subtitle": "Your business's appointments and their statuses.",
+    "noBusiness": "Create your business in Settings first.",
+    "goToSettings": "Go to Settings",
+    "empty": "No appointments in this filter.",
+    "deposit": "Deposit",
+    "currency": "SAR",
+    "keep": "Keep",
+    "cancelConfirmTitle": "Cancel appointment",
+    "cancelConfirmBody": "The appointment will be canceled and its time freed for booking. Cancellation can't be undone.",
+    "filter": {
+      "all": "All"
+    },
+    "status": {
+      "pending_verification": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "no_show": "No-show",
+      "canceled": "Canceled"
+    },
+    "depositBadge": {
+      "verified": "Deposit verified",
+      "pending": "Deposit pending"
+    },
+    "actions": {
+      "confirmed": "Confirm",
+      "completed": "Complete",
+      "no_show": "No-show",
+      "canceled": "Cancel",
+      "verifyDeposit": "Mark deposit received",
+      "clearDeposit": "Clear deposit"
+    },
+    "messages": {
+      "appointmentConfirmed": "Appointment confirmed.",
+      "appointmentCompleted": "Appointment marked completed.",
+      "appointmentNoShow": "Appointment marked no-show.",
+      "appointmentCanceled": "Appointment canceled.",
+      "depositVerified": "Deposit marked as received.",
+      "depositCleared": "Deposit verification cleared.",
+      "invalidTransition": "That transition isn't allowed.",
+      "invalidInput": "Invalid data.",
+      "notFound": "Appointment not found or not yours.",
+      "slotConflict": "Time conflict. Refresh and try again.",
+      "saveFailed": "Couldn't save. Please try again.",
+      "noBusiness": "Create your business in Settings first.",
+      "unauthorized": "Your session expired. Please sign in again."
     }
   }
 }

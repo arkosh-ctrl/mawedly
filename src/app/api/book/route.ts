@@ -8,6 +8,7 @@ import {
   getBookedRanges,
 } from "@/lib/booking/queries";
 import { computeAvailableSlots, gulfNow } from "@/lib/booking/availability";
+import { INITIAL_APPOINTMENT_STATUS } from "@/lib/appointments/status";
 
 const RATE_LIMIT_MAX = 15; // attempts ...
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // ... per 10 minutes per IP
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
       customer_id: customer.id,
       appointment_date: v.date,
       start_time: v.startTime,
-      status: "pending_verification",
+      status: INITIAL_APPOINTMENT_STATUS,
     })
     .select("id")
     .single();

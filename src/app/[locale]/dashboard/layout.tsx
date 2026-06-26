@@ -34,6 +34,9 @@ export default async function DashboardLayout({
           <Link href="/dashboard" className="font-semibold">
             {t("brand")}
           </Link>
+          <Link href="/dashboard/appointments" className="text-sm opacity-70 hover:opacity-100">
+            {t("appointmentsNav")}
+          </Link>
           <Link href="/dashboard/services" className="text-sm opacity-70 hover:opacity-100">
             {t("servicesNav")}
           </Link>

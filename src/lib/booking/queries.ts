@@ -1,16 +1,9 @@
 import "server-only";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { BLOCKING_STATUSES } from "@/lib/appointments/status";
 import { isReservedSlug } from "./reserved-slugs";
 import { timeToMinutes, type MinuteRange } from "./availability";
-
-// Appointment statuses that occupy a time slot (mirror of the DB EXCLUSION
-// constraint's WHERE clause). canceled / no_show free the slot.
-export const BLOCKING_STATUSES = [
-  "pending_verification",
-  "confirmed",
-  "completed",
-] as const;
 
 export type PublicBusiness = {
   id: string;
@@ -130,7 +123,7 @@ export async function getBookedRanges(
     .eq("business_id", businessId)
     .eq("provider_id", providerId)
     .eq("appointment_date", date)
-    .in("status", BLOCKING_STATUSES as unknown as string[]);
+    .in("status", BLOCKING_STATUSES);
 
   return (data ?? []).map((a) => ({
     start: timeToMinutes(a.start_time),

@@ -24,6 +24,7 @@
   },
   "Dashboard": {
     "brand": "موعدلي",
+    "appointmentsNav": "الحجوزات",
     "servicesNav": "الخدمات",
     "providersNav": "مقدّمو الخدمة",
     "settingsNav": "الإعدادات",
@@ -217,6 +218,55 @@
       "slotTaken": "هذا الوقت لم يعد متاحاً، اختر وقتاً آخر.",
       "saveFailed": "تعذّر إتمام الحجز، حاول مرة أخرى.",
       "generic": "حدث خطأ، حاول مرة أخرى."
+    }
+  },
+  "Appointments": {
+    "title": "الحجوزات",
+    "subtitle": "مواعيد نشاطك وحالاتها.",
+    "noBusiness": "أنشئ نشاطك أولاً من الإعدادات.",
+    "goToSettings": "اذهب للإعدادات",
+    "empty": "لا توجد حجوزات بهذا التصنيف.",
+    "deposit": "العربون",
+    "currency": "ريال",
+    "keep": "تراجع",
+    "cancelConfirmTitle": "إلغاء الموعد",
+    "cancelConfirmBody": "سيُلغى الموعد ويتحرّر وقته للحجز. لا يمكن التراجع عن الإلغاء.",
+    "filter": {
+      "all": "الكل"
+    },
+    "status": {
+      "pending_verification": "بانتظار",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "no_show": "لم يحضر",
+      "canceled": "ملغي"
+    },
+    "depositBadge": {
+      "verified": "العربون مؤكد",
+      "pending": "العربون غير مؤكد"
+    },
+    "actions": {
+      "confirmed": "تأكيد الموعد",
+      "completed": "إكمال",
+      "no_show": "لم يحضر",
+      "canceled": "إلغاء",
+      "verifyDeposit": "تأكيد وصول العربون",
+      "clearDeposit": "إلغاء تأكيد العربون"
+    },
+    "messages": {
+      "appointmentConfirmed": "تم تأكيد الموعد.",
+      "appointmentCompleted": "تم وضع الموعد كمكتمل.",
+      "appointmentNoShow": "تم وضع الموعد كـ«لم يحضر».",
+      "appointmentCanceled": "تم إلغاء الموعد.",
+      "depositVerified": "تم تأكيد وصول العربون.",
+      "depositCleared": "تم إلغاء تأكيد العربون.",
+      "invalidTransition": "هذا الانتقال غير مسموح.",
+      "invalidInput": "بيانات غير صحيحة.",
+      "notFound": "الموعد غير موجود أو لا تملك صلاحيته.",
+      "slotConflict": "تعارض في الوقت، حدّث الصفحة وحاول مجدداً.",
+      "saveFailed": "تعذّر الحفظ، حاول مرة أخرى.",
+      "noBusiness": "أنشئ نشاطك أولاً من الإعدادات.",
+      "unauthorized": "انتهت الجلسة، سجّل الدخول من جديد."
     }
   }
 }
