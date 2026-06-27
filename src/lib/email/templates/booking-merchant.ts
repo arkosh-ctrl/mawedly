@@ -17,16 +17,18 @@ export function bookingMerchantEmail(p: {
     const subject = "New booking awaiting confirmation";
     const html = emailLayout(
       "en",
-      `<h2 style="font-size:16px;margin:0 0 12px;">New booking awaiting confirmation</h2>
-       <p style="font-size:14px;color:#404040;margin:0 0 16px;">A customer just booked an appointment. Review it and confirm once you've received the deposit.</p>
-       <table style="border-collapse:collapse;width:100%;margin-bottom:20px;">
-         ${detailRow("Customer", p.customerName)}
-         ${detailRow("Service", p.serviceName)}
-         ${detailRow("Provider", p.providerName)}
-         ${detailRow("Date", p.date)}
-         ${detailRow("Time", time)}
-       </table>
-       <a href="${p.appointmentsUrl}" style="display:inline-block;background:#0a0a0a;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Open appointments</a>`,
+      `<h2 style="font-size:17px;margin:0 0 8px;color:#111827;">New booking awaiting confirmation</h2>
+       <p style="font-size:14px;color:#4b5563;margin:0 0 18px;">A customer just booked an appointment. Review it and confirm once you've received the deposit.</p>
+       <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:6px 16px;margin-bottom:22px;">
+         <table style="border-collapse:collapse;width:100%;">
+           ${detailRow("Customer", p.customerName)}
+           ${detailRow("Service", p.serviceName)}
+           ${detailRow("Provider", p.providerName)}
+           ${detailRow("Date", p.date)}
+           ${detailRow("Time", time)}
+         </table>
+       </div>
+       <a href="${p.appointmentsUrl}" style="display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:11px 24px;border-radius:9999px;">Open appointments</a>`,
     );
     const text = `New booking awaiting confirmation
 Customer: ${p.customerName}
@@ -42,16 +44,18 @@ Open appointments: ${p.appointmentsUrl}`;
   const subject = "حجز جديد بانتظار تأكيدك";
   const html = emailLayout(
     "ar",
-    `<h2 style="font-size:16px;margin:0 0 12px;">حجز جديد بانتظار تأكيدك</h2>
-     <p style="font-size:14px;color:#404040;margin:0 0 16px;">سجّل عميل موعداً جديداً. راجِعه وأكّده بعد استلام العربون.</p>
-     <table style="border-collapse:collapse;width:100%;margin-bottom:20px;">
-       ${detailRow("العميل", p.customerName)}
-       ${detailRow("الخدمة", p.serviceName)}
-       ${detailRow("مقدّم الخدمة", p.providerName)}
-       ${detailRow("التاريخ", p.date)}
-       ${detailRow("الوقت", time)}
-     </table>
-     <a href="${p.appointmentsUrl}" style="display:inline-block;background:#0a0a0a;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">فتح الحجوزات</a>`,
+    `<h2 style="font-size:17px;margin:0 0 8px;color:#111827;">حجز جديد بانتظار تأكيدك</h2>
+     <p style="font-size:14px;color:#4b5563;margin:0 0 18px;">سجّل عميل موعداً جديداً. راجِعه وأكّده بعد استلام العربون.</p>
+     <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:6px 16px;margin-bottom:22px;">
+       <table style="border-collapse:collapse;width:100%;">
+         ${detailRow("العميل", p.customerName)}
+         ${detailRow("الخدمة", p.serviceName)}
+         ${detailRow("مقدّم الخدمة", p.providerName)}
+         ${detailRow("التاريخ", p.date)}
+         ${detailRow("الوقت", time)}
+       </table>
+     </div>
+     <a href="${p.appointmentsUrl}" style="display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:11px 24px;border-radius:9999px;">فتح الحجوزات</a>`,
   );
   const text = `حجز جديد بانتظار تأكيدك
 العميل: ${p.customerName}
