@@ -6,6 +6,75 @@ import {
   isAppointmentStatus,
   type AppointmentStatus,
 } from "@/lib/appointments/status";
+import { sendEmail } from "@/lib/email/resend";
+import { bookingCustomerConfirmedEmail } from "@/lib/email/templates/booking-customer-confirmed";
+
+// Customer "booking confirmed" email — sent only when transitioning TO
+// 'confirmed', and only if the customer left an email. Best-effort: runs after
+// the action returns and never affects its result.
+type ConfirmedApptRow = {
+  appointment_date: string;
+  start_time: string;
+  customers: { name: string; email: string | null } | null;
+  services: { name: string } | null;
+  providers: { name: string } | null;
+};
+
+async function notifyCustomerConfirmed(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  appointmentId: string,
+  businessId: string,
+) {
+  try {
+    const { data: rawAppt } = await supabase
+      .from("appointments")
+      .select(
+        "appointment_date, start_time, customers(name, email), services(name), providers(name)",
+      )
+      .eq("id", appointmentId)
+      .eq("business_id", businessId)
+      .maybeSingle();
+    const appt = rawAppt as ConfirmedApptRow | null;
+    const to = appt?.customers?.email;
+    if (!appt || !to) return;
+
+    const { data: biz } = await supabase
+      .from("businesses")
+      .select("name, phone, default_language")
+      .eq("id", businessId)
+      .maybeSingle();
+
+    const lang = biz?.default_language === "en" ? "en" : "ar";
+    const { subject, html, text } = bookingCustomerConfirmedEmail({
+      lang,
+      businessName: biz?.name ?? "",
+      serviceName: appt.services?.name ?? "",
+      providerName: appt.providers?.name ?? "",
+      date: appt.appointment_date,
+      time: appt.start_time,
+      whatsappPhone: biz?.phone ?? null,
+    });
+
+    await sendEmail({
+      to,
+      subject,
+      html,
+      text,
+      context: { booking_id: appointmentId, business_id: businessId },
+    });
+  } catch (e) {
+    console.error(
+      JSON.stringify({
+        scope: "email",
+        event: "customer_confirm_failed",
+        booking_id: appointmentId,
+        business_id: businessId,
+        error_message: e instanceof Error ? e.message : String(e),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+  }
+}
 
 export type MutationResult = {
   status: "success" | "error";
@@ -76,6 +145,13 @@ export async function setAppointmentStatus(
     }
     if (!updated || updated.length === 0) {
       return { status: "error", messageKey: "notFound" };
+    }
+
+    // Email the customer only when the appointment becomes confirmed. Awaited
+    // directly (server-action `after()` doesn't fire reliably here); the helper
+    // is fully try/catch-wrapped so a failure never changes the result.
+    if (newStatus === "confirmed") {
+      await notifyCustomerConfirmed(supabase, id, business.id);
     }
 
     return {
