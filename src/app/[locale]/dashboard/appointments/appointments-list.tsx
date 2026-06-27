@@ -19,6 +19,7 @@ export type AppointmentRow = {
   end_time: string;
   status: AppointmentStatus;
   deposit_verified: boolean | null;
+  deposit_screenshot_path: string | null;
   customer_notes: string | null;
   customers: { name: string; phone: string } | null;
   services: { name: string; price: number; deposit_amount: number } | null;
@@ -39,8 +40,10 @@ function hhmm(time: string) {
 
 export function AppointmentsList({
   appointments,
+  receiptUrls,
 }: {
   appointments: AppointmentRow[];
+  receiptUrls: Record<string, string>;
 }) {
   const t = useTranslations("Appointments");
   const router = useRouter();
@@ -177,6 +180,16 @@ export function AppointmentsList({
                       ? t("actions.clearDeposit")
                       : t("actions.verifyDeposit")}
                   </button>
+                  {receiptUrls[a.id] && (
+                    <a
+                      href={receiptUrls[a.id]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-md border border-blue-300 px-2.5 py-1 text-xs text-blue-700 hover:bg-blue-50"
+                    >
+                      {t("actions.viewReceipt")}
+                    </a>
+                  )}
 
                   <span className="mx-1 h-4 w-px bg-neutral-200" />
 

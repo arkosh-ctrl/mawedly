@@ -220,6 +220,21 @@
       "slotTaken": "This time is no longer available. Please choose another.",
       "saveFailed": "Couldn't complete the booking. Please try again.",
       "generic": "Something went wrong. Please try again."
+    },
+    "receipt": {
+      "title": "Upload transfer receipt",
+      "hint": "Image (PNG/JPG/WEBP) or PDF, up to 5 MB. The merchant reviews it before confirming.",
+      "uploading": "Uploading…",
+      "done": "Receipt uploaded. The merchant will review it shortly.",
+      "errors": {
+        "invalidType": "Unsupported file type. Use an image or a PDF.",
+        "tooLarge": "File is too large (max 5 MB).",
+        "notAllowed": "This booking can no longer accept a receipt.",
+        "notFound": "Booking not found.",
+        "saveFailed": "Couldn’t upload the receipt. Please try again.",
+        "invalidInput": "Please choose a valid file.",
+        "generic": "Something went wrong. Please try again."
+      }
     }
   },
   "Appointments": {
@@ -253,7 +268,8 @@
       "no_show": "No-show",
       "canceled": "Cancel",
       "verifyDeposit": "Mark deposit received",
-      "clearDeposit": "Clear deposit"
+      "clearDeposit": "Clear deposit",
+      "viewReceipt": "View receipt"
     },
     "messages": {
       "appointmentConfirmed": "Appointment confirmed.",

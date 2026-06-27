@@ -46,12 +46,28 @@ export default async function AppointmentsPage({
   const { data: appointments } = await supabase
     .from("appointments")
     .select(
-      "id, appointment_date, start_time, end_time, status, deposit_verified, customer_notes, customers(name, phone), services(name, price, deposit_amount), providers(name)",
+      "id, appointment_date, start_time, end_time, status, deposit_verified, deposit_screenshot_path, customer_notes, customers(name, phone), services(name, price, deposit_amount), providers(name)",
     )
     .eq("business_id", business.id)
     .order("appointment_date", { ascending: true })
     .order("start_time", { ascending: true })
     .returns<AppointmentRow[]>();
+
+  // Receipts are private (deposits bucket). Generate short-lived signed URLs for
+  // rows that have an uploaded receipt — the owner-only storage policy permits
+  // the authenticated merchant to read objects under their own business folder.
+  const rows = appointments ?? [];
+  const receiptUrls: Record<string, string> = {};
+  await Promise.all(
+    rows
+      .filter((a) => a.deposit_screenshot_path)
+      .map(async (a) => {
+        const { data: signed } = await supabase.storage
+          .from("deposits")
+          .createSignedUrl(a.deposit_screenshot_path as string, 300);
+        if (signed?.signedUrl) receiptUrls[a.id] = signed.signedUrl;
+      }),
+  );
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6">
@@ -59,7 +75,7 @@ export default async function AppointmentsPage({
         <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
         <p className="text-sm opacity-70">{t("subtitle")}</p>
       </div>
-      <AppointmentsList appointments={appointments ?? []} />
+      <AppointmentsList appointments={rows} receiptUrls={receiptUrls} />
     </main>
   );
 }

@@ -49,6 +49,11 @@ export function BookingWidget({
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<BookingResult | null>(null);
 
+  const [receiptState, setReceiptState] = useState<
+    "idle" | "uploading" | "done" | "error"
+  >("idle");
+  const [receiptError, setReceiptError] = useState<string | null>(null);
+
   const today = new Date().toISOString().slice(0, 10);
 
   // Fetch availability whenever service + provider + date are all chosen.
@@ -108,6 +113,28 @@ export function BookingWidget({
     }
   }
 
+  async function uploadReceipt(file: File) {
+    if (!result) return;
+    setReceiptError(null);
+    setReceiptState("uploading");
+    try {
+      const fd = new FormData();
+      fd.set("appointmentId", result.appointmentId);
+      fd.set("file", file);
+      const res = await fetch("/api/deposit", { method: "POST", body: fd });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setReceiptState("done");
+      } else {
+        setReceiptError(String(data.error ?? "generic"));
+        setReceiptState("error");
+      }
+    } catch {
+      setReceiptError("generic");
+      setReceiptState("error");
+    }
+  }
+
   if (result) {
     const service = services.find((s) => s.id === serviceId);
     const whatsappLink = result.whatsappPhone
@@ -150,6 +177,41 @@ export function BookingWidget({
             className="size-40 self-start rounded-md border border-neutral-200 object-contain"
           />
         )}
+
+        {/* Deposit-receipt upload. Goes through /api/deposit (service-role) since
+            the customer is anonymous and can't write to the private bucket. */}
+        <div className="flex flex-col gap-2 border-t border-green-200 pt-4">
+          <span className="text-sm font-medium text-green-900">
+            {t("receipt.title")}
+          </span>
+          <p className="text-xs text-green-800">{t("receipt.hint")}</p>
+          {receiptState === "done" ? (
+            <p className="rounded-md border border-green-300 bg-white px-3 py-2 text-sm text-green-800">
+              {t("receipt.done")}
+            </p>
+          ) : (
+            <>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,application/pdf"
+                disabled={receiptState === "uploading"}
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void uploadReceipt(f);
+                }}
+                className="text-sm text-green-900 file:me-3 file:rounded-md file:border-0 file:bg-green-600 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white"
+              />
+              {receiptState === "uploading" && (
+                <p className="text-xs text-green-800">{t("receipt.uploading")}</p>
+              )}
+              {receiptState === "error" && receiptError && (
+                <p className="text-xs text-red-700">
+                  {t(`receipt.errors.${receiptError}`)}
+                </p>
+              )}
+            </>
+          )}
+        </div>
 
         {/* Opens the merchant's WhatsApp with a prefilled message (wa.me only).
             Hidden quietly when the merchant has no usable number. */}
