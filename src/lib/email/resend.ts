@@ -3,7 +3,7 @@ import "server-only";
 import { Resend } from "resend";
 
 // Sender on the verified mawedly.com domain.
-const FROM = "Mawedly <no-reply@mawedly.com>";
+const FROM = "Mawedly <support@mawedly.com>";
 
 let client: Resend | null = null;
 
