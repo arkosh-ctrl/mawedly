@@ -31,30 +31,23 @@ export default async function ContactPage({
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-16">
-      <header className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+      <header>
+        <span className="eyebrow">{t("subtitle")}</span>
+        <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-600">
-          {t("subtitle")}
-        </p>
       </header>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2">
+      <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
         <a
           href={`mailto:${CONTACT_EMAIL}`}
-          className="flex flex-col gap-3 rounded-2xl border border-neutral-200 p-8 transition-shadow hover:shadow-sm"
+          className="group flex flex-col gap-3 bg-paper p-8 transition-colors hover:bg-canvas"
         >
-          <span className="text-2xl" aria-hidden>
-            ✉️
-          </span>
-          <span className="text-sm font-medium text-neutral-500">
-            {t("emailLabel")}
-          </span>
-          <span className="text-lg font-semibold text-neutral-900" dir="ltr">
+          <span className="eyebrow text-muted">{t("emailLabel")}</span>
+          <span className="font-mono text-lg text-ink" dir="ltr">
             {t("emailValue")}
           </span>
-          <span className="text-sm font-medium text-emerald-700">
+          <span className="mt-2 text-sm font-medium text-saffron">
             {t("emailAction")} →
           </span>
         </a>
@@ -63,18 +56,13 @@ export default async function ContactPage({
           href={waLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col gap-3 rounded-2xl border border-neutral-200 p-8 transition-shadow hover:shadow-sm"
+          className="group flex flex-col gap-3 bg-paper p-8 transition-colors hover:bg-canvas"
         >
-          <span className="text-2xl" aria-hidden>
-            💬
-          </span>
-          <span className="text-sm font-medium text-neutral-500">
-            {t("whatsappLabel")}
-          </span>
-          <span className="text-lg font-semibold text-neutral-900">
+          <span className="eyebrow text-muted">{t("whatsappLabel")}</span>
+          <span className="text-lg font-semibold text-ink">
             {t("whatsappValue")}
           </span>
-          <span className="text-sm font-medium text-emerald-700">
+          <span className="mt-2 text-sm font-medium text-saffron">
             {t("whatsappAction")} →
           </span>
         </a>

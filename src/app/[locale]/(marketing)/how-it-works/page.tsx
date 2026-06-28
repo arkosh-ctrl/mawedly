@@ -29,41 +29,42 @@ export default async function HowItWorksPage({
   ];
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-16">
-      <header className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+    <div className="mx-auto max-w-3xl px-5 py-20">
+      <header>
+        <span className="eyebrow">{t("subtitle")}</span>
+        <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-600">
-          {t("subtitle")}
-        </p>
       </header>
 
-      <ol className="mt-14 flex flex-col gap-6">
+      {/* A real sequence, so the steps are numbered along a ledger spine. */}
+      <ol className="mt-14 flex flex-col">
         {steps.map((s, i) => (
           <li
             key={s.title}
-            className="flex gap-5 rounded-2xl border border-neutral-200 p-6"
+            className="flex gap-5 border-t border-line py-7 first:border-t-0 sm:gap-7"
           >
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-lg font-bold text-white">
-              {i + 1}
+            <span className="font-mono text-sm font-medium text-saffron" dir="ltr">
+              {String(i + 1).padStart(2, "0")}
             </span>
             <div className="flex flex-col gap-2">
-              <h2 className="text-lg font-semibold text-neutral-900">
+              <h2 className="font-display text-lg font-bold text-ink">
                 {s.title}
               </h2>
-              <p className="leading-relaxed text-neutral-600">{s.body}</p>
+              <p className="leading-relaxed text-muted">{s.body}</p>
             </div>
           </li>
         ))}
       </ol>
 
-      <div className="mt-12 rounded-2xl bg-emerald-50 p-8 text-center">
-        <h2 className="text-xl font-bold text-emerald-800">{t("ctaTitle")}</h2>
-        <p className="mt-2 text-neutral-700">{t("ctaBody")}</p>
+      <div className="mt-14 rounded-3xl bg-ink p-10 text-center text-paper">
+        <h2 className="font-display text-xl font-bold">{t("ctaTitle")}</h2>
+        <p className="mx-auto mt-3 max-w-md leading-relaxed text-sage">
+          {t("ctaBody")}
+        </p>
         <Link
           href="/login"
-          className="mt-6 inline-block rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 px-7 py-3 text-base font-semibold text-white transition-opacity hover:opacity-90"
+          className="mt-7 inline-block rounded-full bg-saffron px-7 py-3 text-base font-semibold text-ink transition-transform hover:scale-[1.02]"
         >
           {t("ctaButton")}
         </Link>

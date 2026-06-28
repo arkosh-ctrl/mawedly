@@ -30,18 +30,18 @@ export default async function TermsPage({
   ];
 
   return (
-    <div className="mx-auto max-w-2xl px-5 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+    <div className="mx-auto max-w-2xl px-5 py-20">
+      <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
         {t("title")}
       </h1>
-      <p className="mt-2 text-sm text-neutral-500">{t("updated")}</p>
-      <p className="mt-6 leading-relaxed text-neutral-700">{t("intro")}</p>
+      <p className="mt-2 font-mono text-xs text-muted">{t("updated")}</p>
+      <p className="mt-6 leading-relaxed text-pine">{t("intro")}</p>
 
-      <div className="mt-10 flex flex-col gap-8">
+      <div className="mt-10 flex flex-col">
         {sections.map((s) => (
-          <section key={s.h}>
-            <h2 className="text-lg font-semibold text-neutral-900">{s.h}</h2>
-            <p className="mt-3 leading-relaxed text-neutral-600">{s.b}</p>
+          <section key={s.h} className="border-t border-line py-7 first:border-t-0">
+            <h2 className="font-display text-lg font-bold text-ink">{s.h}</h2>
+            <p className="mt-3 leading-relaxed text-muted">{s.b}</p>
           </section>
         ))}
       </div>

@@ -12,7 +12,7 @@ export function SignOutButton() {
       <input type="hidden" name="locale" value={locale} />
       <button
         type="submit"
-        className="rounded-md border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-100"
+        className="rounded-full border border-line px-3 py-1 text-sm text-ink transition-colors hover:border-ink"
       >
         {t("signOut")}
       </button>

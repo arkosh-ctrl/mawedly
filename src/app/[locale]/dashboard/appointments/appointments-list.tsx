@@ -27,11 +27,11 @@ export type AppointmentRow = {
 };
 
 const STATUS_BADGE: Record<AppointmentStatus, string> = {
-  pending_verification: "bg-yellow-100 text-yellow-800 border-yellow-300",
-  confirmed: "bg-green-100 text-green-800 border-green-300",
-  completed: "bg-blue-100 text-blue-800 border-blue-300",
-  no_show: "bg-neutral-200 text-neutral-700 border-neutral-300",
-  canceled: "bg-red-100 text-red-800 border-red-300",
+  pending_verification: "bg-saffron/15 text-pine border-saffron/45",
+  confirmed: "bg-ink text-paper border-ink",
+  completed: "bg-pine/10 text-pine border-pine/35",
+  no_show: "bg-canvas text-muted border-line",
+  canceled: "bg-brick/10 text-brick border-brick/35",
 };
 
 function hhmm(time: string) {
@@ -110,7 +110,7 @@ export function AppointmentsList({
       </div>
 
       {visible.length === 0 ? (
-        <p className="rounded-md border border-dashed border-neutral-300 px-4 py-6 text-center text-sm opacity-70">
+        <p className="rounded-2xl border border-dashed border-line bg-paper px-4 py-8 text-center text-sm text-muted">
           {t("empty")}
         </p>
       ) : (
@@ -120,33 +120,33 @@ export function AppointmentsList({
             return (
               <li
                 key={a.id}
-                className="flex flex-col gap-3 rounded-md border border-neutral-200 px-4 py-3"
+                className="flex flex-col gap-3 rounded-xl border border-line bg-paper px-4 py-3.5"
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="flex flex-col gap-1">
-                    <span className="font-medium">
+                    <span className="font-display font-bold text-ink">
                       {a.customers?.name ?? "—"}
                     </span>
-                    <span className="text-xs opacity-70" dir="ltr">
+                    <span className="font-mono text-xs text-muted" dir="ltr">
                       {a.customers?.phone ?? ""}
                     </span>
                   </div>
                   <span
-                    className={`rounded-full border px-2.5 py-0.5 text-xs ${STATUS_BADGE[a.status]}`}
+                    className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_BADGE[a.status]}`}
                   >
                     {t(`status.${a.status}`)}
                   </span>
                 </div>
 
-                <div className="text-sm opacity-80">
+                <div className="text-sm text-pine">
                   <span>{a.services?.name ?? "—"}</span>
-                  <span className="opacity-50"> · </span>
+                  <span className="text-muted"> · </span>
                   <span>{a.providers?.name ?? "—"}</span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs opacity-70">
-                  <span dir="ltr">{a.appointment_date}</span>
-                  <span dir="ltr">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+                  <span className="font-mono" dir="ltr">{a.appointment_date}</span>
+                  <span className="font-mono" dir="ltr">
                     {hhmm(a.start_time)}–{hhmm(a.end_time)}
                   </span>
                   {a.services && (
@@ -157,15 +157,18 @@ export function AppointmentsList({
                   )}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 pt-1">
+                <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3">
                   {/* Deposit indicator + independent toggle */}
                   <span
-                    className={`rounded px-2 py-0.5 text-xs ${
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       a.deposit_verified
-                        ? "bg-green-100 text-green-800"
-                        : "bg-neutral-200 text-neutral-700"
+                        ? "bg-saffron/15 text-pine"
+                        : "bg-canvas text-muted"
                     }`}
                   >
+                    {a.deposit_verified && (
+                      <span className="size-1.5 rounded-full bg-saffron" aria-hidden />
+                    )}
                     {a.deposit_verified
                       ? t("depositBadge.verified")
                       : t("depositBadge.pending")}
@@ -174,7 +177,7 @@ export function AppointmentsList({
                     type="button"
                     disabled={isPending}
                     onClick={() => toggleDeposit(a.id, !a.deposit_verified)}
-                    className="rounded-md border border-neutral-300 px-2.5 py-1 text-xs hover:bg-neutral-100"
+                    className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-ink"
                   >
                     {a.deposit_verified
                       ? t("actions.clearDeposit")
@@ -185,13 +188,13 @@ export function AppointmentsList({
                       href={receiptUrls[a.id]}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-md border border-blue-300 px-2.5 py-1 text-xs text-blue-700 hover:bg-blue-50"
+                      className="rounded-full border border-line px-2.5 py-1 text-xs text-pine transition-colors hover:border-pine"
                     >
                       {t("actions.viewReceipt")}
                     </a>
                   )}
 
-                  <span className="mx-1 h-4 w-px bg-neutral-200" />
+                  <span className="mx-1 h-4 w-px bg-line" />
 
                   {/* Status transition buttons, derived from the map */}
                   {transitions.map((target) =>
@@ -201,7 +204,7 @@ export function AppointmentsList({
                         type="button"
                         disabled={isPending}
                         onClick={() => setConfirmCancel(a)}
-                        className="rounded-md border border-red-300 px-2.5 py-1 text-xs text-red-700 hover:bg-red-50"
+                        className="rounded-full border border-brick/40 px-2.5 py-1 text-xs text-brick transition-colors hover:bg-brick/5"
                       >
                         {t("actions.canceled")}
                       </button>
@@ -211,7 +214,7 @@ export function AppointmentsList({
                         type="button"
                         disabled={isPending}
                         onClick={() => changeStatus(a.id, target)}
-                        className="rounded-md border border-neutral-300 px-2.5 py-1 text-xs hover:bg-neutral-100"
+                        className="rounded-full bg-ink px-2.5 py-1 text-xs font-medium text-paper transition-colors hover:bg-pine"
                       >
                         {t(`actions.${target}`)}
                       </button>
@@ -229,12 +232,12 @@ export function AppointmentsList({
         onClose={() => setConfirmCancel(null)}
         title={t("cancelConfirmTitle")}
       >
-        <p className="mb-4 text-sm opacity-80">{t("cancelConfirmBody")}</p>
+        <p className="mb-4 text-sm text-muted">{t("cancelConfirmBody")}</p>
         <div className="flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setConfirmCancel(null)}
-            className="rounded-md border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-100"
+            className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
           >
             {t("keep")}
           </button>
@@ -244,7 +247,7 @@ export function AppointmentsList({
             onClick={() =>
               confirmCancel && changeStatus(confirmCancel.id, "canceled")
             }
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="rounded-full bg-brick px-4 py-2 text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {t("actions.canceled")}
           </button>
@@ -267,10 +270,10 @@ function FilterButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-md border px-3 py-1 text-sm ${
+      className={`rounded-full border px-3 py-1 text-sm transition-colors ${
         active
-          ? "border-neutral-900 bg-neutral-900 text-white"
-          : "border-neutral-300 hover:bg-neutral-100"
+          ? "border-ink bg-ink text-paper"
+          : "border-line text-muted hover:border-ink hover:text-ink"
       }`}
     >
       {label}

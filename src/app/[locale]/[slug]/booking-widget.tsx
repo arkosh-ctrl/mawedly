@@ -20,8 +20,8 @@ type BookingResult = {
 };
 
 const inputClass =
-  "rounded-md border border-neutral-300 px-3 py-2 text-start outline-none focus:border-neutral-500";
-const labelClass = "flex flex-col gap-1 text-sm";
+  "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
 
 export function BookingWidget({
   slug,
@@ -150,13 +150,23 @@ export function BookingWidget({
       : null;
 
     return (
-      <div className="flex flex-col gap-4 rounded-md border border-green-300 bg-green-50 p-5">
-        <h2 className="text-lg font-semibold text-green-800">
-          {t("success.title")}
-        </h2>
-        <p className="text-sm text-green-900">{t("success.instructions")}</p>
+      <div className="flex flex-col gap-5 rounded-2xl border border-line bg-paper p-6 shadow-xl shadow-ink/5">
+        <div className="flex items-center gap-3">
+          <span
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-saffron text-base font-bold text-ink"
+            aria-hidden
+          >
+            ✓
+          </span>
+          <h2 className="font-display text-lg font-bold text-ink">
+            {t("success.title")}
+          </h2>
+        </div>
+        <p className="text-sm leading-relaxed text-muted">
+          {t("success.instructions")}
+        </p>
 
-        <dl className="flex flex-col gap-2 text-sm">
+        <dl className="flex flex-col gap-2 rounded-xl border border-line bg-canvas p-4 text-sm">
           <Row label={t("success.deposit")} value={`${result.deposit} ${t("currency")}`} />
           {result.transfer.bankName && (
             <Row label={t("fields.bankName")} value={result.transfer.bankName} />
@@ -174,19 +184,19 @@ export function BookingWidget({
           <img
             src={result.transfer.qrUrl}
             alt={t("fields.qr")}
-            className="size-40 self-start rounded-md border border-neutral-200 object-contain"
+            className="size-40 self-start rounded-xl border border-line bg-paper object-contain p-1"
           />
         )}
 
         {/* Deposit-receipt upload. Goes through /api/deposit (service-role) since
             the customer is anonymous and can't write to the private bucket. */}
-        <div className="flex flex-col gap-2 border-t border-green-200 pt-4">
-          <span className="text-sm font-medium text-green-900">
+        <div className="flex flex-col gap-2 border-t border-line pt-5">
+          <span className="text-sm font-semibold text-ink">
             {t("receipt.title")}
           </span>
-          <p className="text-xs text-green-800">{t("receipt.hint")}</p>
+          <p className="text-xs text-muted">{t("receipt.hint")}</p>
           {receiptState === "done" ? (
-            <p className="rounded-md border border-green-300 bg-white px-3 py-2 text-sm text-green-800">
+            <p className="rounded-lg border border-saffron/40 bg-saffron/10 px-3 py-2 text-sm text-pine">
               {t("receipt.done")}
             </p>
           ) : (
@@ -199,13 +209,13 @@ export function BookingWidget({
                   const f = e.target.files?.[0];
                   if (f) void uploadReceipt(f);
                 }}
-                className="text-sm text-green-900 file:me-3 file:rounded-md file:border-0 file:bg-green-600 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white"
+                className="text-sm text-ink file:me-3 file:rounded-full file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-paper"
               />
               {receiptState === "uploading" && (
-                <p className="text-xs text-green-800">{t("receipt.uploading")}</p>
+                <p className="text-xs text-muted">{t("receipt.uploading")}</p>
               )}
               {receiptState === "error" && receiptError && (
-                <p className="text-xs text-red-700">
+                <p className="text-xs text-brick">
                   {t(`receipt.errors.${receiptError}`)}
                 </p>
               )}
@@ -220,7 +230,7 @@ export function BookingWidget({
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="self-start rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+            className="self-start rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine"
           >
             {t("whatsappButton")}
           </a>
@@ -234,7 +244,7 @@ export function BookingWidget({
     !submitting;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 rounded-2xl border border-line bg-paper p-6 shadow-xl shadow-ink/5">
       <label className={labelClass}>
         <span>{t("fields.service")}</span>
         <select
@@ -283,23 +293,26 @@ export function BookingWidget({
 
       {serviceId && providerId && date && (
         <div className="flex flex-col gap-2">
-          <span className="text-sm">{t("fields.time")}</span>
+          <span className="text-sm font-medium text-ink">{t("fields.time")}</span>
           {slotsLoading ? (
-            <p className="text-sm opacity-70">{t("loadingSlots")}</p>
+            <p className="text-sm text-muted">{t("loadingSlots")}</p>
           ) : slots.length === 0 ? (
-            <p className="text-sm opacity-70">{t("noSlots")}</p>
+            <p className="text-sm text-muted">{t("noSlots")}</p>
           ) : (
-            <div className="flex flex-wrap gap-2">
+            // The slot grid is the product's signature: a precise daybook of
+            // available times, the selection set in tabular mono.
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {slots.map((s) => (
                 <button
                   key={s}
                   type="button"
                   dir="ltr"
+                  aria-pressed={slot === s}
                   onClick={() => setSlot(s)}
-                  className={`rounded-md border px-3 py-1 text-sm ${
+                  className={`rounded-lg border px-3 py-2 font-mono text-sm transition-colors ${
                     slot === s
-                      ? "border-neutral-900 bg-neutral-900 text-white"
-                      : "border-neutral-300 hover:bg-neutral-100"
+                      ? "border-ink bg-ink text-saffron-soft"
+                      : "border-line bg-canvas text-ink hover:border-ink"
                   }`}
                 >
                   {s}
@@ -343,7 +356,7 @@ export function BookingWidget({
       </label>
 
       {error && (
-        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
           {t(`errors.${error}`)}
         </p>
       )}
@@ -352,7 +365,7 @@ export function BookingWidget({
         type="button"
         disabled={!canSubmit}
         onClick={submit}
-        className="rounded-md bg-neutral-900 px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-50"
       >
         {submitting ? t("submitting") : t("submit")}
       </button>
@@ -371,8 +384,11 @@ function Row({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <dt className="opacity-70">{label}</dt>
-      <dd className={mono ? "font-mono" : ""} dir={mono ? "ltr" : undefined}>
+      <dt className="text-muted">{label}</dt>
+      <dd
+        className={mono ? "font-mono text-ink" : "font-medium text-ink"}
+        dir={mono ? "ltr" : undefined}
+      >
         {value}
       </dd>
     </div>

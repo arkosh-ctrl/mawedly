@@ -90,9 +90,9 @@ export function ServicesManager({ services }: { services: Service[] }) {
   }
 
   const inputClass =
-    "rounded-md border border-neutral-300 px-3 py-2 text-start outline-none focus:border-neutral-500";
-  const labelClass = "flex flex-col gap-1 text-sm";
-  const errorClass = "text-xs text-red-700";
+    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+  const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
+  const errorClass = "text-xs text-brick";
 
   return (
     <div className="flex flex-col gap-4">
@@ -100,14 +100,14 @@ export function ServicesManager({ services }: { services: Service[] }) {
         <button
           type="button"
           onClick={openCreate}
-          className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+          className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
         >
           {t("add")}
         </button>
       </div>
 
       {services.length === 0 ? (
-        <p className="rounded-md border border-dashed border-neutral-300 px-4 py-6 text-center text-sm opacity-70">
+        <p className="rounded-2xl border border-dashed border-line bg-paper px-4 py-8 text-center text-sm text-muted">
           {t("empty")}
         </p>
       ) : (
@@ -115,20 +115,20 @@ export function ServicesManager({ services }: { services: Service[] }) {
           {services.map((s) => (
             <li
               key={s.id}
-              className={`flex flex-col gap-2 rounded-md border border-neutral-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between ${
+              className={`flex flex-col gap-2 rounded-xl border border-line bg-paper px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between ${
                 s.is_active ? "" : "opacity-60"
               }`}
             >
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium">{s.name}</span>
+                  <span className="font-display font-bold text-ink">{s.name}</span>
                   {!s.is_active && (
-                    <span className="rounded bg-neutral-200 px-2 py-0.5 text-xs text-neutral-700">
+                    <span className="rounded-full bg-canvas px-2 py-0.5 text-xs text-muted">
                       {t("inactive")}
                     </span>
                   )}
                 </div>
-                <span className="text-xs opacity-70">
+                <span className="text-xs text-muted">
                   {t("units.minutes", { n: s.duration_minutes })} ·{" "}
                   {t("fields.price")}: {Number(s.price)} {t("units.currency")} ·{" "}
                   {t("fields.deposit")}: {Number(s.deposit_amount)}{" "}
@@ -139,7 +139,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
                 <button
                   type="button"
                   onClick={() => openEdit(s)}
-                  className="rounded-md border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-100"
+                  className="rounded-full border border-line px-3 py-1 text-sm text-ink transition-colors hover:border-ink"
                 >
                   {t("edit")}
                 </button>
@@ -147,7 +147,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
                   <button
                     type="button"
                     onClick={() => setConfirmArchive(s)}
-                    className="rounded-md border border-red-300 px-3 py-1 text-sm text-red-700 hover:bg-red-50"
+                    className="rounded-full border border-brick/40 px-3 py-1 text-sm text-brick transition-colors hover:bg-brick/5"
                   >
                     {t("archive")}
                   </button>
@@ -156,7 +156,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
                     type="button"
                     onClick={() => changeActive(s, true)}
                     disabled={isPending}
-                    className="rounded-md border border-green-300 px-3 py-1 text-sm text-green-700 hover:bg-green-50"
+                    className="rounded-full border border-pine/40 px-3 py-1 text-sm text-pine transition-colors hover:bg-pine/5"
                   >
                     {t("activate")}
                   </button>
@@ -230,14 +230,14 @@ export function ServicesManager({ services }: { services: Service[] }) {
             <button
               type="button"
               onClick={() => setDialogOpen(false)}
-              className="rounded-md border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-100"
+              className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
             >
               {t("cancel")}
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+              className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
             >
               {isPending ? t("saving") : t("save")}
             </button>
@@ -250,12 +250,12 @@ export function ServicesManager({ services }: { services: Service[] }) {
         onClose={() => setConfirmArchive(null)}
         title={t("archiveConfirmTitle")}
       >
-        <p className="mb-4 text-sm opacity-80">{t("archiveConfirmBody")}</p>
+        <p className="mb-4 text-sm text-muted">{t("archiveConfirmBody")}</p>
         <div className="flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setConfirmArchive(null)}
-            className="rounded-md border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-100"
+            className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
           >
             {t("cancel")}
           </button>
@@ -263,7 +263,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
             type="button"
             disabled={isPending}
             onClick={() => confirmArchive && changeActive(confirmArchive, false)}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="rounded-full bg-brick px-4 py-2 text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {t("archive")}
           </button>

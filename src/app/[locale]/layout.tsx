@@ -2,12 +2,26 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { IBM_Plex_Sans, IBM_Plex_Sans_Arabic } from "next/font/google";
+import {
+  IBM_Plex_Sans,
+  IBM_Plex_Sans_Arabic,
+  IBM_Plex_Mono,
+  Tajawal,
+} from "next/font/google";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
-// Arabic UI font (default locale). Exposed as a CSS variable so the stack in
-// globals.css can prefer it.
+// Display face — geometric, confident, covers Arabic + Latin. Used for
+// headings via the --font-display stack (the "Daybook" voice).
+const display = Tajawal({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+// Arabic UI body font (default locale). Exposed as a CSS variable so the stack
+// in globals.css can prefer it.
 const arabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
@@ -15,11 +29,19 @@ const arabic = IBM_Plex_Sans_Arabic({
   display: "swap",
 });
 
-// Latin font for English content and Latin glyphs inside Arabic text.
+// Latin body font for English content and Latin glyphs inside Arabic text.
 const latin = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-latin",
+  display: "swap",
+});
+
+// Tabular mono for the ledger data — times, prices, IBANs, dates (always LTR).
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -56,7 +78,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${arabic.variable} ${latin.variable}`}
+      className={`${display.variable} ${arabic.variable} ${latin.variable} ${mono.variable}`}
     >
       <body className="antialiased">
         {/* Messages and locale are inherited from the request config. */}

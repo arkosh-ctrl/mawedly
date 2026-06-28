@@ -20,13 +20,13 @@ export function SiteFooter() {
   const tFooter = useTranslations("Footer");
 
   return (
-    <footer className="border-t border-neutral-200 bg-neutral-50">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-5 py-12 sm:grid-cols-2 md:grid-cols-4">
+    <footer className="border-t border-pine/40 bg-ink text-paper">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-5 py-14 sm:grid-cols-2 md:grid-cols-4">
         <div className="flex flex-col gap-3">
-          <span className="text-lg font-bold tracking-tight text-neutral-900">
+          <span className="font-display text-xl font-extrabold tracking-tight text-paper">
             {tNav("brand")}
           </span>
-          <p className="max-w-xs text-sm leading-relaxed text-neutral-600">
+          <p className="max-w-xs text-sm leading-relaxed text-sage">
             {tFooter("tagline")}
           </p>
         </div>
@@ -53,8 +53,8 @@ export function SiteFooter() {
         </FooterCol>
       </div>
 
-      <div className="border-t border-neutral-200">
-        <div className="mx-auto max-w-6xl px-5 py-5 text-xs text-neutral-500">
+      <div className="border-t border-pine/40">
+        <div className="mx-auto max-w-6xl px-5 py-5 font-mono text-xs text-sage">
           {tFooter("rights")}
         </div>
       </div>
@@ -71,7 +71,7 @@ function FooterCol({
 }) {
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-sm font-semibold text-neutral-900">{title}</span>
+      <span className="eyebrow">{title}</span>
       <ul className="flex flex-col gap-2">{children}</ul>
     </div>
   );
@@ -88,7 +88,7 @@ function FooterLink({
     <li>
       <Link
         href={href}
-        className="text-sm text-neutral-600 transition-colors hover:text-emerald-700"
+        className="text-sm text-sage transition-colors hover:text-paper"
       >
         {children}
       </Link>

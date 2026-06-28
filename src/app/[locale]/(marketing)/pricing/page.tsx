@@ -49,14 +49,12 @@ export default async function PricingPage({
   ];
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16">
-      <header className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+    <div className="mx-auto max-w-6xl px-5 py-20">
+      <header>
+        <span className="eyebrow">{t("subtitle")}</span>
+        <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-600">
-          {t("subtitle")}
-        </p>
       </header>
 
       <div className="mt-14 grid gap-6 lg:grid-cols-3">
@@ -65,43 +63,53 @@ export default async function PricingPage({
             key={p.name}
             className={`relative flex flex-col rounded-3xl border p-8 ${
               p.featured
-                ? "border-emerald-300 bg-emerald-50/50 shadow-sm"
-                : "border-neutral-200 bg-white"
+                ? "border-ink bg-ink text-paper shadow-xl shadow-ink/10"
+                : "border-line bg-paper"
             }`}
           >
             {p.featured && (
-              <span className="absolute -top-3 start-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 px-3 py-1 text-xs font-semibold text-white">
+              <span className="absolute -top-3 start-8 rounded-full bg-saffron px-3 py-1 text-xs font-semibold text-ink">
                 {t("mostPopular")}
               </span>
             )}
-            <h2 className="text-lg font-semibold text-neutral-900">{p.name}</h2>
-            <p className="mt-1 text-sm text-neutral-500">{p.tagline}</p>
-            <div className="mt-5 flex items-baseline gap-1.5">
-              <span className="text-4xl font-bold text-neutral-900">
+            <h2
+              className={`font-display text-lg font-bold ${p.featured ? "text-paper" : "text-ink"}`}
+            >
+              {p.name}
+            </h2>
+            <p className={`mt-1 text-sm ${p.featured ? "text-sage" : "text-muted"}`}>
+              {p.tagline}
+            </p>
+            <div className="mt-5 flex items-baseline gap-1.5" dir="ltr">
+              <span
+                className={`font-mono text-4xl font-semibold ${p.featured ? "text-saffron-soft" : "text-ink"}`}
+              >
                 {p.price}
               </span>
-              <span className="text-sm text-neutral-500">{t("currency")}</span>
-              <span className="text-sm text-neutral-500">{t("perMonth")}</span>
+              <span className={`text-sm ${p.featured ? "text-sage" : "text-muted"}`}>
+                {t("currency")}
+              </span>
+              <span className={`text-sm ${p.featured ? "text-sage" : "text-muted"}`}>
+                {t("perMonth")}
+              </span>
             </div>
             <ul className="mt-7 flex flex-1 flex-col gap-3">
               {p.features.map((f) => (
                 <li
                   key={f}
-                  className="flex items-start gap-2.5 text-sm text-neutral-700"
+                  className={`flex items-start gap-2.5 text-sm ${p.featured ? "text-paper/90" : "text-pine"}`}
                 >
-                  <span className="mt-0.5 text-emerald-600" aria-hidden>
-                    ✓
-                  </span>
+                  <span className="mt-1 size-1.5 shrink-0 rounded-full bg-saffron" aria-hidden />
                   <span>{f}</span>
                 </li>
               ))}
             </ul>
             <Link
               href="/login"
-              className={`mt-8 rounded-full px-6 py-3 text-center text-sm font-semibold transition-opacity hover:opacity-90 ${
+              className={`mt-8 rounded-full px-6 py-3 text-center text-sm font-semibold transition-colors ${
                 p.featured
-                  ? "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white"
-                  : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50"
+                  ? "bg-saffron text-ink hover:bg-saffron-soft"
+                  : "border border-line bg-canvas text-ink hover:border-ink"
               }`}
             >
               {p.cta}
@@ -110,7 +118,7 @@ export default async function PricingPage({
         ))}
       </div>
 
-      <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-neutral-500">
+      <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-muted">
         {t("assumptionNote")}
       </p>
     </div>

@@ -28,31 +28,48 @@ export default async function DashboardLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <div className="min-h-screen">
-      <header className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard" className="font-semibold">
-            {t("brand")}
-          </Link>
-          <Link href="/dashboard/appointments" className="text-sm opacity-70 hover:opacity-100">
-            {t("appointmentsNav")}
-          </Link>
-          <Link href="/dashboard/services" className="text-sm opacity-70 hover:opacity-100">
-            {t("servicesNav")}
-          </Link>
-          <Link href="/dashboard/providers" className="text-sm opacity-70 hover:opacity-100">
-            {t("providersNav")}
-          </Link>
-          <Link href="/dashboard/settings" className="text-sm opacity-70 hover:opacity-100">
-            {t("settingsNav")}
-          </Link>
-        </div>
-        <div className="flex items-center gap-3">
-          <LocaleSwitcher />
-          <SignOutButton />
+    <div className="min-h-screen bg-canvas text-ink">
+      <header className="sticky top-0 z-30 border-b border-line bg-canvas/85 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-3.5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+            <Link
+              href="/dashboard"
+              className="font-display text-lg font-extrabold tracking-tight text-ink"
+            >
+              {t("brand")}
+            </Link>
+            <Link
+              href="/dashboard/appointments"
+              className="text-sm text-muted transition-colors hover:text-ink"
+            >
+              {t("appointmentsNav")}
+            </Link>
+            <Link
+              href="/dashboard/services"
+              className="text-sm text-muted transition-colors hover:text-ink"
+            >
+              {t("servicesNav")}
+            </Link>
+            <Link
+              href="/dashboard/providers"
+              className="text-sm text-muted transition-colors hover:text-ink"
+            >
+              {t("providersNav")}
+            </Link>
+            <Link
+              href="/dashboard/settings"
+              className="text-sm text-muted transition-colors hover:text-ink"
+            >
+              {t("settingsNav")}
+            </Link>
+          </div>
+          <div className="flex items-center gap-3">
+            <LocaleSwitcher />
+            <SignOutButton />
+          </div>
         </div>
       </header>
-      <div className="px-6 py-8">{children}</div>
+      <div className="mx-auto max-w-5xl px-6 py-10">{children}</div>
       <Toaster dir={dir} richColors position="top-center" />
     </div>
   );

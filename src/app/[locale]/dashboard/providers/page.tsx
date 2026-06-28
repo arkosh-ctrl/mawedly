@@ -25,12 +25,14 @@ export default async function ProvidersPage({
   if (!business) {
     return (
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
-        <div className="flex flex-col items-start gap-3 rounded-md border border-dashed border-neutral-300 px-4 py-4">
-          <p className="text-sm opacity-80">{t("noBusiness")}</p>
+        <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">
+          {t("title")}
+        </h1>
+        <div className="flex flex-col items-start gap-3 rounded-2xl border border-dashed border-line bg-paper px-5 py-5">
+          <p className="text-sm text-muted">{t("noBusiness")}</p>
           <Link
             href="/dashboard/settings"
-            className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
           >
             {t("goToSettings")}
           </Link>
@@ -50,8 +52,10 @@ export default async function ProvidersPage({
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-sm opacity-70">{t("subtitle")}</p>
+        <span className="eyebrow">{t("subtitle")}</span>
+        <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">
+          {t("title")}
+        </h1>
       </div>
       <ProvidersManager providers={providers ?? []} />
     </main>

@@ -18,7 +18,10 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-2" aria-label={t("label")}>
+    <div
+      className="inline-flex items-center gap-0.5 rounded-full border border-line bg-paper p-0.5"
+      aria-label={t("label")}
+    >
       {routing.locales.map((locale) => {
         const isActive = locale === activeLocale;
         return (
@@ -27,10 +30,10 @@ export function LocaleSwitcher() {
             type="button"
             onClick={() => switchTo(locale)}
             aria-current={isActive ? "true" : undefined}
-            className={`rounded-md border px-3 py-1 text-sm transition-colors ${
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
               isActive
-                ? "border-neutral-900 bg-neutral-900 text-white"
-                : "border-neutral-300 hover:bg-neutral-100"
+                ? "bg-ink text-paper"
+                : "text-muted hover:text-ink"
             }`}
           >
             {t(locale)}

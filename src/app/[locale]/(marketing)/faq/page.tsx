@@ -42,28 +42,29 @@ export default async function FaqPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <header className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+      <header>
+        <span className="eyebrow">{t("subtitle")}</span>
+        <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-600">
-          {t("subtitle")}
-        </p>
       </header>
 
-      <div className="mt-12 flex flex-col gap-3">
+      <div className="mt-12 overflow-hidden rounded-2xl border border-line bg-paper">
         {items.map((it) => (
           <details
             key={it.q}
-            className="group rounded-2xl border border-neutral-200 p-6 [&_summary::-webkit-details-marker]:hidden"
+            className="group border-t border-line p-6 first:border-t-0 [&_summary::-webkit-details-marker]:hidden"
           >
-            <summary className="flex cursor-pointer items-center justify-between gap-4 font-semibold text-neutral-900">
+            <summary className="flex cursor-pointer items-center justify-between gap-4 font-display font-bold text-ink">
               {it.q}
-              <span className="text-emerald-600 transition-transform group-open:rotate-45">
+              <span
+                className="font-mono text-lg text-saffron transition-transform group-open:rotate-45"
+                aria-hidden
+              >
                 +
               </span>
             </summary>
-            <p className="mt-4 leading-relaxed text-neutral-600">{it.a}</p>
+            <p className="mt-4 leading-relaxed text-muted">{it.a}</p>
           </details>
         ))}
       </div>

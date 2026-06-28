@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { safeNextPath } from "@/lib/safe-redirect";
 import { MagicLinkForm } from "./magic-link-form";
@@ -15,26 +16,41 @@ export default async function LoginPage({
 
   const { next, error } = await searchParams;
   const t = await getTranslations("Login");
+  const tNav = await getTranslations("Nav");
 
   // Only allow internal, locale-prefixed redirect targets.
   const safeNext = safeNextPath(next) ?? `/${locale}/dashboard`;
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-start gap-6 px-6 py-16">
-      <LocaleSwitcher />
+    <main className="flex min-h-screen flex-col bg-canvas text-ink">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-8 px-6 py-16">
+        <div className="flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-display text-xl font-extrabold tracking-tight text-ink"
+          >
+            {tNav("brand")}
+          </Link>
+          <LocaleSwitcher />
+        </div>
 
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-sm opacity-80">{t("subtitle")}</p>
+        <div className="rounded-2xl border border-line bg-paper p-8 shadow-xl shadow-ink/5">
+          <span className="eyebrow">{t("subtitle")}</span>
+          <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight">
+            {t("title")}
+          </h1>
+
+          {error === "auth" && (
+            <p className="mt-5 w-full rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+              {t("messages.authError")}
+            </p>
+          )}
+
+          <div className="mt-6">
+            <MagicLinkForm next={safeNext} />
+          </div>
+        </div>
       </div>
-
-      {error === "auth" && (
-        <p className="w-full rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {t("messages.authError")}
-        </p>
-      )}
-
-      <MagicLinkForm next={safeNext} />
     </main>
   );
 }

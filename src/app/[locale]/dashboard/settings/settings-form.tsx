@@ -55,17 +55,15 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
   }
 
   const inputClass =
-    "rounded-md border border-neutral-300 px-3 py-2 text-start outline-none focus:border-neutral-500";
-  const labelClass = "flex flex-col gap-1 text-sm";
-  const errorClass = "text-xs text-red-700";
+    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+  const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
+  const errorClass = "text-xs text-brick";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       {/* Business info */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-sm font-semibold opacity-80">
-          {t("sections.business")}
-        </h2>
+      <section className="flex flex-col gap-4 rounded-2xl border border-line bg-paper p-6">
+        <h2 className="eyebrow">{t("sections.business")}</h2>
 
         <label className={labelClass}>
           <span>{t("fields.name")}</span>
@@ -76,14 +74,14 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
         <label className={labelClass}>
           <span>{t("fields.slug")}</span>
           <input className={inputClass} dir="ltr" placeholder="my-salon" {...register("slug")} />
-          <span className="text-xs opacity-60">{t("hints.slug")}</span>
+          <span className="text-xs text-muted">{t("hints.slug")}</span>
           {errors.slug && <span className={errorClass}>{err(errors.slug.message)}</span>}
         </label>
 
         <label className={labelClass}>
           <span>{t("fields.phone")}</span>
           <input className={inputClass} dir="ltr" inputMode="tel" placeholder="9665XXXXXXXX" {...register("phone")} />
-          <span className="text-xs opacity-60">{t("hints.phone")}</span>
+          <span className="text-xs text-muted">{t("hints.phone")}</span>
           {errors.phone && <span className={errorClass}>{err(errors.phone.message)}</span>}
         </label>
 
@@ -133,8 +131,8 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
       </section>
 
       {/* Bank details */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-sm font-semibold opacity-80">{t("sections.bank")}</h2>
+      <section className="flex flex-col gap-4 rounded-2xl border border-line bg-paper p-6">
+        <h2 className="eyebrow">{t("sections.bank")}</h2>
 
         <label className={labelClass}>
           <span>{t("fields.bankName")}</span>
@@ -163,7 +161,7 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
             <img
               src={preview}
               alt={t("fields.qr")}
-              className="size-32 rounded-md border border-neutral-200 object-contain"
+              className="size-32 rounded-xl border border-line bg-paper object-contain p-1"
             />
           )}
           <input
@@ -176,7 +174,7 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
             }}
             className="text-sm"
           />
-          <span className="text-xs opacity-60">{t("hints.qr")}</span>
+          <span className="text-xs text-muted">{t("hints.qr")}</span>
         </div>
       </section>
 
@@ -184,7 +182,7 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-neutral-900 px-5 py-2 text-sm font-medium text-white transition-opacity disabled:opacity-60"
+          className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
         >
           {isPending ? t("saving") : t("save")}
         </button>

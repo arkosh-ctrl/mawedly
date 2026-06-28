@@ -51,8 +51,10 @@ export default async function SettingsPage({
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-sm opacity-70">{t("subtitle")}</p>
+        <span className="eyebrow">{t("subtitle")}</span>
+        <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">
+          {t("title")}
+        </h1>
       </div>
       <SettingsForm defaultValues={defaultValues} qrUrl={qrUrl} />
     </main>

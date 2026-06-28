@@ -28,7 +28,14 @@
     "currentBusiness": "Your business: {name}",
     "noBusiness": "You haven't set up your business yet.",
     "completeSetup": "Complete your setup",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "bookingLink": "Your booking link",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "shareWhatsApp": "Share via WhatsApp",
+    "scanToBook": "Scan to book",
+    "setSlugFirst": "Set your public link in settings",
+    "downloadQr": "Download QR"
   },
   "Settings": {
     "title": "Business settings",
@@ -327,7 +334,12 @@
     "feature4Body": "Arabic (RTL) and English (LTR) from the ground up. Your customers book in the language they're most comfortable in.",
     "finalCtaTitle": "Ready to protect your calendar?",
     "finalCtaBody": "Set up your services, share your link, and start taking real bookings today. No card required to start.",
-    "finalCtaButton": "Create your account"
+    "finalCtaButton": "Create your account",
+    "demoEyebrow": "Today",
+    "demoConfirmed": "Confirmed",
+    "demoDepositPaid": "Deposit paid",
+    "demoHeld": "Held",
+    "demoOpen": "Open"
   },
   "HowItWorks": {
     "metaTitle": "How Mawedly works",
@@ -379,11 +391,11 @@
   },
   "About": {
     "metaTitle": "About Mawedly",
-    "metaDescription": "Why a pharmacist built a booking tool for the Gulf's service businesses.",
-    "title": "Built by someone who lived the problem",
-    "p1": "Mawedly started with a pharmacist, not a software company. Working in the service sector across the Gulf, our founder watched the same scene play out everywhere — appointments managed through endless WhatsApp messages, double-booked slots, and no-shows that quietly drained the day.",
-    "p2": "The tools that existed were either built for other markets, ignored Arabic entirely, or forced customers to download yet another app. None of them respected how business actually works here: bilingual, relationship-driven, and trust-based.",
-    "p3": "So we built the tool we wished existed — one that speaks Arabic and English natively, protects every appointment with a simple deposit, and keeps the personal WhatsApp connection that customers already love. Mawedly is for the salon owner, the clinic, the consultant, and every appointment-based business that deserves better than a cluttered chat thread.",
+    "metaDescription": "The booking platform built for the Gulf's appointment-based businesses — bilingual, deposit-backed, no app to install.",
+    "title": "Built for how the Gulf books",
+    "p1": "Across the Gulf, salons, clinics, and service businesses run on appointments — and most of them run on chat. Bookings live in scattered WhatsApp threads, two customers land in the same slot, and no-shows quietly drain the day. The tool that once worked becomes the bottleneck as the business grows.",
+    "p2": "The software that exists was mostly built for other markets. It treats Arabic as an afterthought, ignores right-to-left layouts, or forces every customer to download yet another app — none of which fits how business actually works here: bilingual, relationship-driven, and built on trust.",
+    "p3": "Mawedly is the answer to that gap: a booking platform that speaks Arabic and English natively, protects every appointment with a simple deposit, and keeps the direct WhatsApp connection customers already rely on. It's for the salon, the clinic, the consultant, and every appointment-based business that deserves better than a cluttered chat thread.",
     "missionTitle": "Our mission",
     "missionBody": "To give every service business in the Gulf a booking experience that feels effortless — in their language, on their terms."
   },

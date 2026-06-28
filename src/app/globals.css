@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ *
+ * Mawedly — "Daybook" visual identity.
+ * Time is the material: a warm ruled-paper canvas, deep pine ink, and a
+ * single saffron accent reserved for the booking signature (a locked /
+ * confirmed slot). Numbers and times are set in a tabular mono so the UI
+ * reads like an appointment ledger.
+ * ------------------------------------------------------------------ */
+
 @theme inline {
-  /* The design font stack resolves to the next/font CSS variables that the
-     locale layout injects on <html> (Arabic first, Latin fallback). */
+  /* Font stacks resolve to the next/font CSS variables injected on <html>
+     by the locale layout (Arabic first, Latin fallback). */
   --font-sans: var(--font-arabic), var(--font-latin), ui-sans-serif, system-ui,
     sans-serif;
+  --font-display: var(--font-display), var(--font-arabic), var(--font-latin),
+    ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SFMono-Regular", monospace;
+}
+
+@theme {
+  /* Surfaces */
+  --color-canvas: #f1eee4; /* warm ruled paper — page background */
+  --color-paper: #fbfaf3; /* near-white warm — cards / raised surfaces */
+
+  /* Ink (deep pine) family */
+  --color-ink: #12302a; /* primary text, dark surfaces, primary CTA */
+  --color-pine: #244a40; /* mid pine — hover / secondary dark */
+  --color-sage: #8fa59b; /* muted text on ink surfaces */
+
+  /* Accent — the signature. Reserved for confirmed / deposit / focus. */
+  --color-saffron: #c2881b;
+  --color-saffron-soft: #e7c66a;
+
+  /* Lines & secondary text on canvas */
+  --color-line: #ddd8c9; /* hairline rule, borders */
+  --color-muted: #5c5b4d; /* secondary text on canvas (AA on canvas) */
+  --color-brick: #a6441f; /* destructive / error */
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  color-scheme: light;
+  --background: var(--color-canvas);
+  --foreground: var(--color-ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  /* Tabular, slashed-zero figures for the ledger feel wherever mono is used. */
+  .font-mono {
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+
+  ::selection {
+    background: var(--color-saffron);
+    color: var(--color-ink);
+  }
+
+  /* One consistent, highly visible focus ring across the whole app. */
+  :focus-visible {
+    outline: 2px solid var(--color-saffron);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+@layer components {
+  /* Faint ruled-paper backdrop — the daybook motif. Sits behind hero / panels. */
+  .ledger-lines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 39px,
+      color-mix(in srgb, var(--color-line) 60%, transparent) 39px,
+      color-mix(in srgb, var(--color-line) 60%, transparent) 40px
+    );
+  }
+
+  /* Small uppercase functional label used as section eyebrows. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-saffron);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Hero daybook: the confirmed slot "locks" in on load. */
+@keyframes slot-lock {
+  0% {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slot-lock {
+  animation: slot-lock 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }

@@ -22,11 +22,11 @@ export function SiteNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5">
         <Link
           href="/"
-          className="text-lg font-bold tracking-tight text-neutral-900"
+          className="font-display text-xl font-extrabold tracking-tight text-ink"
           onClick={() => setOpen(false)}
         >
           {t("brand")}
@@ -40,10 +40,11 @@ export function SiteNav() {
               <Link
                 key={l.key}
                 href={l.href}
-                className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+                aria-current={active ? "page" : undefined}
+                className={`relative rounded-md px-3 py-1.5 text-sm transition-colors ${
                   active
-                    ? "text-emerald-700"
-                    : "text-neutral-600 hover:text-neutral-900"
+                    ? "text-ink after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:bg-saffron after:content-['']"
+                    : "text-muted hover:text-ink"
                 }`}
               >
                 {t(l.key)}
@@ -52,17 +53,17 @@ export function SiteNav() {
           })}
         </div>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           <LocaleSwitcher />
           <Link
             href="/login"
-            className="rounded-full px-3 py-1.5 text-sm font-medium text-neutral-700 hover:text-neutral-900"
+            className="px-2 py-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"
           >
             {t("login")}
           </Link>
           <Link
             href="/login"
-            className="rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+            className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-pine"
           >
             {t("cta")}
           </Link>
@@ -74,7 +75,7 @@ export function SiteNav() {
           aria-label={open ? t("closeMenu") : t("openMenu")}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex size-9 items-center justify-center rounded-md border border-neutral-300 md:hidden"
+          className="inline-flex size-9 items-center justify-center rounded-md border border-line text-ink md:hidden"
         >
           <span className="text-lg leading-none">{open ? "✕" : "☰"}</span>
         </button>
@@ -82,25 +83,25 @@ export function SiteNav() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-neutral-200 bg-white md:hidden">
+        <div className="border-t border-line bg-canvas md:hidden">
           <div className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-3">
             {NAV_LINKS.map((l) => (
               <Link
                 key={l.key}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-2 text-sm text-neutral-700 hover:bg-neutral-100"
+                className="rounded-md px-2 py-2 text-sm text-pine hover:bg-paper"
               >
                 {t(l.key)}
               </Link>
             ))}
-            <div className="my-2 h-px bg-neutral-200" />
+            <div className="my-2 h-px bg-line" />
             <div className="flex items-center justify-between">
               <LocaleSwitcher />
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 px-4 py-1.5 text-sm font-semibold text-white"
+                className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-paper"
               >
                 {t("cta")}
               </Link>
