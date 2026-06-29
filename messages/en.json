@@ -35,7 +35,14 @@
     "shareWhatsApp": "Share via WhatsApp",
     "scanToBook": "Scan to book",
     "setSlugFirst": "Set your public link in settings",
-    "downloadQr": "Download QR"
+    "downloadQr": "Download QR",
+    "stats": {
+      "today": "Today's bookings",
+      "week": "This week",
+      "pending": "Awaiting confirmation",
+      "completedMonth": "Completed this month",
+      "emptyHint": "No bookings yet — share your booking link below to start receiving appointments."
+    }
   },
   "Settings": {
     "title": "Business settings",
@@ -426,6 +433,7 @@
     "metaDescription": "Reach the Mawedly team by email or WhatsApp.",
     "title": "Get in touch",
     "subtitle": "Questions, feedback, or help getting set up — we're a message away.",
+    "intro": "The Mawedly team is here to help at every stage — from pre-signup questions to support while you set up your business and run your bookings. Pick whichever channel suits you and we'll get back to you shortly.",
     "emailLabel": "Email us",
     "emailValue": "hello@mawedly.com",
     "emailAction": "Send an email",
