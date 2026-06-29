@@ -35,7 +35,14 @@
     "shareWhatsApp": "Share via WhatsApp",
     "scanToBook": "Scan to book",
     "setSlugFirst": "Set your public link in settings",
-    "downloadQr": "Download QR"
+    "downloadQr": "Download QR",
+    "stats": {
+      "today": "Today's bookings",
+      "week": "This week",
+      "pending": "Awaiting confirmation",
+      "completedMonth": "Completed this month",
+      "emptyHint": "No bookings yet — share your booking link below to start receiving appointments."
+    }
   },
   "Settings": {
     "title": "Business settings",
