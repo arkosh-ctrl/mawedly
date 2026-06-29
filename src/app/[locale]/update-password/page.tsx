@@ -1,25 +1,21 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
-import { safeNextPath } from "@/lib/safe-redirect";
-import { AuthTabs } from "./auth-tabs";
+import { UpdatePasswordForm } from "./update-password-form";
 
-export default async function LoginPage({
+// Landing page for the reset/set-password link. The recovery session is
+// established by auth/confirm before this page is reached; the updatePassword
+// action revalidates that session and reports sessionExpired if it is missing.
+export default async function UpdatePasswordPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ next?: string; error?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { next, error } = await searchParams;
-  const t = await getTranslations("Login");
+  const t = await getTranslations("UpdatePassword");
   const tNav = await getTranslations("Nav");
-
-  // Only allow internal, locale-prefixed redirect targets.
-  const safeNext = safeNextPath(next) ?? `/${locale}/dashboard`;
 
   return (
     <main className="flex min-h-screen flex-col bg-canvas text-ink">
@@ -40,14 +36,8 @@ export default async function LoginPage({
             {t("title")}
           </h1>
 
-          {error === "auth" && (
-            <p className="mt-5 w-full rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
-              {t("messages.authError")}
-            </p>
-          )}
-
           <div className="mt-6">
-            <AuthTabs next={safeNext} />
+            <UpdatePasswordForm />
           </div>
         </div>
       </div>
