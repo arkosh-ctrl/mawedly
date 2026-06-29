@@ -19,6 +19,8 @@
     "resetSubtitle": "Enter your email and we'll send you a link to set or reset your password.",
     "sendResetSubmit": "Send reset link",
     "backToSignIn": "Back to sign in",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
     "messages": {
       "checkEmail": "Check your email — we sent you a sign-in link.",
       "invalidEmail": "Please enter a valid email address.",
@@ -27,6 +29,49 @@
       "passwordShort": "Password must be at least 8 characters.",
       "invalidCredentials": "Invalid sign-in details. If you haven't set a password yet, use \"Forgot your password?\" to set one.",
       "resetEmailSent": "If an account exists for that email, we've sent a link to set your password."
+    }
+  },
+  "Signup": {
+    "title": "Create your account",
+    "subtitle": "Get started — set up your business in one step.",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "passwordHint": "At least 8 characters.",
+    "businessNameLabel": "Business name",
+    "slugLabel": "Public link (slug)",
+    "slugHint": "Lowercase letters, numbers and hyphens only, e.g. my-salon",
+    "typeLabel": "Business type",
+    "types": {
+      "salon": "Salon",
+      "consulting": "Consulting",
+      "other": "Other"
+    },
+    "phoneLabel": "WhatsApp number",
+    "phoneHint": "Digits only in international format without +, e.g. 9665XXXXXXXX",
+    "submit": "Create account",
+    "creating": "Creating account…",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "slugStatus": {
+      "checking": "Checking availability…",
+      "available": "Available",
+      "taken": "Already taken",
+      "reserved": "This link is reserved",
+      "invalid": "Lowercase letters, numbers and hyphens only."
+    },
+    "messages": {
+      "invalidEmail": "Please enter a valid email address.",
+      "passwordShort": "Password must be at least 8 characters.",
+      "nameRequired": "Business name is required.",
+      "nameLong": "Business name is too long.",
+      "slugShort": "The link is too short.",
+      "slugLong": "The link is too long.",
+      "slugFormat": "Lowercase letters, numbers and hyphens only.",
+      "slugReserved": "This link is reserved, choose another.",
+      "slugTaken": "This link is taken, choose another.",
+      "phone": "Invalid phone number.",
+      "emailTaken": "An account already exists for this email. Try signing in instead.",
+      "signupFailed": "Couldn't create your account. Please try again."
     }
   },
   "UpdatePassword": {

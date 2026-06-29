@@ -8,6 +8,7 @@ export const RESERVED_SLUGS = new Set<string>([
   "auth",
   "dashboard",
   "login",
+  "signup",
   "update-password",
   // Static marketing routes — must not be shadowed by a business slug.
   "how-it-works",
