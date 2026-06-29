@@ -6,15 +6,41 @@
   },
   "Login": {
     "title": "Sign in",
-    "subtitle": "Enter your email and we'll send you a sign-in link.",
+    "subtitle": "Welcome back — sign in to your dashboard.",
     "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "passwordTab": "Password",
+    "magicLinkTab": "Magic link",
     "submit": "Send sign-in link",
     "sending": "Sending…",
+    "signInSubmit": "Sign in",
+    "signingIn": "Signing in…",
+    "forgotPassword": "Forgot your password?",
+    "resetSubtitle": "Enter your email and we'll send you a link to set or reset your password.",
+    "sendResetSubmit": "Send reset link",
+    "backToSignIn": "Back to sign in",
     "messages": {
       "checkEmail": "Check your email — we sent you a sign-in link.",
       "invalidEmail": "Please enter a valid email address.",
       "sendFailed": "Couldn't send the link. Please try again.",
-      "authError": "Sign-in confirmation failed — the link is invalid or expired."
+      "authError": "Sign-in confirmation failed — the link is invalid or expired.",
+      "passwordShort": "Password must be at least 8 characters.",
+      "invalidCredentials": "Invalid sign-in details. If you haven't set a password yet, use \"Forgot your password?\" to set one.",
+      "resetEmailSent": "If an account exists for that email, we've sent a link to set your password."
+    }
+  },
+  "UpdatePassword": {
+    "title": "Set your password",
+    "subtitle": "Choose a new password",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "submit": "Save password",
+    "saving": "Saving…",
+    "messages": {
+      "passwordShort": "Password must be at least 8 characters.",
+      "passwordMismatch": "The passwords don't match.",
+      "updateFailed": "Couldn't save your password. Please try again.",
+      "sessionExpired": "This link has expired. Request a new one from the sign-in page."
     }
   },
   "Dashboard": {

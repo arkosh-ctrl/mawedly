@@ -15,8 +15,13 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next");
 
-  const redirectTo =
-    safeNextPath(next) ?? `/${routing.defaultLocale}/dashboard`;
+  // Recovery links land on the set-password page; everything else (magic link)
+  // defaults to the dashboard. An explicit, validated `next` always wins.
+  const fallback =
+    type === "recovery"
+      ? `/${routing.defaultLocale}/update-password`
+      : `/${routing.defaultLocale}/dashboard`;
+  const redirectTo = safeNextPath(next) ?? fallback;
 
   const supabase = await createClient();
 
