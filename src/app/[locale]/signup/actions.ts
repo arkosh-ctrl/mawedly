@@ -16,9 +16,17 @@ import type { SignupState } from "./types";
 // and project policy forbids new migrations/DB functions. So atomicity is
 // achieved with a COMPENSATING ACTION: if the business insert fails after the
 // user is created, the just-created user is deleted, leaving no silent
-// "user without a business". The service_role admin client is required both to
-// create the user without an email-confirmation round-trip (email_confirm:true)
-// and to delete it on rollback — the public client can do neither.
+// "user without a business".
+//
+// Two clients, by design:
+//   - admin (service_role): create the user without an email-confirmation
+//     round-trip (email_confirm:true) and delete it on rollback — auth-admin
+//     APIs the public client can't call.
+//   - session (SSR) client: the `businesses` INSERT. Table grants exist only for
+//     `authenticated`/`anon` (migration 0003), NOT service_role — so the row is
+//     inserted under the merchant's own session (auth.uid() = user_id passes the
+//     owner RLS policy), exactly as dashboard/settings does. This is why we sign
+//     the user in BEFORE inserting.
 //
 // Final safety net (belt and suspenders): even if the compensating delete were
 // to fail, dashboard/page.tsx already detects "no business" and routes the
@@ -74,9 +82,26 @@ export async function signupAction(
     }
     const userId = created.user.id;
 
-    // 2) Insert the business row. On any failure, compensate by deleting the
-    //    orphaned user so we never leave a user without a business.
-    const { error: insertError } = await admin.from("businesses").insert({
+    // 2) Establish the session via the SSR client (sets cookies on this
+    //    response). Done BEFORE the insert so the row can be created under the
+    //    merchant's own session — the only role granted INSERT on businesses.
+    const supabase = await createClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: v.email,
+      password: v.password,
+    });
+    if (signInError) {
+      // Couldn't sign in the brand-new account — roll it back so no orphan user
+      // remains, then surface a generic failure.
+      await admin.auth.admin.deleteUser(userId);
+      return { status: "error", messageKey: "signupFailed" };
+    }
+
+    // 3) Insert the business row under the merchant's session (authenticated
+    //    role + owner RLS). On any failure, compensate: sign out (clear the
+    //    cookie just set) and delete the orphaned user — never a user without a
+    //    business.
+    const { error: insertError } = await supabase.from("businesses").insert({
       user_id: userId,
       name: v.name,
       slug: v.slug,
@@ -85,23 +110,12 @@ export async function signupAction(
       default_language: locale === "en" ? "en" : "ar",
     });
     if (insertError) {
+      await supabase.auth.signOut();
       await admin.auth.admin.deleteUser(userId);
       // Unique violation on slug (e.g. a race after the live check) => slugTaken.
       if (insertError.code === "23505") {
         return { status: "error", messageKey: "slugTaken" };
       }
-      return { status: "error", messageKey: "signupFailed" };
-    }
-
-    // 3) Establish the session via the SSR client so cookies are set on this
-    //    response, then redirect into the dashboard.
-    const supabase = await createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: v.email,
-      password: v.password,
-    });
-    if (signInError) {
-      // Account + business both exist; the merchant can simply sign in.
       return { status: "error", messageKey: "signupFailed" };
     }
 
