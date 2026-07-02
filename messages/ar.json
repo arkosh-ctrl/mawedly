@@ -123,6 +123,9 @@
     "starLabel": "{n} نجوم",
     "commentLabel": "تعليق (اختياري)",
     "commentPlaceholder": "أخبرنا عن زيارتك…",
+    "reviewer_name_label": "اسمك (اختياري)",
+    "reviewer_phone_label": "رقم جوالك (اختياري)",
+    "reviewer_phone_hint": "للعروض الخاصة فقط.",
     "submit": "إرسال التقييم",
     "submitting": "جارٍ الإرسال…",
     "messages": {
@@ -135,7 +138,24 @@
     "subtitle": "ما يقوله عملاؤك",
     "averageLabel": "متوسط التقييم",
     "countLabel": "إجمالي التقييمات",
-    "empty": "لا توجد تقييمات بعد. بعد إكمال المواعيد، يمكن لعملائك تقييم زيارتهم."
+    "empty": "لا توجد تقييمات بعد. بعد إكمال المواعيد، يمكن لعملائك تقييم زيارتهم.",
+    "nameColumn": "الاسم",
+    "phoneColumn": "الرقم",
+    "send_review_link": "إرسال رابط تقييم يدوياً",
+    "select_appointment_placeholder": "اختر موعداً مكتملاً…",
+    "no_unreviewed_appointments": "لا توجد مواعيد مكتملة بانتظار التقييم.",
+    "copyLink": "نسخ الرابط",
+    "copy_link_success": "تم نسخ رابط التقييم.",
+    "whatsappSend": "إرسال عبر واتساب",
+    "reviewLinkMessage": "يسعدنا رأيك — قيّم زيارتك من هنا:",
+    "export_excel": "تحميل Excel",
+    "excel": {
+      "name": "الاسم",
+      "phone": "الرقم",
+      "rating": "التقييم",
+      "comment": "التعليق",
+      "date": "التاريخ"
+    }
   },
   "Settings": {
     "title": "إعدادات النشاط",
@@ -345,6 +365,8 @@
     "noBusiness": "أنشئ نشاطك أولاً من الإعدادات.",
     "goToSettings": "اذهب للإعدادات",
     "empty": "لا توجد حجوزات بهذا التصنيف.",
+    "reviewLinkButton": "📋 رابط التقييم",
+    "reviewLinkCopied": "تم نسخ رابط التقييم.",
     "deposit": "العربون",
     "currency": "ريال",
     "keep": "تراجع",

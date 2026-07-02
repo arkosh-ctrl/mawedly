@@ -273,6 +273,8 @@ export type Database = {
           business_id: string;
           rating: number;
           comment: string | null;
+          reviewer_name: string | null;
+          reviewer_phone: string | null;
           created_at: string | null;
         };
         Insert: {
@@ -282,6 +284,8 @@ export type Database = {
           business_id?: string;
           rating: number;
           comment?: string | null;
+          reviewer_name?: string | null;
+          reviewer_phone?: string | null;
           created_at?: string | null;
         };
         Update: {
@@ -290,6 +294,8 @@ export type Database = {
           business_id?: string;
           rating?: number;
           comment?: string | null;
+          reviewer_name?: string | null;
+          reviewer_phone?: string | null;
           created_at?: string | null;
         };
         Relationships: [];

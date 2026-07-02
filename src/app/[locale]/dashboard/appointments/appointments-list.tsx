@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Modal } from "@/components/ui/modal";
@@ -24,6 +24,8 @@ export type AppointmentRow = {
   customers: { name: string; phone: string } | null;
   services: { name: string; price: number; deposit_amount: number } | null;
   providers: { name: string } | null;
+  // Present (non-empty) once a review exists for this appointment.
+  reviews: { id: string }[] | null;
 };
 
 const STATUS_BADGE: Record<AppointmentStatus, string> = {
@@ -47,6 +49,8 @@ export function AppointmentsList({
 }) {
   const t = useTranslations("Appointments");
   const router = useRouter();
+  const params = useParams();
+  const locale = typeof params.locale === "string" ? params.locale : "ar";
   const [isPending, startTransition] = useTransition();
   const [filter, setFilter] = useState<"all" | AppointmentStatus>("all");
   const [confirmCancel, setConfirmCancel] = useState<AppointmentRow | null>(null);
@@ -90,6 +94,12 @@ export function AppointmentsList({
     });
   }
 
+  async function copyReviewLink(id: string) {
+    const url = `${window.location.origin}/${locale}/review/${id}`;
+    await navigator.clipboard.writeText(url);
+    toast.success(t("reviewLinkCopied"));
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {/* Status filter */}
@@ -117,6 +127,8 @@ export function AppointmentsList({
         <ul className="flex flex-col gap-3">
           {visible.map((a) => {
             const transitions = ALLOWED_TRANSITIONS[a.status];
+            const needsReviewLink =
+              a.status === "completed" && !a.reviews?.length;
             return (
               <li
                 key={a.id}
@@ -219,6 +231,16 @@ export function AppointmentsList({
                         {t(`actions.${target}`)}
                       </button>
                     ),
+                  )}
+
+                  {needsReviewLink && (
+                    <button
+                      type="button"
+                      onClick={() => copyReviewLink(a.id)}
+                      className="rounded-full border border-line px-2.5 py-1 text-xs text-pine transition-colors hover:border-pine"
+                    >
+                      {t("reviewLinkButton")}
+                    </button>
                   )}
                 </div>
               </li>

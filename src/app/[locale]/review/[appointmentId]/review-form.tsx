@@ -66,6 +66,29 @@ export function ReviewForm({ appointmentId }: { appointmentId: string }) {
         />
       </label>
 
+      <label className="flex flex-col gap-1.5 text-sm font-medium text-ink">
+        <span>{t("reviewer_name_label")}</span>
+        <input
+          name="reviewer_name"
+          maxLength={100}
+          autoComplete="name"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+        />
+      </label>
+
+      <label className="flex flex-col gap-1.5 text-sm font-medium text-ink">
+        <span>{t("reviewer_phone_label")}</span>
+        <input
+          name="reviewer_phone"
+          maxLength={20}
+          dir="ltr"
+          inputMode="tel"
+          autoComplete="tel"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+        />
+        <span className="text-xs text-muted">{t("reviewer_phone_hint")}</span>
+      </label>
+
       <button
         type="submit"
         disabled={pending || rating === 0}

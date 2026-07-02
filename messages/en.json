@@ -123,6 +123,9 @@
     "starLabel": "{n} stars",
     "commentLabel": "Comment (optional)",
     "commentPlaceholder": "Tell us about your visit…",
+    "reviewer_name_label": "Your name (optional)",
+    "reviewer_phone_label": "Your phone (optional)",
+    "reviewer_phone_hint": "For special offers only.",
     "submit": "Submit review",
     "submitting": "Submitting…",
     "messages": {
@@ -135,7 +138,24 @@
     "subtitle": "What your customers say",
     "averageLabel": "Average rating",
     "countLabel": "Total reviews",
-    "empty": "No reviews yet. Once you complete appointments, customers can rate their visit."
+    "empty": "No reviews yet. Once you complete appointments, customers can rate their visit.",
+    "nameColumn": "Name",
+    "phoneColumn": "Phone",
+    "send_review_link": "Send a review link manually",
+    "select_appointment_placeholder": "Choose a completed appointment…",
+    "no_unreviewed_appointments": "No completed appointments awaiting a review.",
+    "copyLink": "Copy link",
+    "copy_link_success": "Review link copied.",
+    "whatsappSend": "Send via WhatsApp",
+    "reviewLinkMessage": "We'd love your feedback — rate your visit here:",
+    "export_excel": "Download Excel",
+    "excel": {
+      "name": "Name",
+      "phone": "Phone",
+      "rating": "Rating",
+      "comment": "Comment",
+      "date": "Date"
+    }
   },
   "Settings": {
     "title": "Business settings",
@@ -345,6 +365,8 @@
     "noBusiness": "Create your business in Settings first.",
     "goToSettings": "Go to Settings",
     "empty": "No appointments in this filter.",
+    "reviewLinkButton": "📋 Review link",
+    "reviewLinkCopied": "Review link copied.",
     "deposit": "Deposit",
     "currency": "SAR",
     "keep": "Keep",

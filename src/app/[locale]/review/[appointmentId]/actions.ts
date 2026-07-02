@@ -20,11 +20,14 @@ export async function submitReview(
       appointmentId: formData.get("appointmentId"),
       rating: formData.get("rating"),
       comment: formData.get("comment") ?? "",
+      reviewer_name: formData.get("reviewer_name") ?? "",
+      reviewer_phone: formData.get("reviewer_phone") ?? "",
     });
     if (!parsed.success) {
       return { status: "error", messageKey: "failed" };
     }
-    const { appointmentId, rating, comment } = parsed.data;
+    const { appointmentId, rating, comment, reviewer_name, reviewer_phone } =
+      parsed.data;
 
     const supabase = await createClient();
     // No .select(): anon has no SELECT grant/policy on reviews, and we don't need
@@ -33,6 +36,8 @@ export async function submitReview(
       appointment_id: appointmentId,
       rating,
       comment,
+      reviewer_name,
+      reviewer_phone,
     });
     if (error) {
       return { status: "error", messageKey: "failed" };

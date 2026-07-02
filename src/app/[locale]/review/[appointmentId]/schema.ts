@@ -14,6 +14,20 @@ export const reviewSchema = z.object({
     .max(1000)
     .optional()
     .transform((v) => (v ? v : null)),
+  // Optional self-reported contact, used only for the merchant's own follow-up
+  // (e.g. special offers). Empty strings normalize to null.
+  reviewer_name: z
+    .string()
+    .trim()
+    .max(100)
+    .optional()
+    .transform((v) => (v ? v : null)),
+  reviewer_phone: z
+    .string()
+    .trim()
+    .max(20)
+    .optional()
+    .transform((v) => (v ? v : null)),
 });
 
 export type ReviewInput = z.infer<typeof reviewSchema>;
