@@ -93,6 +93,7 @@
     "appointmentsNav": "الحجوزات",
     "servicesNav": "الخدمات",
     "providersNav": "مقدّمو الخدمة",
+    "reviewsNav": "التقييمات",
     "settingsNav": "الإعدادات",
     "welcomeTitle": "مرحباً بك في لوحة التحكم",
     "signedInAs": "أنت مسجّل الدخول باسم {email}",
@@ -114,6 +115,27 @@
       "completedMonth": "مكتملة هذا الشهر",
       "emptyHint": "لا توجد حجوزات بعد — شارك رابط الحجز أدناه مع عملائك لتبدأ باستقبال المواعيد."
     }
+  },
+  "Review": {
+    "title": "قيّم زيارتك",
+    "subtitle": "رأيك يهمّنا",
+    "ratingLabel": "تقييمك",
+    "starLabel": "{n} نجوم",
+    "commentLabel": "تعليق (اختياري)",
+    "commentPlaceholder": "أخبرنا عن زيارتك…",
+    "submit": "إرسال التقييم",
+    "submitting": "جارٍ الإرسال…",
+    "messages": {
+      "thanks": "شكراً لك! تم إرسال تقييمك.",
+      "failed": "تعذّر إرسال التقييم."
+    }
+  },
+  "Reviews": {
+    "title": "التقييمات",
+    "subtitle": "ما يقوله عملاؤك",
+    "averageLabel": "متوسط التقييم",
+    "countLabel": "إجمالي التقييمات",
+    "empty": "لا توجد تقييمات بعد. بعد إكمال المواعيد، يمكن لعملائك تقييم زيارتهم."
   },
   "Settings": {
     "title": "إعدادات النشاط",

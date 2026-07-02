@@ -266,6 +266,34 @@ export type Database = {
         };
         Relationships: [];
       };
+      reviews: {
+        Row: {
+          id: string;
+          appointment_id: string;
+          business_id: string;
+          rating: number;
+          comment: string | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          appointment_id: string;
+          // Set by the reviews_set_business_id trigger; never sent by clients.
+          business_id?: string;
+          rating: number;
+          comment?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          appointment_id?: string;
+          business_id?: string;
+          rating?: number;
+          comment?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -281,4 +309,5 @@ export type Provider = PublicTables["providers"]["Row"];
 export type Service = PublicTables["services"]["Row"];
 export type Customer = PublicTables["customers"]["Row"];
 export type Appointment = PublicTables["appointments"]["Row"];
+export type Review = PublicTables["reviews"]["Row"];
 export type AuditLog = PublicTables["audit_log"]["Row"];

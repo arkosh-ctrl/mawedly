@@ -57,6 +57,12 @@ export default async function DashboardLayout({
               {t("providersNav")}
             </Link>
             <Link
+              href="/dashboard/reviews"
+              className="text-sm text-muted transition-colors hover:text-ink"
+            >
+              {t("reviewsNav")}
+            </Link>
+            <Link
               href="/dashboard/settings"
               className="text-sm text-muted transition-colors hover:text-ink"
             >

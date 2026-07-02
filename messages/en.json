@@ -93,6 +93,7 @@
     "appointmentsNav": "Appointments",
     "servicesNav": "Services",
     "providersNav": "Providers",
+    "reviewsNav": "Reviews",
     "settingsNav": "Settings",
     "welcomeTitle": "Welcome to your dashboard",
     "signedInAs": "Signed in as {email}",
@@ -114,6 +115,27 @@
       "completedMonth": "Completed this month",
       "emptyHint": "No bookings yet — share your booking link below to start receiving appointments."
     }
+  },
+  "Review": {
+    "title": "Rate your visit",
+    "subtitle": "Your feedback",
+    "ratingLabel": "Your rating",
+    "starLabel": "{n} stars",
+    "commentLabel": "Comment (optional)",
+    "commentPlaceholder": "Tell us about your visit…",
+    "submit": "Submit review",
+    "submitting": "Submitting…",
+    "messages": {
+      "thanks": "Thank you! Your review has been submitted.",
+      "failed": "Couldn't submit your review."
+    }
+  },
+  "Reviews": {
+    "title": "Reviews",
+    "subtitle": "What your customers say",
+    "averageLabel": "Average rating",
+    "countLabel": "Total reviews",
+    "empty": "No reviews yet. Once you complete appointments, customers can rate their visit."
   },
   "Settings": {
     "title": "Business settings",
