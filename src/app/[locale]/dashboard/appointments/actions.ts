@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import {
   ALLOWED_TRANSITIONS,
@@ -8,6 +9,7 @@ import {
 } from "@/lib/appointments/status";
 import { sendEmail } from "@/lib/email/resend";
 import { bookingCustomerConfirmedEmail } from "@/lib/email/templates/booking-customer-confirmed";
+import { reviewRequestEmail } from "@/lib/email/templates/review-request";
 
 // Customer "booking confirmed" email — sent only when transitioning TO
 // 'confirmed', and only if the customer left an email. Best-effort: runs after
@@ -67,6 +69,66 @@ async function notifyCustomerConfirmed(
       JSON.stringify({
         scope: "email",
         event: "customer_confirm_failed",
+        booking_id: appointmentId,
+        business_id: businessId,
+        error_message: e instanceof Error ? e.message : String(e),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+  }
+}
+
+// Customer "rate your visit" email — sent only when transitioning TO
+// 'completed', and only if the customer left an email. Best-effort and fully
+// try/catch-wrapped: a failure never affects the status change. The link points
+// at the public review page; the appointment id is the only thing it carries.
+type ReviewApptRow = { customers: { email: string | null } | null };
+
+async function notifyReviewRequest(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  appointmentId: string,
+  businessId: string,
+) {
+  try {
+    const { data: rawAppt } = await supabase
+      .from("appointments")
+      .select("customers(email)")
+      .eq("id", appointmentId)
+      .eq("business_id", businessId)
+      .maybeSingle();
+    const to = (rawAppt as ReviewApptRow | null)?.customers?.email;
+    if (!to) return;
+
+    const { data: biz } = await supabase
+      .from("businesses")
+      .select("name, default_language")
+      .eq("id", businessId)
+      .maybeSingle();
+
+    const lang = biz?.default_language === "en" ? "en" : "ar";
+    const requestHeaders = await headers();
+    const origin =
+      requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "";
+    const reviewUrl = `${origin}/${lang}/review/${appointmentId}`;
+
+    const { subject, html, text } = reviewRequestEmail({
+      lang,
+      businessName: biz?.name ?? "",
+      reviewUrl,
+    });
+
+    await sendEmail({
+      to,
+      subject,
+      html,
+      text,
+      context: { booking_id: appointmentId, business_id: businessId },
+    });
+  } catch (e) {
+    console.error(
+      JSON.stringify({
+        scope: "email",
+        event: "review_request_failed",
         booking_id: appointmentId,
         business_id: businessId,
         error_message: e instanceof Error ? e.message : String(e),
@@ -152,6 +214,12 @@ export async function setAppointmentStatus(
     // is fully try/catch-wrapped so a failure never changes the result.
     if (newStatus === "confirmed") {
       await notifyCustomerConfirmed(supabase, id, business.id);
+    }
+    // Review request fires once, on the terminal 'completed' transition. The
+    // state machine makes 'completed' terminal (status.ts), so this can never
+    // run twice for the same appointment.
+    if (newStatus === "completed") {
+      await notifyReviewRequest(supabase, id, business.id);
     }
 
     return {
