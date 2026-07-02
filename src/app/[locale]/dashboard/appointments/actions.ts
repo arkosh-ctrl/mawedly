@@ -10,6 +10,10 @@ import {
 import { sendEmail } from "@/lib/email/resend";
 import { bookingCustomerConfirmedEmail } from "@/lib/email/templates/booking-customer-confirmed";
 import { reviewRequestEmail } from "@/lib/email/templates/review-request";
+import { rescheduleCustomerEmail } from "@/lib/email/templates/reschedule-customer";
+import { rescheduleMerchantEmail } from "@/lib/email/templates/reschedule-merchant";
+import { getActiveService, getBookedRanges } from "@/lib/booking/queries";
+import { computeAvailableSlots, gulfNow } from "@/lib/booking/availability";
 
 // Customer "booking confirmed" email — sent only when transitioning TO
 // 'confirmed', and only if the customer left an email. Best-effort: runs after
@@ -129,6 +133,130 @@ async function notifyReviewRequest(
       JSON.stringify({
         scope: "email",
         event: "review_request_failed",
+        booking_id: appointmentId,
+        business_id: businessId,
+        error_message: e instanceof Error ? e.message : String(e),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+  }
+}
+
+// Customer "your appointment was rescheduled" email — sent after a successful
+// reschedule, only if the customer left an email. Best-effort: fully
+// try/catch-wrapped so a failure never affects the reschedule result.
+async function notifyCustomerRescheduled(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  appointmentId: string,
+  businessId: string,
+) {
+  try {
+    const { data: rawAppt } = await supabase
+      .from("appointments")
+      .select(
+        "appointment_date, start_time, customers(name, email), services(name), providers(name)",
+      )
+      .eq("id", appointmentId)
+      .eq("business_id", businessId)
+      .maybeSingle();
+    const appt = rawAppt as ConfirmedApptRow | null;
+    const to = appt?.customers?.email;
+    if (!appt || !to) return;
+
+    const { data: biz } = await supabase
+      .from("businesses")
+      .select("name, phone, default_language")
+      .eq("id", businessId)
+      .maybeSingle();
+
+    const lang = biz?.default_language === "en" ? "en" : "ar";
+    const { subject, html, text } = rescheduleCustomerEmail({
+      lang,
+      businessName: biz?.name ?? "",
+      serviceName: appt.services?.name ?? "",
+      providerName: appt.providers?.name ?? "",
+      date: appt.appointment_date,
+      time: appt.start_time,
+      whatsappPhone: biz?.phone ?? null,
+    });
+
+    await sendEmail({
+      to,
+      subject,
+      html,
+      text,
+      context: { booking_id: appointmentId, business_id: businessId },
+    });
+  } catch (e) {
+    console.error(
+      JSON.stringify({
+        scope: "email",
+        event: "customer_reschedule_failed",
+        booking_id: appointmentId,
+        business_id: businessId,
+        error_message: e instanceof Error ? e.message : String(e),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+  }
+}
+
+// Merchant reschedule confirmation. Recipient: businesses.notification_email,
+// else the merchant's own login email (passed in from the session claims).
+// Best-effort and fully try/catch-wrapped.
+async function notifyMerchantRescheduled(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  appointmentId: string,
+  businessId: string,
+  fallbackEmail: string | null,
+) {
+  try {
+    const { data: rawAppt } = await supabase
+      .from("appointments")
+      .select(
+        "appointment_date, start_time, customers(name), services(name), providers(name)",
+      )
+      .eq("id", appointmentId)
+      .eq("business_id", businessId)
+      .maybeSingle();
+    const appt = rawAppt as ConfirmedApptRow | null;
+    if (!appt) return;
+
+    const { data: biz } = await supabase
+      .from("businesses")
+      .select("notification_email, default_language")
+      .eq("id", businessId)
+      .maybeSingle();
+
+    const to = biz?.notification_email || fallbackEmail;
+    if (!to) return;
+
+    const lang = biz?.default_language === "en" ? "en" : "ar";
+    const requestHeaders = await headers();
+    const origin =
+      requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "";
+    const { subject, html, text } = rescheduleMerchantEmail({
+      lang,
+      customerName: appt.customers?.name ?? "",
+      serviceName: appt.services?.name ?? "",
+      providerName: appt.providers?.name ?? "",
+      date: appt.appointment_date,
+      time: appt.start_time,
+      appointmentsUrl: `${origin}/${lang}/dashboard/appointments`,
+    });
+
+    await sendEmail({
+      to,
+      subject,
+      html,
+      text,
+      context: { booking_id: appointmentId, business_id: businessId },
+    });
+  } catch (e) {
+    console.error(
+      JSON.stringify({
+        scope: "email",
+        event: "merchant_reschedule_failed",
         booking_id: appointmentId,
         business_id: businessId,
         error_message: e instanceof Error ? e.message : String(e),
@@ -268,6 +396,166 @@ export async function setDepositVerified(
       status: "success",
       messageKey: verified ? "depositVerified" : "depositCleared",
     };
+  } catch {
+    return { status: "error", messageKey: "saveFailed" };
+  }
+}
+
+// Owned appointment fields needed to compute reschedule availability.
+type ReschedulableAppt = {
+  status: AppointmentStatus;
+  provider_id: string;
+  service_id: string;
+};
+
+// Free start times for rescheduling an owned appointment on a given date. Same
+// availability logic as the public booking flow (computeAvailableSlots +
+// getBookedRanges), but owner-scoped and excluding the appointment being moved
+// so its own current slot stays selectable. Returns [] on any failure — details
+// never leak, and the DB EXCLUSION constraint is the hard guard at save time.
+export async function getRescheduleSlots(
+  appointmentId: string,
+  date: string,
+): Promise<string[]> {
+  try {
+    if (!appointmentId || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return [];
+
+    const supabase = await createClient();
+    const { data: claims } = await supabase.auth.getClaims();
+    const userId = claims?.claims?.sub as string | undefined;
+    if (!userId) return [];
+
+    const { data: business } = await supabase
+      .from("businesses")
+      .select("id, work_start, work_end")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (!business) return [];
+
+    const { data: appt } = await supabase
+      .from("appointments")
+      .select("status, provider_id, service_id")
+      .eq("id", appointmentId)
+      .eq("business_id", business.id)
+      .maybeSingle<ReschedulableAppt>();
+    if (!appt || appt.status !== "confirmed") return [];
+
+    const now = gulfNow();
+    if (date < now.date) return [];
+
+    const service = await getActiveService(business.id, appt.service_id);
+    if (!service) return [];
+
+    const booked = await getBookedRanges(
+      business.id,
+      appt.provider_id,
+      date,
+      appointmentId,
+    );
+    return computeAvailableSlots({
+      workStart: business.work_start,
+      workEnd: business.work_end,
+      durationMinutes: service.duration_minutes,
+      booked,
+      minStartMinutes: date === now.date ? now.minutes : 0,
+    });
+  } catch {
+    return [];
+  }
+}
+
+// Reschedule an owned, CONFIRMED appointment to a new date/time. Status stays
+// 'confirmed' and the deposit is untouched — only appointment_date/start_time
+// change (end_time is recomputed by the DB trigger). Ownership is enforced
+// explicitly (business_id scope) alongside RLS, availability is re-checked with
+// the same logic as booking, and the EXCLUSION constraint (23P01) is the final
+// guard against a slot taken between preview and save.
+export async function rescheduleAppointment(
+  formData: FormData,
+): Promise<MutationResult> {
+  try {
+    const supabase = await createClient();
+    const { data: claims } = await supabase.auth.getClaims();
+    const userId = claims?.claims?.sub as string | undefined;
+    const claimEmail = (claims?.claims?.email as string | undefined) ?? null;
+    if (!userId) return { status: "error", messageKey: "unauthorized" };
+
+    const id = String(formData.get("id") ?? "");
+    const date = String(formData.get("date") ?? "");
+    const startTime = String(formData.get("startTime") ?? "");
+    if (
+      !id ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+      !/^\d{2}:\d{2}$/.test(startTime)
+    ) {
+      return { status: "error", messageKey: "invalidInput" };
+    }
+
+    const { data: business } = await supabase
+      .from("businesses")
+      .select("id, work_start, work_end")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (!business) return { status: "error", messageKey: "noBusiness" };
+
+    const { data: appt } = await supabase
+      .from("appointments")
+      .select("status, provider_id, service_id")
+      .eq("id", id)
+      .eq("business_id", business.id)
+      .maybeSingle<ReschedulableAppt>();
+    if (!appt) return { status: "error", messageKey: "notFound" };
+    if (appt.status !== "confirmed") {
+      return { status: "error", messageKey: "notReschedulable" };
+    }
+
+    // Friendly availability re-check (the DB constraint is the hard guard).
+    const now = gulfNow();
+    if (date < now.date) return { status: "error", messageKey: "slotTaken" };
+
+    const service = await getActiveService(business.id, appt.service_id);
+    if (!service) return { status: "error", messageKey: "invalidInput" };
+
+    const booked = await getBookedRanges(
+      business.id,
+      appt.provider_id,
+      date,
+      id,
+    );
+    const slots = computeAvailableSlots({
+      workStart: business.work_start,
+      workEnd: business.work_end,
+      durationMinutes: service.duration_minutes,
+      booked,
+      minStartMinutes: date === now.date ? now.minutes : 0,
+    });
+    if (!slots.includes(startTime)) {
+      return { status: "error", messageKey: "slotTaken" };
+    }
+
+    const { data: updated, error } = await supabase
+      .from("appointments")
+      .update({ appointment_date: date, start_time: startTime })
+      .eq("id", id)
+      .eq("business_id", business.id)
+      .select("id");
+    if (error) {
+      // A slot taken between preview and save trips the EXCLUSION constraint.
+      if (error.code === "23P01") {
+        return { status: "error", messageKey: "slotConflict" };
+      }
+      return { status: "error", messageKey: "saveFailed" };
+    }
+    if (!updated || updated.length === 0) {
+      return { status: "error", messageKey: "notFound" };
+    }
+
+    // Notify both sides with the new time. Awaited and fully try/catch-wrapped
+    // so an email failure never changes the result.
+    await notifyCustomerRescheduled(supabase, id, business.id);
+    await notifyMerchantRescheduled(supabase, id, business.id, claimEmail);
+
+    return { status: "success", messageKey: "appointmentRescheduled" };
   } catch {
     return { status: "error", messageKey: "saveFailed" };
   }

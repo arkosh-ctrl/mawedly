@@ -393,10 +393,24 @@
       "canceled": "Cancel",
       "verifyDeposit": "Mark deposit received",
       "clearDeposit": "Clear deposit",
-      "viewReceipt": "View receipt"
+      "viewReceipt": "View receipt",
+      "reschedule": "Reschedule"
+    },
+    "reschedule": {
+      "title": "Reschedule appointment",
+      "current": "Current",
+      "dateLabel": "New date",
+      "pickTime": "Choose a time",
+      "loadingSlots": "Loading times…",
+      "noSlots": "No available times that day.",
+      "save": "Save new time",
+      "saving": "Saving…"
     },
     "messages": {
       "appointmentConfirmed": "Appointment confirmed.",
+      "appointmentRescheduled": "Appointment rescheduled.",
+      "notReschedulable": "Only confirmed appointments can be rescheduled.",
+      "slotTaken": "This time is no longer available.",
       "appointmentCompleted": "Appointment marked completed.",
       "appointmentNoShow": "Appointment marked no-show.",
       "appointmentCanceled": "Appointment canceled.",

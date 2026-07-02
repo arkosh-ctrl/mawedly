@@ -110,20 +110,25 @@ export async function providerBelongsToBusiness(
   return Boolean(data);
 }
 
-// Blocking appointments for a provider on a date, as minute ranges.
+// Blocking appointments for a provider on a date, as minute ranges. When
+// rescheduling, the appointment being moved must be excluded — otherwise its own
+// current slot would appear taken on the same date.
 export async function getBookedRanges(
   businessId: string,
   providerId: string,
   date: string,
+  excludeAppointmentId?: string,
 ): Promise<MinuteRange[]> {
   const supabase = createAdminClient();
-  const { data } = await supabase
+  let query = supabase
     .from("appointments")
     .select("start_time, end_time")
     .eq("business_id", businessId)
     .eq("provider_id", providerId)
     .eq("appointment_date", date)
     .in("status", BLOCKING_STATUSES);
+  if (excludeAppointmentId) query = query.neq("id", excludeAppointmentId);
+  const { data } = await query;
 
   return (data ?? []).map((a) => ({
     start: timeToMinutes(a.start_time),

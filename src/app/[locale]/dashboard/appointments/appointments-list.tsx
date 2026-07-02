@@ -11,6 +11,7 @@ import {
   type AppointmentStatus,
 } from "@/lib/appointments/status";
 import { setAppointmentStatus, setDepositVerified } from "./actions";
+import { RescheduleModal } from "./reschedule-modal";
 
 export type AppointmentRow = {
   id: string;
@@ -54,6 +55,7 @@ export function AppointmentsList({
   const [isPending, startTransition] = useTransition();
   const [filter, setFilter] = useState<"all" | AppointmentStatus>("all");
   const [confirmCancel, setConfirmCancel] = useState<AppointmentRow | null>(null);
+  const [rescheduling, setRescheduling] = useState<AppointmentRow | null>(null);
 
   const visible = useMemo(
     () =>
@@ -233,6 +235,16 @@ export function AppointmentsList({
                     ),
                   )}
 
+                  {a.status === "confirmed" && (
+                    <button
+                      type="button"
+                      onClick={() => setRescheduling(a)}
+                      className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-ink"
+                    >
+                      {t("actions.reschedule")}
+                    </button>
+                  )}
+
                   {needsReviewLink && (
                     <button
                       type="button"
@@ -247,6 +259,13 @@ export function AppointmentsList({
             );
           })}
         </ul>
+      )}
+
+      {rescheduling && (
+        <RescheduleModal
+          appointment={rescheduling}
+          onClose={() => setRescheduling(null)}
+        />
       )}
 
       <Modal

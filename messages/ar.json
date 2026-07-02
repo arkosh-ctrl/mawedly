@@ -393,10 +393,24 @@
       "canceled": "إلغاء",
       "verifyDeposit": "تأكيد وصول العربون",
       "clearDeposit": "إلغاء تأكيد العربون",
-      "viewReceipt": "عرض الإيصال"
+      "viewReceipt": "عرض الإيصال",
+      "reschedule": "إعادة جدولة"
+    },
+    "reschedule": {
+      "title": "إعادة جدولة الموعد",
+      "current": "الموعد الحالي",
+      "dateLabel": "التاريخ الجديد",
+      "pickTime": "اختر الوقت",
+      "loadingSlots": "جارٍ تحميل الأوقات…",
+      "noSlots": "لا أوقات متاحة في هذا اليوم.",
+      "save": "حفظ الموعد الجديد",
+      "saving": "جارٍ الحفظ…"
     },
     "messages": {
       "appointmentConfirmed": "تم تأكيد الموعد.",
+      "appointmentRescheduled": "تم تعديل الموعد.",
+      "notReschedulable": "يمكن إعادة جدولة المواعيد المؤكدة فقط.",
+      "slotTaken": "هذا الوقت لم يعد متاحاً.",
       "appointmentCompleted": "تم وضع الموعد كمكتمل.",
       "appointmentNoShow": "تم وضع الموعد كـ«لم يحضر».",
       "appointmentCanceled": "تم إلغاء الموعد.",
