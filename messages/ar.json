@@ -90,6 +90,7 @@
   },
   "Dashboard": {
     "brand": "موعدلي",
+    "overviewNav": "نظرة عامة",
     "appointmentsNav": "الحجوزات",
     "servicesNav": "الخدمات",
     "providersNav": "مقدّمو الخدمة",
@@ -303,6 +304,13 @@
   },
   "Booking": {
     "subtitle": "احجز موعدك بخطوات بسيطة.",
+    "hoursLabel": "ساعات العمل",
+    "steps": {
+      "service": "الخدمة",
+      "providerDate": "مقدّم الخدمة والتاريخ",
+      "time": "الوقت",
+      "details": "بياناتك"
+    },
     "notBookable": "هذا النشاط لا يستقبل الحجوزات حالياً.",
     "currency": "ريال",
     "minutesShort": "دقيقة",
@@ -457,6 +465,19 @@
     "finalCtaTitle": "جاهز لحماية جدولك؟",
     "finalCtaBody": "أضِف خدماتك، شارك رابطك، وابدأ استقبال حجوزات حقيقية اليوم. لا حاجة لبطاقة للبدء.",
     "finalCtaButton": "أنشئ حسابك",
+    "categoriesTitle": "لمن موعدلي؟",
+    "stepsTitle": "ثلاث خطوات وتبدأ",
+    "step1Title": "أنشئ صفحتك",
+    "step1Body": "أضف خدماتك ومقدّمي الخدمة وساعات عملك في دقائق.",
+    "step2Title": "شارك رابطك",
+    "step2Body": "رابط واحد أو رمز QR — في واتساب أو إنستغرام أو على طاولة الاستقبال.",
+    "step3Title": "استقبل العربون وأكّد",
+    "step3Body": "يختار العميل وقتاً متاحاً فعلاً ويحوّل العربون، وأنت تؤكّد الموعد بنقرة.",
+    "preview": {
+      "sampleName": "صالون غَيم",
+      "sampleService": "قص وتصفيف",
+      "sampleServiceMeta": "45 دقيقة · 120 ريال"
+    },
     "demoEyebrow": "اليوم",
     "demoConfirmed": "مؤكَّد",
     "demoDepositPaid": "تم دفع العربون",

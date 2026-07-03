@@ -23,6 +23,9 @@ const inputClass =
   "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
 const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
 
+// Above this count, choice cards/chips would sprawl — fall back to a select.
+const CARD_CHOICE_MAX = 6;
+
 export function BookingWidget({
   slug,
   services,
@@ -150,7 +153,7 @@ export function BookingWidget({
       : null;
 
     return (
-      <div className="flex flex-col gap-5 rounded-2xl border border-line bg-paper p-6 shadow-xl shadow-ink/5">
+      <div className="animate-fade-rise flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <span
             className="flex size-9 shrink-0 items-center justify-center rounded-full bg-saffron text-base font-bold text-ink"
@@ -244,42 +247,115 @@ export function BookingWidget({
     !submitting;
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-line bg-paper p-6 shadow-xl shadow-ink/5">
-      <label className={labelClass}>
-        <span>{t("fields.service")}</span>
-        <select
-          className={inputClass}
-          value={serviceId}
-          onChange={(e) => setServiceId(e.target.value)}
+    <div className="flex flex-col gap-5">
+      {/* 01 — service. Choice cards for a short menu; select beyond that. */}
+      <StepHeading num="01" label={t("steps.service")} first />
+      {services.length <= CARD_CHOICE_MAX ? (
+        <div
+          role="group"
+          aria-label={t("fields.service")}
+          className="grid gap-2 sm:grid-cols-2"
         >
-          <option value="">{t("placeholders.service")}</option>
-          {services.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name} · {s.duration_minutes} {t("minutesShort")} · {Number(s.price)}{" "}
-              {t("currency")}
-            </option>
-          ))}
-        </select>
-      </label>
+          {services.map((s) => {
+            const active = serviceId === s.id;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setServiceId(s.id)}
+                className={`flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-start transition-colors ${
+                  active
+                    ? "border-ink bg-canvas"
+                    : "border-line bg-paper hover:border-ink"
+                }`}
+              >
+                <span className="flex w-full items-center justify-between gap-2">
+                  <span className="text-sm font-semibold text-ink">
+                    {s.name}
+                  </span>
+                  {active && (
+                    <span
+                      className="h-2.5 w-2.5 shrink-0 rounded-full bg-saffron"
+                      aria-hidden
+                    />
+                  )}
+                </span>
+                <span className="font-mono text-xs text-muted">
+                  {s.duration_minutes} {t("minutesShort")} · {Number(s.price)}{" "}
+                  {t("currency")}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <label className={labelClass}>
+          <span className="sr-only">{t("fields.service")}</span>
+          <select
+            className={inputClass}
+            value={serviceId}
+            onChange={(e) => setServiceId(e.target.value)}
+          >
+            <option value="">{t("placeholders.service")}</option>
+            {services.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name} · {s.duration_minutes} {t("minutesShort")} ·{" "}
+                {Number(s.price)} {t("currency")}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
 
-      <label className={labelClass}>
-        <span>{t("fields.provider")}</span>
-        <select
-          className={inputClass}
-          value={providerId}
-          onChange={(e) => setProviderId(e.target.value)}
+      {/* 02 — provider & date. Pill chips for a short roster. */}
+      <StepHeading num="02" label={t("steps.providerDate")} />
+      {providers.length <= CARD_CHOICE_MAX ? (
+        <div
+          role="group"
+          aria-label={t("fields.provider")}
+          className="flex flex-wrap gap-2"
         >
-          <option value="">{t("placeholders.provider")}</option>
-          {providers.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-              {p.title ? ` — ${p.title}` : ""}
-            </option>
-          ))}
-        </select>
-      </label>
+          {providers.map((p) => {
+            const active = providerId === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setProviderId(p.id)}
+                className={`rounded-full border px-4 py-2 text-sm transition-colors ${
+                  active
+                    ? "border-ink bg-ink font-semibold text-paper"
+                    : "border-line bg-canvas text-ink hover:border-ink"
+                }`}
+              >
+                {p.name}
+                {p.title ? ` — ${p.title}` : ""}
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <label className={labelClass}>
+          <span className="sr-only">{t("fields.provider")}</span>
+          <select
+            className={inputClass}
+            value={providerId}
+            onChange={(e) => setProviderId(e.target.value)}
+          >
+            <option value="">{t("placeholders.provider")}</option>
+            {providers.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+                {p.title ? ` — ${p.title}` : ""}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
 
-      <label className={labelClass}>
+      <label className={`${labelClass} sm:max-w-xs`}>
         <span>{t("fields.date")}</span>
         <input
           type="date"
@@ -292,16 +368,16 @@ export function BookingWidget({
       </label>
 
       {serviceId && providerId && date && (
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-ink">{t("fields.time")}</span>
+        <div className="flex flex-col gap-3">
+          {/* 03 — time. The slot grid is the product's signature: a precise
+              daybook of available times, the selection set in tabular mono. */}
+          <StepHeading num="03" label={t("steps.time")} />
           {slotsLoading ? (
             <p className="text-sm text-muted">{t("loadingSlots")}</p>
           ) : slots.length === 0 ? (
             <p className="text-sm text-muted">{t("noSlots")}</p>
           ) : (
-            // The slot grid is the product's signature: a precise daybook of
-            // available times, the selection set in tabular mono.
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+            <div className="animate-fade-rise grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
               {slots.map((s) => (
                 <button
                   key={s}
@@ -311,7 +387,7 @@ export function BookingWidget({
                   onClick={() => setSlot(s)}
                   className={`rounded-lg border px-3 py-2 font-mono text-sm transition-colors ${
                     slot === s
-                      ? "border-ink bg-ink text-saffron-soft"
+                      ? "border-ink bg-ink font-semibold text-paper"
                       : "border-line bg-canvas text-ink hover:border-ink"
                   }`}
                 >
@@ -323,37 +399,41 @@ export function BookingWidget({
         </div>
       )}
 
-      <label className={labelClass}>
-        <span>{t("fields.name")}</span>
-        <input
-          className={inputClass}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </label>
+      {/* 04 — customer details. */}
+      <StepHeading num="04" label={t("steps.details")} />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className={labelClass}>
+          <span>{t("fields.name")}</span>
+          <input
+            className={inputClass}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
 
-      <label className={labelClass}>
-        <span>{t("fields.phone")}</span>
-        <input
-          className={inputClass}
-          dir="ltr"
-          inputMode="tel"
-          placeholder="9665XXXXXXXX"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-      </label>
+        <label className={labelClass}>
+          <span>{t("fields.phone")}</span>
+          <input
+            className={inputClass}
+            dir="ltr"
+            inputMode="tel"
+            placeholder="9665XXXXXXXX"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </label>
 
-      <label className={labelClass}>
-        <span>{t("fields.emailOptional")}</span>
-        <input
-          className={inputClass}
-          dir="ltr"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
+        <label className={`${labelClass} sm:col-span-2`}>
+          <span>{t("fields.emailOptional")}</span>
+          <input
+            className={inputClass}
+            dir="ltr"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+      </div>
 
       {error && (
         <p className="rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
@@ -365,10 +445,35 @@ export function BookingWidget({
         type="button"
         disabled={!canSubmit}
         onClick={submit}
-        className="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-50"
+        className="w-full rounded-full bg-ink px-5 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-50"
       >
         {submitting ? t("submitting") : t("submit")}
       </button>
+    </div>
+  );
+}
+
+// Numbered step heading — the mono figure in saffron gives the flow its
+// daybook rhythm; a hairline rule separates steps after the first.
+function StepHeading({
+  num,
+  label,
+  first,
+}: {
+  num: string;
+  label: string;
+  first?: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-baseline gap-2.5 ${
+        first ? "" : "border-t border-line pt-5"
+      }`}
+    >
+      <span className="font-mono text-xs font-bold tracking-widest text-saffron">
+        {num}
+      </span>
+      <span className="font-display text-base font-bold text-ink">{label}</span>
     </div>
   );
 }

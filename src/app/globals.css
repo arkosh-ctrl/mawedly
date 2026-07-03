@@ -121,3 +121,20 @@
 .animate-slot-lock {
   animation: slot-lock 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+
+/* Cards rising into place on page entry. Staggered per card via inline
+   animation-delay; `both` keeps delayed cards hidden until their turn. */
+@keyframes fade-rise {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}

@@ -90,6 +90,7 @@
   },
   "Dashboard": {
     "brand": "Mawedly",
+    "overviewNav": "Overview",
     "appointmentsNav": "Appointments",
     "servicesNav": "Services",
     "providersNav": "Providers",
@@ -303,6 +304,13 @@
   },
   "Booking": {
     "subtitle": "Book your appointment in a few steps.",
+    "hoursLabel": "Working hours",
+    "steps": {
+      "service": "Service",
+      "providerDate": "Provider & date",
+      "time": "Time",
+      "details": "Your details"
+    },
     "notBookable": "This business is not accepting bookings right now.",
     "currency": "SAR",
     "minutesShort": "min",
@@ -457,6 +465,19 @@
     "finalCtaTitle": "Ready to protect your calendar?",
     "finalCtaBody": "Set up your services, share your link, and start taking real bookings today. No card required to start.",
     "finalCtaButton": "Create your account",
+    "categoriesTitle": "Who is Mawedly for?",
+    "stepsTitle": "Three steps to start",
+    "step1Title": "Create your page",
+    "step1Body": "Add your services, providers, and working hours in minutes.",
+    "step2Title": "Share your link",
+    "step2Body": "One link or QR code — on WhatsApp, Instagram, or at the front desk.",
+    "step3Title": "Take the deposit & confirm",
+    "step3Body": "Customers pick a genuinely open slot and transfer the deposit; you confirm in one tap.",
+    "preview": {
+      "sampleName": "Ghaim Salon",
+      "sampleService": "Cut & style",
+      "sampleServiceMeta": "45 min · 120 SAR"
+    },
     "demoEyebrow": "Today",
     "demoConfirmed": "Confirmed",
     "demoDepositPaid": "Deposit paid",
