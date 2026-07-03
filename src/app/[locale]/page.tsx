@@ -50,13 +50,15 @@ export default async function HomePage({
     { num: "03", title: t("step3Title"), body: t("step3Body"), accent: "border-t-ink" },
   ];
 
-  // The three fixed business categories, labelled via the existing Signup.types
-  // keys — presentation only, no new category anywhere.
+  // The five consultation fields of the platform, labelled via Signup.types so
+  // the landing page and the signup form always agree.
   const categories = [
-    tSignup("types.salon"),
-    tSignup("types.consulting"),
-    tSignup("types.other"),
-  ];
+    { key: "education", icon: <CapIcon /> },
+    { key: "business", icon: <BriefcaseIcon /> },
+    { key: "nutrition", icon: <LeafIcon /> },
+    { key: "legal", icon: <ScaleIcon /> },
+    { key: "mental_health", icon: <MindIcon /> },
+  ] as const;
 
   return (
     <MarketingShell>
@@ -79,7 +81,7 @@ export default async function HomePage({
             </p>
             <div className="animate-fade-rise mt-9 flex w-full flex-col gap-3 sm:flex-row sm:items-center [animation-delay:180ms]">
               <Link
-                href="/login"
+                href="/signup"
                 className="rounded-full bg-ink px-7 py-3 text-center text-base font-semibold text-paper transition-colors hover:bg-pine"
               >
                 {t("heroCtaPrimary")}
@@ -91,24 +93,11 @@ export default async function HomePage({
                 {t("heroCtaSecondary")}
               </Link>
             </div>
-
-            {/* The three fixed categories as quiet chips under the CTAs. */}
-            <div className="animate-fade-rise mt-9 flex flex-wrap items-center gap-2 [animation-delay:240ms]">
-              <span className="text-sm text-muted">{t("categoriesTitle")}</span>
-              {categories.map((c) => (
-                <span
-                  key={c}
-                  className="rounded-full border border-line bg-paper px-3 py-1 text-xs font-medium text-pine"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
           </div>
 
           <BookingPreview
             sampleName={t("preview.sampleName")}
-            typeBadge={tSignup("types.salon")}
+            typeBadge={tSignup("types.business")}
             stepService={tBooking("steps.service")}
             stepTime={tBooking("steps.time")}
             sampleService={t("preview.sampleService")}
@@ -116,6 +105,34 @@ export default async function HomePage({
             confirmed={t("demoConfirmed")}
             depositPaid={t("demoDepositPaid")}
           />
+        </div>
+      </section>
+
+      {/* The five consultation fields — the same labels the signup form uses. */}
+      <section className="mx-auto max-w-5xl px-5 pt-20">
+        <div className="flex flex-col gap-2">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+            {t("categoriesTitle")}
+          </h2>
+          <p className="max-w-2xl text-muted">{t("categoriesSubtitle")}</p>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((c) => (
+            <div
+              key={c.key}
+              className="flex flex-col gap-3 rounded-xl border border-line bg-paper p-6 shadow-sm"
+            >
+              <span className="flex size-10 items-center justify-center rounded-full bg-ink text-paper">
+                {c.icon}
+              </span>
+              <h3 className="font-display text-lg font-bold text-ink">
+                {tSignup(`types.${c.key}`)}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted">
+                {t(`categoryDesc.${c.key}`)}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -189,7 +206,7 @@ export default async function HomePage({
             {t("finalCtaBody")}
           </p>
           <Link
-            href="/login"
+            href="/signup"
             className="mt-9 inline-block rounded-full bg-saffron px-8 py-3 text-base font-semibold text-ink transition-transform hover:scale-[1.02]"
           >
             {t("finalCtaButton")}
@@ -219,5 +236,72 @@ function FeatureCard({
       </h3>
       <p className="leading-relaxed text-muted">{feature.body}</p>
     </div>
+  );
+}
+
+/* Category glyphs, matched to the Daybook stroke weight (no icon dependency). */
+
+function iconProps() {
+  return {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": true,
+  } as const;
+}
+
+function CapIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="m12 4 10 5-10 5L2 9l10-5Z" />
+      <path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5" />
+      <path d="M22 9v5" />
+    </svg>
+  );
+}
+
+function BriefcaseIcon() {
+  return (
+    <svg {...iconProps()}>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+      <path d="M3 13h18" />
+    </svg>
+  );
+}
+
+function LeafIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M20 4c-8 0-14 4-14 11a5 5 0 0 0 5 5c7 0 9-8 9-16Z" />
+      <path d="M4 20c2-5 6-9 11-11" />
+    </svg>
+  );
+}
+
+function ScaleIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M12 3v18" />
+      <path d="M4 7h16" />
+      <path d="m7 7-3 6a3.5 3.5 0 0 0 6 0L7 7Z" />
+      <path d="m17 7-3 6a3.5 3.5 0 0 0 6 0l-3-6Z" />
+      <path d="M8 21h8" />
+    </svg>
+  );
+}
+
+function MindIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M9.5 3A5.5 5.5 0 0 0 4 8.5c0 1.2.4 2.3 1 3.2L4 15l3 .5V19a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2v-1.5A6.5 6.5 0 0 0 20 12 9 9 0 0 0 9.5 3Z" />
+      <path d="M9 9.5h.01M13 9.5h.01" />
+      <path d="M9.5 13c.8.7 2.2.7 3 0" />
+    </svg>
   );
 }

@@ -8,9 +8,20 @@ import {
 } from "@/lib/booking/queries";
 import { BookingWidget } from "./booking-widget";
 
-// The three business categories — used only to pick an existing label from
-// Signup.types; anything else simply shows no badge.
-const KNOWN_TYPES = ["salon", "consulting", "other"] as const;
+// Every business category with a label in Signup.types — the five consultation
+// fields plus the catch-all, and the legacy values written before the pivot
+// ("salon", "consulting") so existing businesses keep their badge. Anything
+// else simply shows no badge.
+const KNOWN_TYPES = [
+  "education",
+  "business",
+  "nutrition",
+  "legal",
+  "mental_health",
+  "other",
+  "salon",
+  "consulting",
+] as const;
 
 export default async function BookingPage({
   params,

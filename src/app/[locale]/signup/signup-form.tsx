@@ -110,7 +110,7 @@ export function SignupForm({ next }: { next: string }) {
           name="slug"
           required
           dir="ltr"
-          placeholder="my-salon"
+          placeholder="noor-consulting"
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
           className={inputClass}
@@ -136,7 +136,7 @@ export function SignupForm({ next }: { next: string }) {
 
       <label className={labelClass}>
         <span>{t("typeLabel")}</span>
-        <select name="type" defaultValue="salon" className={inputClass}>
+        <select name="type" defaultValue={BUSINESS_TYPES[0]} className={inputClass}>
           {BUSINESS_TYPES.map((value) => (
             <option key={value} value={value}>
               {t(`types.${value}`)}
