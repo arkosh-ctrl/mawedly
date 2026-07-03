@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
+import { BookingPreview } from "@/components/marketing/booking-preview";
 
 export async function generateMetadata({
   params,
@@ -21,6 +22,8 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Home");
+  const tBooking = await getTranslations("Booking");
+  const tSignup = await getTranslations("Signup");
 
   // Organization structured data for the home page.
   const orgJsonLd = {
@@ -41,6 +44,22 @@ export default async function HomePage({
     { title: t("feature4Title"), body: t("feature4Body") },
   ];
 
+  const steps = [
+    { num: "01", title: t("step1Title"), body: t("step1Body"), accent: "border-t-pine" },
+    { num: "02", title: t("step2Title"), body: t("step2Body"), accent: "border-t-saffron" },
+    { num: "03", title: t("step3Title"), body: t("step3Body"), accent: "border-t-ink" },
+  ];
+
+  // The five consultation fields of the platform, labelled via Signup.types so
+  // the landing page and the signup form always agree.
+  const categories = [
+    { key: "education", icon: <CapIcon /> },
+    { key: "business", icon: <BriefcaseIcon /> },
+    { key: "nutrition", icon: <LeafIcon /> },
+    { key: "legal", icon: <ScaleIcon /> },
+    { key: "mental_health", icon: <MindIcon /> },
+  ] as const;
+
   return (
     <MarketingShell>
       <script
@@ -48,20 +67,21 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
       />
 
-      {/* Hero — headline as thesis, beside a live "daybook" of today's slots */}
-      <section className="border-b border-line">
+      {/* Hero — headline as thesis, beside a working miniature of the real
+          booking page (the same split card shipped at /[slug]). */}
+      <section className="ledger-lines border-b border-line">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col items-start">
-            <span className="eyebrow">{t("heroBadge")}</span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
+            <span className="animate-fade-rise eyebrow">{t("heroBadge")}</span>
+            <h1 className="animate-fade-rise mt-5 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl [animation-delay:60ms]">
               {t("heroTitle")}
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+            <p className="animate-fade-rise mt-6 max-w-xl text-lg leading-relaxed text-muted [animation-delay:120ms]">
               {t("heroSubtitle")}
             </p>
-            <div className="mt-9 flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="animate-fade-rise mt-9 flex w-full flex-col gap-3 sm:flex-row sm:items-center [animation-delay:180ms]">
               <Link
-                href="/login"
+                href="/signup"
                 className="rounded-full bg-ink px-7 py-3 text-center text-base font-semibold text-paper transition-colors hover:bg-pine"
               >
                 {t("heroCtaPrimary")}
@@ -75,62 +95,118 @@ export default async function HomePage({
             </div>
           </div>
 
-          <Daybook
-            eyebrow={t("demoEyebrow")}
+          <BookingPreview
+            sampleName={t("preview.sampleName")}
+            typeBadge={tSignup("types.business")}
+            stepService={tBooking("steps.service")}
+            stepTime={tBooking("steps.time")}
+            sampleService={t("preview.sampleService")}
+            sampleServiceMeta={t("preview.sampleServiceMeta")}
             confirmed={t("demoConfirmed")}
             depositPaid={t("demoDepositPaid")}
-            held={t("demoHeld")}
-            open={t("demoOpen")}
           />
         </div>
       </section>
 
-      {/* Problem / Solution — two ledger entries across the spread */}
+      {/* The five consultation fields — the same labels the signup form uses. */}
+      <section className="mx-auto max-w-5xl px-5 pt-20">
+        <div className="flex flex-col gap-2">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+            {t("categoriesTitle")}
+          </h2>
+          <p className="max-w-2xl text-muted">{t("categoriesSubtitle")}</p>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((c) => (
+            <div
+              key={c.key}
+              className="flex flex-col gap-3 rounded-xl border border-line bg-paper p-6 shadow-sm"
+            >
+              <span className="flex size-10 items-center justify-center rounded-full bg-ink text-paper">
+                {c.icon}
+              </span>
+              <h3 className="font-display text-lg font-bold text-ink">
+                {tSignup(`types.${c.key}`)}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted">
+                {t(`categoryDesc.${c.key}`)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* How it works — the numbered daybook rhythm shared with /[slug]. */}
+      <section className="mx-auto max-w-5xl px-5 pt-20">
+        <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+          {t("stepsTitle")}
+        </h2>
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          {steps.map((s) => (
+            <div
+              key={s.num}
+              className={`flex flex-col gap-3 rounded-xl border border-line ${s.accent} border-t-[3px] bg-paper p-6 shadow-sm`}
+            >
+              <span className="font-mono text-xs font-bold tracking-widest text-saffron">
+                {s.num}
+              </span>
+              <h3 className="font-display text-lg font-bold text-ink">
+                {s.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Problem / Solution — the solution deliberately gets the wider page. */}
       <section className="mx-auto max-w-5xl px-5 py-20">
-        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-[2fr_3fr]">
           <div className="bg-canvas p-8 sm:p-10">
             <span className="eyebrow text-muted">{t("problemTitle")}</span>
             <p className="mt-5 leading-relaxed text-pine">{t("problemBody")}</p>
           </div>
           <div className="bg-ink p-8 text-paper sm:p-10">
             <span className="eyebrow">{t("solutionTitle")}</span>
-            <p className="mt-5 leading-relaxed text-sage">{t("solutionBody")}</p>
+            <p className="mt-5 leading-relaxed text-canvas">
+              {t("solutionBody")}
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Features — capabilities as ruled daybook entries */}
+      {/* Features — an asymmetric zigzag: the lead capability on dark ink,
+          the rest on paper with identity-coloured top rules. */}
       <section className="mx-auto max-w-5xl px-5 pb-20">
         <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           {t("featuresTitle")}
         </h2>
-        <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
-          {features.map((f) => (
-            <div key={f.title} className="flex flex-col gap-3 bg-paper p-8">
-              <span
-                className="size-2.5 rounded-[2px] bg-saffron"
-                aria-hidden
-              />
-              <h3 className="font-display text-lg font-bold text-ink">
-                {f.title}
-              </h3>
-              <p className="leading-relaxed text-muted">{f.body}</p>
-            </div>
-          ))}
+        <div className="mt-10 grid gap-4 lg:grid-cols-12">
+          <div className="flex flex-col gap-3 rounded-2xl bg-ink p-8 text-paper shadow-md lg:col-span-7">
+            <span className="h-1 w-10 rounded-full bg-saffron" aria-hidden />
+            <h3 className="font-display text-xl font-bold text-paper">
+              {features[0].title}
+            </h3>
+            <p className="leading-relaxed text-canvas">{features[0].body}</p>
+          </div>
+          <FeatureCard feature={features[1]} accent="border-t-pine" span="lg:col-span-5" />
+          <FeatureCard feature={features[2]} accent="border-t-saffron" span="lg:col-span-5" />
+          <FeatureCard feature={features[3]} accent="border-t-ink" span="lg:col-span-7" />
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="mx-auto max-w-5xl px-5 pb-24">
-        <div className="rounded-3xl bg-ink px-8 py-16 text-center text-paper">
-          <h2 className="mx-auto max-w-2xl font-display text-2xl font-bold tracking-tight sm:text-3xl">
+        <div className="flex flex-col items-center rounded-3xl bg-ink px-8 py-16 text-center text-paper">
+          <span className="h-1 w-10 rounded-full bg-saffron" aria-hidden />
+          <h2 className="mx-auto mt-6 max-w-2xl font-display text-2xl font-bold tracking-tight sm:text-3xl">
             {t("finalCtaTitle")}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-sage">
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-canvas">
             {t("finalCtaBody")}
           </p>
           <Link
-            href="/login"
+            href="/signup"
             className="mt-9 inline-block rounded-full bg-saffron px-8 py-3 text-base font-semibold text-ink transition-transform hover:scale-[1.02]"
           >
             {t("finalCtaButton")}
@@ -141,79 +217,91 @@ export default async function HomePage({
   );
 }
 
-// The product's most characteristic artifact: a day's slots, with one snapping
-// to confirmed + deposit-paid. Static, but it shows the whole flow at a glance.
-function Daybook({
-  eyebrow,
-  confirmed,
-  depositPaid,
-  held,
-  open,
+function FeatureCard({
+  feature,
+  accent,
+  span,
 }: {
-  eyebrow: string;
-  confirmed: string;
-  depositPaid: string;
-  held: string;
-  open: string;
+  feature: { title: string; body: string };
+  accent: string;
+  span: string;
 }) {
-  const rows = [
-    { time: "10:00", state: "held" as const },
-    { time: "11:30", state: "confirmed" as const },
-    { time: "13:00", state: "open" as const },
-    { time: "16:30", state: "open" as const },
-  ];
-
   return (
-    <div className="ledger-lines rounded-2xl border border-line bg-paper p-2 shadow-xl shadow-ink/5">
-      <div className="flex items-center justify-between px-4 pb-3 pt-3">
-        <span className="eyebrow">{eyebrow}</span>
-        <span className="font-mono text-xs text-muted" dir="ltr">
-          Sat · 14 Jun
-        </span>
-      </div>
-      <ul className="flex flex-col">
-        {rows.map((r) => {
-          const isConfirmed = r.state === "confirmed";
-          return (
-            <li
-              key={r.time}
-              className={`flex items-center gap-4 rounded-xl px-4 py-3.5 ${
-                isConfirmed ? "animate-slot-lock bg-ink text-paper" : ""
-              }`}
-            >
-              <span
-                className={`font-mono text-sm ${
-                  isConfirmed ? "text-saffron-soft" : "text-ink"
-                }`}
-                dir="ltr"
-              >
-                {r.time}
-              </span>
-              <span className="h-px flex-1 bg-line/70" aria-hidden />
-              {isConfirmed ? (
-                <span className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-paper">
-                    {confirmed}
-                  </span>
-                  <span className="rounded-full bg-saffron px-2 py-0.5 text-[0.6875rem] font-semibold text-ink">
-                    {depositPaid}
-                  </span>
-                  <span
-                    className="flex size-5 items-center justify-center rounded-full bg-saffron text-xs font-bold text-ink"
-                    aria-hidden
-                  >
-                    ✓
-                  </span>
-                </span>
-              ) : (
-                <span className="font-mono text-xs uppercase tracking-wide text-muted">
-                  {r.state === "held" ? held : open}
-                </span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+    <div
+      className={`flex flex-col gap-3 rounded-xl border border-line ${accent} border-t-[3px] bg-paper p-8 shadow-sm ${span}`}
+    >
+      <span className="size-2.5 rounded-[2px] bg-saffron" aria-hidden />
+      <h3 className="font-display text-lg font-bold text-ink">
+        {feature.title}
+      </h3>
+      <p className="leading-relaxed text-muted">{feature.body}</p>
     </div>
+  );
+}
+
+/* Category glyphs, matched to the Daybook stroke weight (no icon dependency). */
+
+function iconProps() {
+  return {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": true,
+  } as const;
+}
+
+function CapIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="m12 4 10 5-10 5L2 9l10-5Z" />
+      <path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5" />
+      <path d="M22 9v5" />
+    </svg>
+  );
+}
+
+function BriefcaseIcon() {
+  return (
+    <svg {...iconProps()}>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+      <path d="M3 13h18" />
+    </svg>
+  );
+}
+
+function LeafIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M20 4c-8 0-14 4-14 11a5 5 0 0 0 5 5c7 0 9-8 9-16Z" />
+      <path d="M4 20c2-5 6-9 11-11" />
+    </svg>
+  );
+}
+
+function ScaleIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M12 3v18" />
+      <path d="M4 7h16" />
+      <path d="m7 7-3 6a3.5 3.5 0 0 0 6 0L7 7Z" />
+      <path d="m17 7-3 6a3.5 3.5 0 0 0 6 0l-3-6Z" />
+      <path d="M8 21h8" />
+    </svg>
+  );
+}
+
+function MindIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M9.5 3A5.5 5.5 0 0 0 4 8.5c0 1.2.4 2.3 1 3.2L4 15l3 .5V19a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2v-1.5A6.5 6.5 0 0 0 20 12 9 9 0 0 0 9.5 3Z" />
+      <path d="M9 9.5h.01M13 9.5h.01" />
+      <path d="M9.5 13c.8.7 2.2.7 3 0" />
+    </svg>
   );
 }

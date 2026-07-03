@@ -47,7 +47,8 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "Mawedly",
-  description: "Bilingual deposit-based appointment booking for salons.",
+  description:
+    "Bilingual deposit-based appointment booking for consultants, educators, and health & legal experts.",
 };
 
 // Pre-render a route for every supported locale at build time.

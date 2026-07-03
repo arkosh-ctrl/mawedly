@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/navigation";
+import { PageHeader } from "@/components/dashboard/page-header";
 import { ServicesManager } from "./services-manager";
 
 export default async function ServicesPage({
@@ -51,12 +52,7 @@ export default async function ServicesPage({
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-      <div className="flex flex-col gap-1">
-        <span className="eyebrow">{t("subtitle")}</span>
-        <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">
-          {t("title")}
-        </h1>
-      </div>
+      <PageHeader eyebrow={t("subtitle")} title={t("title")} />
       <ServicesManager services={services ?? []} />
     </main>
   );

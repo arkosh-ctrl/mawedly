@@ -73,7 +73,7 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
 
         <label className={labelClass}>
           <span>{t("fields.slug")}</span>
-          <input className={inputClass} dir="ltr" placeholder="my-salon" {...register("slug")} />
+          <input className={inputClass} dir="ltr" placeholder="noor-consulting" {...register("slug")} />
           <span className="text-xs text-muted">{t("hints.slug")}</span>
           {errors.slug && <span className={errorClass}>{err(errors.slug.message)}</span>}
         </label>

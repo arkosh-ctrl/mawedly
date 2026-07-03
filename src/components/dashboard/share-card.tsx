@@ -75,61 +75,62 @@ export function ShareCard({
   }
 
   return (
-    <section className="relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-line bg-paper p-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <span className="eyebrow">{t("bookingLink")}</span>
+    <section className="relative grid overflow-hidden rounded-2xl border border-line border-t-[3px] border-t-saffron bg-paper shadow-sm sm:grid-cols-[minmax(0,1fr)_auto]">
+      {/* Link panel — the shareable URL sits in a sunken canvas well. */}
+      <div className="flex min-w-0 flex-col justify-center gap-3 p-6">
+        <span className="eyebrow">{t("bookingLink")}</span>
 
-          {/* The link itself, set in tabular mono and always shown LTR. */}
-          <p
-            dir="ltr"
-            className="overflow-x-auto whitespace-nowrap rounded-lg border border-line bg-canvas px-3 py-2.5 text-start font-mono text-sm text-ink"
-          >
-            {url}
-          </p>
+        {/* The link itself, set in tabular mono and always shown LTR. */}
+        <p
+          dir="ltr"
+          className="overflow-x-auto whitespace-nowrap rounded-lg border border-line bg-canvas px-3 py-2.5 text-start font-mono text-sm text-ink"
+        >
+          {url}
+        </p>
 
-          <div className="mt-1 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={copy}
-              aria-live="polite"
-              className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
-            >
-              <CopyIcon />
-              {copied ? t("copied") : t("copyLink")}
-            </button>
-            <a
-              href={waShareLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-ink"
-            >
-              {t("shareWhatsApp")}
-            </a>
-          </div>
-        </div>
-
-        {/* QR for the same link — a customer scans it to open the booking page. */}
-        <div className="flex shrink-0 flex-col items-center gap-2 self-start">
-          <div className="rounded-xl border border-line bg-paper p-2">
-            <QRCodeSVG
-              value={url}
-              size={160}
-              bgColor="#FBFAF3"
-              fgColor="#12302A"
-              aria-label={url}
-            />
-          </div>
-          <span className="font-mono text-xs text-muted">{t("scanToBook")}</span>
+        <div className="mt-1 flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={downloadQr}
-            className="mt-1 inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+            onClick={copy}
+            aria-live="polite"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
           >
-            <DownloadIcon />
-            {t("downloadQr")}
+            <CopyIcon />
+            {copied ? t("copied") : t("copyLink")}
           </button>
+          <a
+            href={waShareLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-ink"
+          >
+            {t("shareWhatsApp")}
+          </a>
         </div>
+      </div>
+
+      {/* QR panel — a customer scans it to open the booking page. Split from
+          the link panel by a hairline rule (horizontal on mobile, vertical on
+          wider screens via the logical inline-start border). */}
+      <div className="flex shrink-0 flex-col items-center gap-2 border-t border-line p-6 sm:border-s sm:border-t-0">
+        <div className="rounded-xl border border-line bg-paper p-2">
+          <QRCodeSVG
+            value={url}
+            size={160}
+            bgColor="#FBFAF3"
+            fgColor="#12302A"
+            aria-label={url}
+          />
+        </div>
+        <span className="font-mono text-xs text-muted">{t("scanToBook")}</span>
+        <button
+          type="button"
+          onClick={downloadQr}
+          className="mt-1 inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+        >
+          <DownloadIcon />
+          {t("downloadQr")}
+        </button>
       </div>
 
       {/* Hidden high-res canvas, rendered off-screen purely as the PNG source. */}

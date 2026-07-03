@@ -33,15 +33,20 @@
   },
   "Signup": {
     "title": "Create your account",
-    "subtitle": "Get started — set up your business in one step.",
+    "subtitle": "Join as an expert — set up your appointments page in one step.",
     "emailLabel": "Email",
     "passwordLabel": "Password",
     "passwordHint": "At least 8 characters.",
     "businessNameLabel": "Business name",
     "slugLabel": "Public link (slug)",
-    "slugHint": "Lowercase letters, numbers and hyphens only, e.g. my-salon",
-    "typeLabel": "Business type",
+    "slugHint": "Lowercase letters, numbers and hyphens only, e.g. noor-consulting",
+    "typeLabel": "Your consultation field",
     "types": {
+      "education": "Education & training",
+      "business": "Business consulting",
+      "nutrition": "Nutrition & health",
+      "legal": "Legal consulting",
+      "mental_health": "Mental health",
       "salon": "Salon",
       "consulting": "Consulting",
       "other": "Other"
@@ -90,6 +95,7 @@
   },
   "Dashboard": {
     "brand": "Mawedly",
+    "overviewNav": "Overview",
     "appointmentsNav": "Appointments",
     "servicesNav": "Services",
     "providersNav": "Providers",
@@ -178,7 +184,7 @@
       "qr": "Bank transfer QR image"
     },
     "hints": {
-      "slug": "Lowercase letters, numbers, and hyphens only, e.g. my-salon",
+      "slug": "Lowercase letters, numbers, and hyphens only, e.g. noor-consulting",
       "phone": "Digits only in international format without +, e.g. 9665XXXXXXXX",
       "qr": "PNG, JPG, or WEBP, up to 5 MB."
     },
@@ -303,6 +309,13 @@
   },
   "Booking": {
     "subtitle": "Book your appointment in a few steps.",
+    "hoursLabel": "Working hours",
+    "steps": {
+      "service": "Service",
+      "providerDate": "Provider & date",
+      "time": "Time",
+      "details": "Your details"
+    },
     "notBookable": "This business is not accepting bookings right now.",
     "currency": "SAR",
     "minutesShort": "min",
@@ -425,7 +438,7 @@
     "closeMenu": "Close menu"
   },
   "Footer": {
-    "tagline": "Smart appointment booking for salons, clinics, and service businesses across the Gulf.",
+    "tagline": "Smart appointment booking for consultants, educators, and health & legal experts across the Gulf.",
     "product": "Product",
     "company": "Company",
     "legal": "Legal",
@@ -434,34 +447,52 @@
     "rights": "© 2026 Mawedly. All rights reserved."
   },
   "Home": {
-    "metaTitle": "Mawedly — Smart booking with a deposit, in Arabic & English",
-    "metaDescription": "Mawedly turns scattered WhatsApp bookings into confirmed appointments. A booking link, instant confirmation, and a deposit that protects your time — built bilingual for the Gulf.",
-    "heroBadge": "Built for the Gulf · Arabic & English",
-    "heroTitle": "Turn messy WhatsApp bookings into confirmed appointments.",
-    "heroSubtitle": "Mawedly gives your salon, clinic, or service business a clean booking link — with a deposit that protects every appointment and instant confirmation in Arabic and English.",
-    "heroCtaPrimary": "Start your business now",
+    "metaTitle": "Mawedly — The smart appointments platform for consultants, educators & specialists",
+    "metaDescription": "Book your consultation with experts in education, business, health, and law — direct 1-on-1 booking with a deposit that protects the session and instant confirmation in Arabic and English.",
+    "heroBadge": "The smart appointments platform · Arabic & English",
+    "heroTitle": "Your consultation starts with an appointment — the experts' platform for education, business, health, and law.",
+    "heroSubtitle": "Mawedly gives your consulting sessions a clean booking link: direct 1-on-1 booking, a deposit that protects your time, and instant confirmation in Arabic and English.",
+    "heroCtaPrimary": "Join as an expert",
     "heroCtaSecondary": "See how it works",
     "problemTitle": "Booking over chat wasn't built for this",
-    "problemBody": "Appointments scattered across WhatsApp threads. Two customers booked into the same slot. No-shows that cost you a full chair. Endless back-and-forth just to confirm a time. As your business grows, the chat that once worked becomes the thing holding you back.",
+    "problemBody": "Appointments scattered across WhatsApp threads. Two clients booked into the same slot. No-shows that cost you a full session of your time. Endless back-and-forth just to confirm a time. As your practice grows, the chat that once worked becomes the thing holding you back.",
     "solutionTitle": "One link does the work for you",
     "solutionBody": "Share a single booking link. Customers pick a real, available time, pay a deposit to lock it in, and you confirm once the transfer lands — all in their own language. No double-bookings, no guesswork, no app for the customer to install.",
-    "featuresTitle": "Everything you need to fill your calendar",
-    "feature1Title": "Deposit that protects the slot",
-    "feature1Body": "A bank-transfer deposit means customers who book actually show up — and you decide when to confirm.",
-    "feature2Title": "Instant, clear confirmation",
-    "feature2Body": "Customers see availability in real time and get a clear status the moment you approve their booking.",
+    "featuresTitle": "Why Mawedly for consultants?",
+    "feature1Title": "A deposit that protects your session",
+    "feature1Body": "A bank-transfer deposit means clients who book actually show up — and you decide when to confirm.",
+    "feature2Title": "Direct 1-on-1 booking",
+    "feature2Body": "Clients see your real availability and book their individual session with zero back-and-forth.",
     "feature3Title": "Direct WhatsApp link",
     "feature3Body": "Every booking comes with a one-tap WhatsApp link, so you stay in touch the way your customers already do.",
     "feature4Title": "Fully bilingual",
     "feature4Body": "Arabic (RTL) and English (LTR) from the ground up. Your customers book in the language they're most comfortable in.",
-    "finalCtaTitle": "Ready to protect your calendar?",
-    "finalCtaBody": "Set up your services, share your link, and start taking real bookings today. No card required to start.",
-    "finalCtaButton": "Create your account",
-    "demoEyebrow": "Today",
+    "finalCtaTitle": "Join Mawedly as an expert and start taking bookings today",
+    "finalCtaBody": "No complexity, no credentials required — sign up, add your sessions, and share your link. Live in minutes, no card required.",
+    "finalCtaButton": "Join as an expert",
+    "categoriesTitle": "Who is Mawedly for?",
+    "categoriesSubtitle": "Five core fields — and any other expert who wants a smart appointments system.",
+    "categoryDesc": {
+      "education": "Private tutors, test-prep and skills coaches, and language teachers.",
+      "business": "Entrepreneurs, career coaches, and strategy & digital-transformation consultants.",
+      "nutrition": "Clinical and sports dietitians, fitness and wellness coaches.",
+      "legal": "Lawyers and legal consultants for individuals and companies.",
+      "mental_health": "Mental-health specialists, behavioural therapists, and life coaches."
+    },
+    "stepsTitle": "Three steps to start",
+    "step1Title": "Create your page",
+    "step1Body": "Add your sessions, prices, and availability in minutes.",
+    "step2Title": "Share your link",
+    "step2Body": "One link or QR code — on WhatsApp, Instagram, or at the front desk.",
+    "step3Title": "Take the deposit & confirm",
+    "step3Body": "Customers pick a genuinely open slot and transfer the deposit; you confirm in one tap.",
+    "preview": {
+      "sampleName": "Noura Al-Salem",
+      "sampleService": "Business consultation",
+      "sampleServiceMeta": "60 min · 300 SAR"
+    },
     "demoConfirmed": "Confirmed",
-    "demoDepositPaid": "Deposit paid",
-    "demoHeld": "Held",
-    "demoOpen": "Open"
+    "demoDepositPaid": "Deposit paid"
   },
   "HowItWorks": {
     "metaTitle": "How Mawedly works",
@@ -469,7 +500,7 @@
     "title": "From sign-up to your first booking",
     "subtitle": "Four steps. No technical setup. You can be live in an afternoon.",
     "step1Title": "Create your account",
-    "step1Body": "Sign in with a magic link — no passwords. Add your business name, your bank details for deposits, and your working hours.",
+    "step1Body": "Sign up with your email and a password in under a minute. Add your business name, your bank details for deposits, and your working hours.",
     "step2Title": "Add services & providers",
     "step2Body": "List what you offer with duration, price, and deposit, then add the team members customers can book with.",
     "step3Title": "Share your booking link",
@@ -497,7 +528,7 @@
     "starterF4": "Deposit protection & WhatsApp link",
     "starterCta": "Start with Starter",
     "proName": "Professional",
-    "proTagline": "For growing salons and clinics.",
+    "proTagline": "For growing experts and consulting centres.",
     "proF1": "Up to 5 service providers",
     "proF2": "Up to ~500 appointments / month",
     "proF3": "Everything in Starter",
@@ -515,9 +546,9 @@
     "metaTitle": "About Mawedly",
     "metaDescription": "The booking platform built for the Gulf's appointment-based businesses — bilingual, deposit-backed, no app to install.",
     "title": "Built for how the Gulf books",
-    "p1": "Across the Gulf, salons, clinics, and service businesses run on appointments — and most of them run on chat. Bookings live in scattered WhatsApp threads, two customers land in the same slot, and no-shows quietly drain the day. The tool that once worked becomes the bottleneck as the business grows.",
+    "p1": "Across the Gulf, consultants, teachers, coaches, and specialists run on appointments — and most of them run on chat. Bookings live in scattered WhatsApp threads, two clients land in the same slot, and no-shows quietly drain the day. The tool that once worked becomes the bottleneck as the practice grows.",
     "p2": "The software that exists was mostly built for other markets. It treats Arabic as an afterthought, ignores right-to-left layouts, or forces every customer to download yet another app — none of which fits how business actually works here: bilingual, relationship-driven, and built on trust.",
-    "p3": "Mawedly is the answer to that gap: a booking platform that speaks Arabic and English natively, protects every appointment with a simple deposit, and keeps the direct WhatsApp connection customers already rely on. It's for the salon, the clinic, the consultant, and every appointment-based business that deserves better than a cluttered chat thread.",
+    "p3": "Mawedly is the answer to that gap: a booking platform that speaks Arabic and English natively, protects every session with a simple deposit, and keeps the direct WhatsApp connection clients already rely on. It's for the consultant, the teacher, the specialist, and every appointment-based expert who deserves better than a cluttered chat thread.",
     "missionTitle": "Our mission",
     "missionBody": "To give every service business in the Gulf a booking experience that feels effortless — in their language, on their terms."
   },
@@ -539,9 +570,9 @@
     "q6": "Can I use my own WhatsApp?",
     "a6": "Yes. Every booking includes a direct WhatsApp link to your number, so you can keep talking to customers exactly as you do today — Mawedly just removes the scheduling chaos.",
     "q7": "What kinds of businesses is it for?",
-    "a7": "Any appointment-based service business: salons and beauty studios, clinics, consultants, personal trainers, and more. If you book people into time slots, Mawedly fits.",
+    "a7": "Any expert whose work runs on appointments: private tutors and coaches, business consultants, nutrition and mental-health specialists, lawyers, and consulting centres. If you book people into time slots, Mawedly fits.",
     "q8": "Do I need any technical skills to set it up?",
-    "a8": "Not at all. Sign in with a magic link, add your services and working hours, and share your booking link. Most businesses are live the same day."
+    "a8": "Not at all. Sign up with your email, add your services and working hours, and share your booking link. Most experts are live the same day."
   },
   "Contact": {
     "metaTitle": "Contact Mawedly",

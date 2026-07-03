@@ -8,12 +8,20 @@ import { isReservedSlug } from "@/lib/booking/reserved-slugs";
 // are kept identical to dashboard/settings/schema.ts so a row created here
 // passes the same constraints the settings screen later enforces.
 
-// The complete documented set of business types lives only as the column
-// comment in supabase/migrations/0001_init_schema_v3_2.sql:23
-// (`type text not null default 'salon' -- salon | consulting | other`); the
-// column is free text with no DB enum/CHECK, so this list is the source of
-// truth for the UI.
-export const BUSINESS_TYPES = ["salon", "consulting", "other"] as const;
+// The `businesses.type` column is free text with no DB enum/CHECK (see
+// supabase/migrations/0001_init_schema_v3_2.sql:23), so this list is the
+// source of truth for what NEW signups may choose: the five consultation
+// fields of the platform pivot, plus a catch-all. Legacy values written under
+// the old positioning ("salon", "consulting") remain valid in existing rows —
+// settings never edits type, and display code maps every known value.
+export const BUSINESS_TYPES = [
+  "education",
+  "business",
+  "nutrition",
+  "legal",
+  "mental_health",
+  "other",
+] as const;
 
 export const signupSchema = z.object({
   email: z.string().trim().toLowerCase().email("messages.invalidEmail"),
