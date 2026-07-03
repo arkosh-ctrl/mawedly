@@ -26,9 +26,11 @@ const ATTACHMENT_TYPES: Record<string, ChatMessageType> = {
 export function ChatInputArea({
   appointmentId,
   onSent,
+  onTyping,
 }: {
   appointmentId: string;
   onSent: (message: ChatMessage) => void;
+  onTyping?: () => void;
 }) {
   const t = useTranslations("Chat");
   const [value, setValue] = useState("");
@@ -153,6 +155,7 @@ export function ChatInputArea({
         onChange={(e) => {
           setValue(e.target.value);
           autoResize();
+          onTyping?.();
         }}
         onKeyDown={(e) => {
           // isComposing guards against sending mid-IME-composition.

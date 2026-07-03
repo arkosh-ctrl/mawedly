@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Toaster } from "sonner";
+import type { RealtimeChannel } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
 import { fetchChatHistory } from "@/lib/chat/actions";
 import type { ChatMessage } from "@/lib/chat/types";
 import { ChatMessagesList } from "@/components/chat/ChatMessagesList";
@@ -46,6 +48,38 @@ export function CustomerChatView({
   const [loading, setLoading] = useState(true);
   const [closed, setClosed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Send-only channel: this page sends the "typing" broadcast for the
+  // merchant's ChatContainer to receive; it never listens on this channel
+  // itself (option B — customer sends, merchant receives).
+  const supabase = useMemo(() => createClient(), []);
+  const channelRef = useRef<RealtimeChannel | null>(null);
+  const lastTypingRef = useRef(0);
+
+  useEffect(() => {
+    const channel = supabase.channel(`chat-${appointmentId}`);
+    channelRef.current = channel;
+    channel.subscribe();
+    return () => {
+      channelRef.current = null;
+      void supabase.removeChannel(channel);
+    };
+  }, [supabase, appointmentId]);
+
+  // Debounced to once per second — the textarea's onChange fires on every
+  // keystroke, but the merchant only needs a coarse "still typing" signal.
+  function sendTyping() {
+    const now = Date.now();
+    if (now - lastTypingRef.current < 1000) return;
+    lastTypingRef.current = now;
+    const channel = channelRef.current;
+    if (!channel) return;
+    void channel.send({
+      type: "broadcast",
+      event: "typing",
+      payload: { sender: "customer" },
+    });
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -111,7 +145,11 @@ export function CustomerChatView({
       ) : (
         <ChatMessagesList messages={messages} />
       )}
-      <ChatInputArea appointmentId={appointmentId} onSent={handleSent} />
+      <ChatInputArea
+        appointmentId={appointmentId}
+        onSent={handleSent}
+        onTyping={sendTyping}
+      />
       <Toaster dir={dir} richColors position="top-center" />
     </div>
   );

@@ -16,7 +16,13 @@ import type { ChatMessage } from "@/lib/chat/types";
 // the locale, so this is a deliberate, documented exception to the
 // logical-properties rule: physical auto cross-margins (ml-auto = hug right,
 // mr-auto = hug left) pin each bubble to its side in every direction.
-export function ChatMessagesList({ messages }: { messages: ChatMessage[] }) {
+export function ChatMessagesList({
+  messages,
+  isTyping,
+}: {
+  messages: ChatMessage[];
+  isTyping?: boolean;
+}) {
   const t = useTranslations("Chat");
   const params = useParams();
   const locale = typeof params.locale === "string" ? params.locale : "ar";
@@ -51,6 +57,14 @@ export function ChatMessagesList({ messages }: { messages: ChatMessage[] }) {
           </Fragment>
         );
       })}
+      {isTyping && (
+        // mr-auto matches the customer bubble side above (physically fixed,
+        // not logical self-start) — the indicator represents the customer, so
+        // it sits where the customer's own messages sit, in every direction.
+        <div className="mr-auto flex items-center gap-1.5 ps-1 text-sm text-muted">
+          <span>{t("typingIndicator")}</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -451,6 +451,7 @@
     "send": "إرسال",
     "sending": "جارٍ الإرسال…",
     "attach": "إرفاق ملف",
+    "typingIndicator": "العميل يكتب...",
     "messages": {
       "invalidInput": "بيانات غير صحيحة.",
       "notFound": "الموعد غير موجود.",
