@@ -12,6 +12,7 @@ import {
 } from "@/lib/appointments/status";
 import { setAppointmentStatus, setDepositVerified } from "./actions";
 import { RescheduleDialog } from "./reschedule-dialog";
+import { ChatContainer } from "@/components/chat/ChatContainer";
 
 export type AppointmentRow = {
   id: string;
@@ -58,6 +59,7 @@ export function AppointmentsList({
   const [rescheduleTarget, setRescheduleTarget] = useState<AppointmentRow | null>(
     null,
   );
+  const [chatTarget, setChatTarget] = useState<AppointmentRow | null>(null);
 
   const visible = useMemo(
     () =>
@@ -248,6 +250,16 @@ export function AppointmentsList({
                     </button>
                   )}
 
+                  {/* Chat is available on every card: open statuses for
+                      conversation, terminal statuses as a readable archive. */}
+                  <button
+                    type="button"
+                    onClick={() => setChatTarget(a)}
+                    className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-ink"
+                  >
+                    {t("actions.chat")}
+                  </button>
+
                   {needsReviewLink && (
                     <button
                       type="button"
@@ -295,6 +307,18 @@ export function AppointmentsList({
         appointment={rescheduleTarget}
         onClose={() => setRescheduleTarget(null)}
       />
+
+      {/* Chat modal — ChatContainer mounts on open and unmounts on close, so
+          the realtime subscription is created/removed with the dialog. */}
+      <Modal
+        open={!!chatTarget}
+        onClose={() => setChatTarget(null)}
+        title={chatTarget?.customers?.name ?? t("actions.chat")}
+      >
+        {chatTarget && (
+          <ChatContainer appointmentId={chatTarget.id} callerType="business" />
+        )}
+      </Modal>
     </div>
   );
 }

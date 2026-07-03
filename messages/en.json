@@ -405,6 +405,7 @@
       "no_show": "No-show",
       "canceled": "Cancel",
       "reschedule": "Reschedule",
+      "chat": "💬 Chat",
       "verifyDeposit": "Mark deposit received",
       "clearDeposit": "Clear deposit",
       "viewReceipt": "View receipt"

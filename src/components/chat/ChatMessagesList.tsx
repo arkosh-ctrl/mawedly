@@ -5,14 +5,15 @@ import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { ChatMessage } from "@/lib/chat/types";
 
-// Scrollable message list: direction-aware bubbles, a date separator between
+// Scrollable message list: fixed-side bubbles, a date separator between
 // different days, and auto-scroll to the newest message.
 //
-// Bubble sides use logical alignment so the layout mirrors with the locale.
-// In a column flex container the cross axis follows the inline direction, so
-// self-start = inline-start (RIGHT in RTL) and self-end = inline-end (LEFT in
-// RTL). The product requirement is business on the right / customer on the
-// left in the Arabic dashboard — hence business gets self-start.
+// Bubble sides are FIXED by product decision: business always on the right,
+// customer always on the left — in BOTH RTL and LTR. Logical alignment
+// (self-start/self-end) cannot express a fixed side because it mirrors with
+// the locale, so this is a deliberate, documented exception to the
+// logical-properties rule: physical auto cross-margins (ml-auto = hug right,
+// mr-auto = hug left) pin each bubble to its side in every direction.
 export function ChatMessagesList({ messages }: { messages: ChatMessage[] }) {
   const t = useTranslations("Chat");
   const params = useParams();
@@ -103,8 +104,8 @@ function MessageBubble({ message }: { message: ChatMessage }) {
     <div
       className={`flex max-w-[75%] flex-col gap-0.5 rounded-2xl px-3.5 py-2 ${
         isBusiness
-          ? "self-start bg-ink text-paper"
-          : "self-end border border-line bg-canvas text-ink"
+          ? "ml-auto bg-ink text-paper"
+          : "mr-auto border border-line bg-canvas text-ink"
       }`}
     >
       <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
