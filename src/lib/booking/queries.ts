@@ -111,19 +111,27 @@ export async function providerBelongsToBusiness(
 }
 
 // Blocking appointments for a provider on a date, as minute ranges.
+// `excludeAppointmentId` drops one appointment from the result — used when
+// rescheduling so the appointment being moved doesn't block its own slot (and
+// the ones adjacent to it) in the availability grid.
 export async function getBookedRanges(
   businessId: string,
   providerId: string,
   date: string,
+  options?: { excludeAppointmentId?: string },
 ): Promise<MinuteRange[]> {
   const supabase = createAdminClient();
-  const { data } = await supabase
+  let query = supabase
     .from("appointments")
     .select("start_time, end_time")
     .eq("business_id", businessId)
     .eq("provider_id", providerId)
     .eq("appointment_date", date)
     .in("status", BLOCKING_STATUSES);
+  if (options?.excludeAppointmentId) {
+    query = query.neq("id", options.excludeAppointmentId);
+  }
+  const { data } = await query;
 
   return (data ?? []).map((a) => ({
     start: timeToMinutes(a.start_time),
