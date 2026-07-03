@@ -451,6 +451,7 @@
     "send": "Send",
     "sending": "Sending…",
     "attach": "Attach file",
+    "typingIndicator": "Customer is typing...",
     "messages": {
       "invalidInput": "Invalid data.",
       "notFound": "Appointment not found.",
