@@ -440,6 +440,24 @@
       "unauthorized": "Your session expired. Please sign in again."
     }
   },
+  "Chat": {
+    "loading": "Loading messages…",
+    "empty": "No messages yet — start the conversation.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "inputLabel": "Message",
+    "inputPlaceholder": "Type your message…",
+    "send": "Send",
+    "sending": "Sending…",
+    "messages": {
+      "invalidInput": "Invalid data.",
+      "notFound": "Appointment not found.",
+      "chatClosed": "Chat is closed for this appointment.",
+      "saveFailed": "Couldn't send. Please try again.",
+      "unauthorized": "Your session expired. Please sign in again.",
+      "noBusiness": "Create your business in Settings first."
+    }
+  },
   "Nav": {
     "brand": "Mawedly",
     "home": "Home",
