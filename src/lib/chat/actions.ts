@@ -74,6 +74,21 @@ const CHAT_OPEN_STATUSES = ["pending_verification", "confirmed"];
 
 const MAX_CONTENT_LENGTH = 2000;
 
+// Types a client may set directly. 'system_message' is reserved for
+// server-originated rows and is never accepted from sendMessage's input.
+const CLIENT_MESSAGE_TYPES: ChatMessageType[] = ["text", "image", "file"];
+
+// Mirrors the ALLOWED set in api/chat-upload/route.ts — defense in depth so a
+// forged fileData.mimeType can't slip past sendMessage even if the upload
+// route is bypassed.
+const ALLOWED_ATTACHMENT_MIME_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/gif",
+  "application/pdf",
+];
+
 // Everything the SELECTs below return — kept as one constant so the row shape
 // always matches the ChatMessage type.
 const MESSAGE_COLUMNS =
@@ -106,17 +121,32 @@ export async function sendMessage(
 ): Promise<SendMessageResult> {
   try {
     const appointmentId = String(input?.appointmentId ?? "");
-    const content = String(input?.content ?? "").trim();
     const type = input?.type ?? "text";
+    const fileData = input?.fileData;
 
-    if (!UUID_RE.test(appointmentId)) {
+    if (!UUID_RE.test(appointmentId) || !CLIENT_MESSAGE_TYPES.includes(type)) {
       return { status: "error", messageKey: "invalidInput" };
     }
-    // Phase 2 is text-only; attachments arrive with Phase 3.
-    if (type !== "text" || input?.fileData) {
-      return { status: "error", messageKey: "invalidInput" };
-    }
-    if (!content || content.length > MAX_CONTENT_LENGTH) {
+
+    // Exactly one of (text content) or (attachment) per message — never both,
+    // never neither. The DB CHECK (content IS NOT NULL OR file_path IS NOT
+    // NULL) allows either alone; this action doesn't offer a captioned
+    // attachment, so the two are kept mutually exclusive here.
+    let content: string | null = null;
+    if (type === "text") {
+      const trimmed = String(input?.content ?? "").trim();
+      if (!trimmed || trimmed.length > MAX_CONTENT_LENGTH || fileData) {
+        return { status: "error", messageKey: "invalidInput" };
+      }
+      content = trimmed;
+    } else if (
+      !fileData?.path ||
+      !fileData.name ||
+      !(fileData.size > 0) ||
+      !ALLOWED_ATTACHMENT_MIME_TYPES.includes(fileData.mimeType)
+    ) {
+      // The object itself was already validated by api/chat-upload; this
+      // re-checks the metadata isn't obviously forged before it's persisted.
       return { status: "error", messageKey: "invalidInput" };
     }
 
@@ -155,8 +185,12 @@ export async function sendMessage(
           appointment_id: appointmentId,
           sender_type: "business",
           sender_id: userId,
-          type: "text",
+          type,
           content,
+          file_path: fileData?.path ?? null,
+          file_name: fileData?.name ?? null,
+          file_size: fileData?.size ?? null,
+          mime_type: fileData?.mimeType ?? null,
         })
         .select(MESSAGE_COLUMNS)
         .single();
@@ -197,8 +231,12 @@ export async function sendMessage(
         sender_type: "customer",
         // Derived from the appointment itself — the caller never supplies it.
         sender_id: appt.customer_id,
-        type: "text",
+        type,
         content,
+        file_path: fileData?.path ?? null,
+        file_name: fileData?.name ?? null,
+        file_size: fileData?.size ?? null,
+        mime_type: fileData?.mimeType ?? null,
       })
       .select(MESSAGE_COLUMNS)
       .single();
@@ -335,6 +373,60 @@ export async function markMessagesRead(
 
     revalidatePath("/[locale]/dashboard/appointments", "page");
     return { status: "success", messageKey: "messagesRead" };
+  } catch {
+    return { status: "error", messageKey: "saveFailed" };
+  }
+}
+
+export type ChatAttachmentUrlResult =
+  | { status: "success"; url: string }
+  | { status: "error"; messageKey: string };
+
+// Resolve a short-lived signed URL for one message's attachment. The path used
+// for signing is always read back from the MESSAGE'S OWN file_path column —
+// never a client-supplied path — so a forged path can't be signed against an
+// unrelated business's object. Business callers are scoped by the chat_messages
+// SELECT policy (RLS); customer callers are scoped by an explicit
+// appointment_id match via service_role (same capability-URL model as the rest
+// of this file). Matches messageId to appointmentId in one query, so a message
+// id from a different thread never resolves even if guessed.
+export async function getChatAttachmentUrl(
+  appointmentId: string,
+  messageId: string,
+): Promise<ChatAttachmentUrlResult> {
+  try {
+    if (
+      !UUID_RE.test(String(appointmentId ?? "")) ||
+      !UUID_RE.test(String(messageId ?? ""))
+    ) {
+      return { status: "error", messageKey: "invalidInput" };
+    }
+
+    const session = await createClient();
+    const { data: claims } = await session.auth.getClaims();
+    const userId = claims?.claims?.sub as string | undefined;
+
+    const client = userId ? session : createAdminClient();
+    const typedClient = withChat(client);
+
+    const { data: row } = await typedClient
+      .from("chat_messages")
+      .select("file_path")
+      .eq("id", messageId)
+      .eq("appointment_id", appointmentId)
+      .maybeSingle();
+    if (!row?.file_path) {
+      return { status: "error", messageKey: "notFound" };
+    }
+
+    const { data: signed, error } = await client.storage
+      .from("chat-attachments")
+      .createSignedUrl(row.file_path, 300);
+    if (error || !signed?.signedUrl) {
+      return { status: "error", messageKey: "saveFailed" };
+    }
+
+    return { status: "success", url: signed.signedUrl };
   } catch {
     return { status: "error", messageKey: "saveFailed" };
   }

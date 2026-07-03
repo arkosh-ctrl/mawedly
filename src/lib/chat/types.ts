@@ -23,13 +23,16 @@ export type ChatMessage = {
   created_at: string;
 };
 
-// Input for sendMessage. fileData is declared now for API stability but is NOT
-// accepted until Phase 3 (file upload) — the action rejects non-text types.
+// Input for sendMessage. For type 'image'|'file', fileData is required — path
+// comes from the api/chat-upload response (the object already lives in the
+// chat-attachments bucket by the time sendMessage is called; this just records
+// the pointer + display metadata on the message row).
 export type SendMessageInput = {
   appointmentId: string;
   content?: string;
   type?: ChatMessageType;
   fileData?: {
+    path: string;
     name: string;
     size: number;
     mimeType: string;
