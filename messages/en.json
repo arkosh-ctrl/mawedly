@@ -457,6 +457,12 @@
       "saveFailed": "Couldn't send. Please try again.",
       "unauthorized": "Your session expired. Please sign in again.",
       "noBusiness": "Create your business in Settings first."
+    },
+    "customer": {
+      "title": "Chat with your provider",
+      "subtitle": "Message them directly about your appointment",
+      "closedTitle": "Chat Closed",
+      "closedMessage": "This chat is no longer available because the appointment's status changed."
     }
   },
   "Nav": {
