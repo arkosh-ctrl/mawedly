@@ -1,8 +1,10 @@
 "use client";
 
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import { getChatAttachmentUrl } from "@/lib/chat/actions";
 import type { ChatMessage } from "@/lib/chat/types";
 
 // Scrollable message list: fixed-side bubbles, a date separator between
@@ -100,6 +102,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   }
 
   const isBusiness = message.sender_type === "business";
+  const isAttachment = message.type === "image" || message.type === "file";
   return (
     <div
       className={`flex max-w-[75%] flex-col gap-0.5 rounded-2xl px-3.5 py-2 ${
@@ -108,9 +111,13 @@ function MessageBubble({ message }: { message: ChatMessage }) {
           : "mr-auto border border-line bg-canvas text-ink"
       }`}
     >
-      <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
-        {message.content}
-      </p>
+      {isAttachment ? (
+        <AttachmentLink message={message} isBusiness={isBusiness} />
+      ) : (
+        <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
+          {message.content}
+        </p>
+      )}
       <span
         dir="ltr"
         className={`self-end font-mono text-[10px] ${
@@ -120,5 +127,50 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         {hhmm(message.created_at)}
       </span>
     </div>
+  );
+}
+
+// Attachments are private-bucket objects: file_path is a storage path, not a
+// fetchable URL, so it can't be used as a plain href. The signed URL is
+// resolved on click (via the message's own appointment_id/id — never a
+// client-trusted path) and opened in a new tab; nothing is pre-fetched for
+// messages that are never opened.
+function AttachmentLink({
+  message,
+  isBusiness,
+}: {
+  message: ChatMessage;
+  isBusiness: boolean;
+}) {
+  const t = useTranslations("Chat");
+  const [resolving, setResolving] = useState(false);
+
+  async function open() {
+    if (resolving) return;
+    setResolving(true);
+    try {
+      const res = await getChatAttachmentUrl(message.appointment_id, message.id);
+      if (res.status === "success") {
+        window.open(res.url, "_blank", "noopener,noreferrer");
+      } else {
+        toast.error(t(`messages.${res.messageKey}`));
+      }
+    } finally {
+      setResolving(false);
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      disabled={resolving}
+      onClick={() => void open()}
+      className={`flex items-center gap-1.5 text-sm underline underline-offset-2 disabled:opacity-60 ${
+        isBusiness ? "text-paper" : "text-ink"
+      }`}
+    >
+      <span aria-hidden>📎</span>
+      <span className="max-w-[200px] truncate">{message.file_name ?? "—"}</span>
+    </button>
   );
 }

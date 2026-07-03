@@ -450,13 +450,16 @@
     "inputPlaceholder": "Type your message…",
     "send": "Send",
     "sending": "Sending…",
+    "attach": "Attach file",
     "messages": {
       "invalidInput": "Invalid data.",
       "notFound": "Appointment not found.",
       "chatClosed": "Chat is closed for this appointment.",
       "saveFailed": "Couldn't send. Please try again.",
       "unauthorized": "Your session expired. Please sign in again.",
-      "noBusiness": "Create your business in Settings first."
+      "noBusiness": "Create your business in Settings first.",
+      "invalidType": "File type not supported.",
+      "tooLarge": "File exceeds 10MB."
     },
     "customer": {
       "title": "Chat with your provider",
