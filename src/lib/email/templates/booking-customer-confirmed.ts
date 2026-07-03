@@ -11,6 +11,9 @@ export function bookingCustomerConfirmedEmail(p: {
   date: string;
   time: string;
   whatsappPhone: string | null;
+  // Optional so existing callers/tests don't break. Same construction style
+  // as review-request.ts's reviewUrl CTA.
+  chatUrl?: string;
 }): { subject: string; html: string; text: string } {
   const time = p.time.slice(0, 5);
 
@@ -24,6 +27,9 @@ export function bookingCustomerConfirmedEmail(p: {
 
   if (p.lang === "en") {
     const subject = "Your booking is confirmed";
+    const chatButton = p.chatUrl
+      ? `<div style="margin-bottom:10px;"><a href="${p.chatUrl}" style="display:inline-block;background:#059669;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Chat with your provider</a></div>`
+      : "";
     const waButton = waUrl
       ? `<a href="${waUrl}" style="display:inline-block;background:#16a34a;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Contact via WhatsApp</a>`
       : "";
@@ -37,18 +43,21 @@ export function bookingCustomerConfirmedEmail(p: {
          ${detailRow("Date", p.date)}
          ${detailRow("Time", time)}
        </table>
-       ${waButton}`,
+       ${chatButton}${waButton}`,
     );
     const text = `Your booking is confirmed
 ${p.businessName} confirmed your appointment.
 Service: ${p.serviceName}
 Provider: ${p.providerName}
 Date: ${p.date}
-Time: ${time}${waUrl ? `\n\nContact via WhatsApp: ${waUrl}` : ""}`;
+Time: ${time}${p.chatUrl ? `\n\nChat with your provider: ${p.chatUrl}` : ""}${waUrl ? `\n\nContact via WhatsApp: ${waUrl}` : ""}`;
     return { subject, html, text };
   }
 
   const subject = "تم تأكيد حجزك";
+  const chatButton = p.chatUrl
+    ? `<div style="margin-bottom:10px;"><a href="${p.chatUrl}" style="display:inline-block;background:#059669;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">تواصل مع مزود الخدمة عبر المحادثة</a></div>`
+    : "";
   const waButton = waUrl
     ? `<a href="${waUrl}" style="display:inline-block;background:#16a34a;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">تواصل عبر واتساب</a>`
     : "";
@@ -62,13 +71,13 @@ Time: ${time}${waUrl ? `\n\nContact via WhatsApp: ${waUrl}` : ""}`;
        ${detailRow("التاريخ", p.date)}
        ${detailRow("الوقت", time)}
      </table>
-     ${waButton}`,
+     ${chatButton}${waButton}`,
   );
   const text = `تم تأكيد حجزك
 أكّد ${p.businessName} موعدك.
 الخدمة: ${p.serviceName}
 مقدّم الخدمة: ${p.providerName}
 التاريخ: ${p.date}
-الوقت: ${time}${waUrl ? `\n\nتواصل عبر واتساب: ${waUrl}` : ""}`;
+الوقت: ${time}${p.chatUrl ? `\n\nتواصل مع مزود الخدمة عبر المحادثة: ${p.chatUrl}` : ""}${waUrl ? `\n\nتواصل عبر واتساب: ${waUrl}` : ""}`;
   return { subject, html, text };
 }
