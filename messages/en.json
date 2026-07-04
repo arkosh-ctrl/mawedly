@@ -707,5 +707,54 @@
     "contactTitle": "Contact",
     "contactBody": "Questions about these terms? Email hello@mawedly.com.",
     "updated": "Last updated: June 2026"
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "markAll": "Mark all read",
+    "settingsLink": "Settings",
+    "empty": "No notifications",
+    "urgent": "Urgent",
+    "markRead": "Mark as read",
+    "archive": "Archive",
+    "tabs": {
+      "all": "All",
+      "unread": "Unread",
+      "archived": "Archived"
+    },
+    "groups": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "types": {
+      "new_booking": "New booking",
+      "reminder_1h": "1-hour reminder",
+      "reminder_30m": "30-min reminder",
+      "reminder_15m": "15-min reminder",
+      "new_chat_message": "New message",
+      "appointment_cancelled": "Appointment cancelled",
+      "appointment_rescheduled": "Rescheduled",
+      "appointment_completed": "Appointment completed",
+      "no_show": "No-show",
+      "payment_received": "Payment received",
+      "payment_failed": "Payment failed",
+      "new_review": "New review",
+      "system_announcement": "System announcement"
+    },
+    "settings": {
+      "title": "Notification settings",
+      "subtitle": "Control notification types, sounds, and quiet hours.",
+      "typeLabel": "Type",
+      "inApp": "In-app",
+      "sound": "Sound",
+      "quietHours": "Quiet hours",
+      "from": "From",
+      "to": "To",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Settings saved.",
+      "error": "Could not save, try again."
+    }
   }
 }

@@ -138,3 +138,28 @@
 .animate-fade-rise {
   animation: fade-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+
+/* Notification bell: a brief swing when a new notification arrives. */
+@keyframes notif-ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  10% {
+    transform: rotate(12deg);
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+  70% {
+    transform: rotate(-4deg);
+  }
+}
+
+.animate-notif-ring {
+  transform-origin: top center;
+  animation: notif-ring 1s ease-in-out;
+}

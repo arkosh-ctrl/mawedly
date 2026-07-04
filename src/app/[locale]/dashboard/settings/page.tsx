@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { SettingsForm } from "./settings-form";
+import { NotificationSettings } from "@/components/dashboard/notification-settings";
 import type { SettingsInput } from "./schema";
 
 export default async function SettingsPage({
@@ -53,6 +54,7 @@ export default async function SettingsPage({
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <PageHeader eyebrow={t("subtitle")} title={t("title")} />
       <SettingsForm defaultValues={defaultValues} qrUrl={qrUrl} />
+      {business && <NotificationSettings />}
     </main>
   );
 }

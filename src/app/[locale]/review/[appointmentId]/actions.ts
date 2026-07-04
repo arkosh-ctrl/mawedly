@@ -1,6 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { createNotification } from "@/lib/notifications/create";
 import { reviewSchema } from "./schema";
 import type { ReviewState } from "./types";
 
@@ -41,6 +43,43 @@ export async function submitReview(
     });
     if (error) {
       return { status: "error", messageKey: "failed" };
+    }
+
+    // Notify the merchant of the new review (best-effort). anon can't read the
+    // business, so resolve it via a service-role client from the appointment.
+    try {
+      const admin = createAdminClient();
+      const { data: appt } = await admin
+        .from("appointments")
+        .select("business_id")
+        .eq("id", appointmentId)
+        .maybeSingle();
+      if (appt?.business_id) {
+        const { data: biz } = await admin
+          .from("businesses")
+          .select("default_language")
+          .eq("id", appt.business_id)
+          .maybeSingle();
+        const lang = biz?.default_language === "en" ? "en" : "ar";
+        const name =
+          reviewer_name || (lang === "en" ? "A customer" : "عميل");
+        await createNotification(admin, {
+          businessId: appt.business_id,
+          type: "new_review",
+          title: lang === "en" ? "⭐ New review" : "⭐ تقييم جديد",
+          message:
+            lang === "en"
+              ? `${name} rated you ${rating} out of 5.`
+              : `قيّمك ${name} بـ ${rating} من ٥.`,
+          priority: "medium",
+          sourceType: "review",
+          sourceId: appointmentId,
+          actionUrl: `/${lang}/dashboard/reviews`,
+          actionType: "open_review",
+        });
+      }
+    } catch {
+      // Never let a notification failure affect the review submission result.
     }
 
     return { status: "success", messageKey: "thanks" };
