@@ -440,6 +440,44 @@
       "saveFailed": "Couldn't save. Please try again.",
       "noBusiness": "Create your business in Settings first.",
       "unauthorized": "Your session expired. Please sign in again."
+    },
+    "columns": {
+      "customer": "Customer",
+      "phone": "Phone",
+      "time": "Time",
+      "service": "Service / Provider",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "search": {
+      "placeholder": "Search by name, phone, or booking ID…",
+      "kind": {
+        "empty": "Smart search",
+        "name": "Name",
+        "phone": "Phone",
+        "reference": "Booking ID"
+      }
+    },
+    "date": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month",
+      "all": "All dates",
+      "custom": "Custom range",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply range"
+    },
+    "view": {
+      "list": "List",
+      "cards": "Cards",
+      "calendar": "Calendar"
+    },
+    "calendar": {
+      "prev": "Previous month",
+      "next": "Next month",
+      "dayTitle": "Appointments",
+      "close": "Close"
     }
   },
   "Chat": {

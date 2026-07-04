@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موعدلي — لوحة الحجوزات</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-green:#1B4332; --brand-green-2:#2D5E45; --brand-gold:#C9A24B;
+    --surface:#FAF8F3; --card:#FFFFFF; --line:#EAE6DD;
+    --fg:#1F2A24; --muted-fg:#6B7280;
+    --pending:#B7791F; --pending-bg:#FDF6E7;
+    --confirmed:#1B6E4B; --confirmed-bg:#E8F5EE;
+    --completed:#3A5A9B; --completed-bg:#EAF0FB;
+    --noshow:#9A3412; --noshow-bg:#FBEDE7;
+    --canceled:#8A8A8A; --canceled-bg:#F1F1F1;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface);color:var(--fg);
+    font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;font-size:14px}
+  .app{max-width:1200px;margin:0 auto;padding:24px}
+  .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .head h1{font-size:22px;margin:0;font-weight:700}
+  .head .sub{color:var(--muted-fg);font-size:13px;margin-top:4px}
+  .lang{border:1px solid var(--line);background:var(--card);border-radius:10px;
+    padding:8px 14px;cursor:pointer;font-family:inherit;font-size:13px}
+
+  /* toolbar */
+  .toolbar{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;margin-bottom:16px}
+  .toolbar-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .search{flex:1;min-width:260px;position:relative}
+  .search input{width:100%;border:1px solid var(--line);border-radius:12px;
+    padding:12px 44px 12px 16px;font-family:inherit;font-size:14px;background:var(--surface)}
+  .search input:focus{outline:none;border-color:var(--brand-gold);background:#fff}
+  .search .icon{position:absolute;inset-inline-start:14px;top:50%;transform:translateY(-50%);
+    color:var(--muted-fg)}
+  .search .hint{position:absolute;inset-inline-end:12px;top:50%;transform:translateY(-50%);
+    font-size:11px;color:var(--muted-fg);background:#fff;border:1px solid var(--line);
+    border-radius:6px;padding:2px 8px}
+
+  .dropdown{position:relative}
+  .btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;
+    padding:11px 16px;cursor:pointer;font-family:inherit;font-size:14px;display:flex;
+    gap:8px;align-items:center;white-space:nowrap}
+  .btn:hover{border-color:var(--brand-gold)}
+  .menu{position:absolute;inset-inline-start:0;top:calc(100% + 6px);background:#fff;
+    border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.10);
+    padding:8px;min-width:240px;z-index:20;display:none}
+  .menu.open{display:block}
+  .menu button{width:100%;text-align:start;border:0;background:none;padding:10px 12px;
+    border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px}
+  .menu button:hover{background:var(--surface)}
+  .menu button.active{background:var(--brand-green);color:#fff}
+  .menu .range{border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
+  .menu .range label{display:block;font-size:12px;color:var(--muted-fg);margin:6px 4px 3px}
+  .menu .range input{width:100%;border:1px solid var(--line);border-radius:8px;
+    padding:8px;font-family:inherit}
+  .menu .range .apply{background:var(--brand-gold);color:#3a2c07;font-weight:600;
+    margin-top:10px;text-align:center}
+
+  .viewtoggle{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);
+    border-radius:12px;padding:4px}
+  .viewtoggle button{border:0;background:none;padding:8px 12px;border-radius:8px;cursor:pointer;
+    color:var(--muted-fg);display:flex;align-items:center;gap:6px;font-family:inherit}
+  .viewtoggle button.active{background:#fff;color:var(--brand-green);
+    box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600}
+
+  /* status tabs */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;
+    padding:7px 15px;cursor:pointer;font-family:inherit;font-size:13px;color:var(--muted-fg);
+    display:flex;gap:7px;align-items:center}
+  .pill .count{background:#fff;border-radius:999px;padding:0 8px;font-size:11px;
+    border:1px solid var(--line)}
+  .pill.active{background:var(--brand-green);color:#fff;border-color:var(--brand-green)}
+  .pill.active .count{background:rgba(255,255,255,.2);border-color:transparent;color:#fff}
+
+  /* status dot/badge */
+  .badge{font-size:12px;padding:4px 10px;border-radius:999px;font-weight:600;white-space:nowrap}
+  .b-pending{color:var(--pending);background:var(--pending-bg)}
+  .b-confirmed{color:var(--confirmed);background:var(--confirmed-bg)}
+  .b-completed{color:var(--completed);background:var(--completed-bg)}
+  .b-noshow{color:var(--noshow);background:var(--noshow-bg)}
+  .b-canceled{color:var(--canceled);background:var(--canceled-bg)}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .d-pending{background:var(--pending)} .d-confirmed{background:var(--confirmed)}
+  .d-completed{background:var(--completed)} .d-noshow{background:var(--noshow)}
+  .d-canceled{background:var(--canceled)}
+
+  /* MODE A: list */
+  .list{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .list .lrow{display:grid;grid-template-columns:1.4fr 1fr .9fr 1.3fr auto auto;
+    gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+  .list .lrow:first-child{border-top:0}
+  .list .lrow:hover{background:var(--surface)}
+  .list .lhead{background:var(--surface);color:var(--muted-fg);font-size:12px;font-weight:600}
+  .name{font-weight:600}
+  .muted{color:var(--muted-fg)}
+  .qa{display:flex;gap:6px}
+  .qa button{border:1px solid var(--line);background:#fff;border-radius:8px;width:32px;height:32px;
+    cursor:pointer;font-size:14px}
+  .qa button:hover{border-color:var(--brand-gold)}
+
+  /* MODE B: cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+  .bcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .bcard .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+  .bcard .avatar{width:44px;height:44px;border-radius:12px;background:var(--brand-green);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+  .bcard .who{display:flex;gap:12px;align-items:center}
+  .bcard .meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;
+    padding:14px 0;border-block:1px solid var(--line)}
+  .bcard .meta .k{font-size:11px;color:var(--muted-fg);margin-bottom:3px}
+  .bcard .meta .v{font-weight:600;font-size:13px}
+  .bcard .deposit{color:var(--brand-gold)}
+  .bcard .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .bcard .actions button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;
+    padding:9px;cursor:pointer;font-family:inherit;font-size:13px}
+  .bcard .actions .primary{background:var(--brand-green);color:#fff;border-color:var(--brand-green)}
+  .bcard .actions .danger{color:var(--noshow)}
+
+  /* MODE C: calendar */
+  .cal{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal .wd{text-align:center;color:var(--muted-fg);font-size:12px;padding:6px 0}
+  .cal .day{aspect-ratio:1;border:1px solid var(--line);border-radius:10px;padding:6px;
+    cursor:pointer;position:relative;display:flex;flex-direction:column}
+  .cal .day:hover{border-color:var(--brand-gold);background:var(--surface)}
+  .cal .day.empty{border:0;cursor:default;background:none}
+  .cal .day .n{font-size:12px;font-weight:600}
+  .cal .day.today .n{color:#fff;background:var(--brand-green);width:22px;height:22px;
+    border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .cal .dots{margin-top:auto;display:flex;gap:3px;flex-wrap:wrap}
+
+  /* slide-over */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:40}
+  .overlay.open{display:block}
+  .slideover{position:fixed;inset-block:0;inset-inline-start:0;width:380px;max-width:90vw;
+    background:#fff;transform:translateX(-100%);transition:transform .25s;z-index:50;
+    padding:20px;overflow:auto;box-shadow:6px 0 30px rgba(0,0,0,.15)}
+  .slideover.open{transform:translateX(0)}
+  .slideover h3{margin:0 0 4px}
+  .so-item{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;
+    display:flex;justify-content:space-between;align-items:center}
+
+  .hidden{display:none}
+  .empty-state{padding:60px;text-align:center;color:var(--muted-fg)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <h1>الحجوزات</h1>
+      <div class="sub">٩٤ حجزاً هذا الشهر · ٣ مواعيد اليوم</div>
+    </div>
+    <button class="lang" onclick="alert('تبديل اللغة — سيتبع التنفيذ الفعلي next-intl')">English</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-row">
+      <!-- omni search -->
+      <div class="search">
+        <span class="icon">🔍</span>
+        <input id="omni" placeholder="ابحث بالاسم أو الجوال أو رقم الحجز…"
+          oninput="applyFilters()">
+        <span class="hint" id="searchhint">بحث ذكي</span>
+      </div>
+
+      <!-- date filter -->
+      <div class="dropdown">
+        <button class="btn" onclick="toggleMenu(event)">📅 <span id="dateLabel">هذا الشهر</span> ▾</button>
+        <div class="menu" id="dateMenu">
+          <button class="active" onclick="setDate('today','اليوم')">اليوم</button>
+          <button onclick="setDate('week','هذا الأسبوع')">هذا الأسبوع</button>
+          <button class="active" onclick="setDate('month','هذا الشهر')">هذا الشهر</button>
+          <div class="range">
+            <label>من</label><input type="date" id="from">
+            <label>إلى</label><input type="date" id="to">
+            <button class="apply" onclick="setDate('custom','نطاق مخصّص')">تطبيق النطاق</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- view toggle -->
+      <div class="viewtoggle">
+        <button data-view="list" class="active" onclick="setView('list')" title="قائمة مضغوطة">≣ قائمة</button>
+        <button data-view="cards" onclick="setView('cards')" title="بطاقات">▤ بطاقات</button>
+        <button data-view="calendar" onclick="setView('calendar')" title="تقويم">📆 تقويم</button>
+      </div>
+    </div>
+
+    <!-- status tabs -->
+    <div class="tabs" id="tabs">
+      <div class="pill active" data-status="all" onclick="setStatus('all')">الكل <span class="count">94</span></div>
+      <div class="pill" data-status="pending" onclick="setStatus('pending')">قيد الانتظار <span class="count">12</span></div>
+      <div class="pill" data-status="confirmed" onclick="setStatus('confirmed')">مؤكد <span class="count">41</span></div>
+      <div class="pill" data-status="completed" onclick="setStatus('completed')">مكتمل <span class="count">33</span></div>
+      <div class="pill" data-status="noshow" onclick="setStatus('noshow')">لم يحضر <span class="count">5</span></div>
+      <div class="pill" data-status="canceled" onclick="setStatus('canceled')">ملغى <span class="count">3</span></div>
+    </div>
+  </div>
+
+  <!-- views -->
+  <div id="view-list"></div>
+  <div id="view-cards" class="hidden"></div>
+  <div id="view-calendar" class="hidden"></div>
+</div>
+
+<!-- slide-over -->
+<div class="overlay" id="overlay" onclick="closeSlide()"></div>
+<div class="slideover" id="slideover">
+  <h3 id="soTitle">مواعيد اليوم</h3>
+  <div class="muted" id="soDate"></div>
+  <div id="soList"></div>
+</div>
+
+<script>
+const STATUS_LABEL={pending:'قيد الانتظار',confirmed:'مؤكد',completed:'مكتمل',noshow:'لم يحضر',canceled:'ملغى'};
+const bookings=[
+  {id:'MW-1042',name:'عبدالله الشهري',phone:'0551234789',time:'٩:٠٠ ص',svc:'استشارة أعمال · د. ناصر',deposit:'٧٥ ر.س',status:'confirmed',day:4},
+  {id:'MW-1043',name:'ثريا القحطاني',phone:'0509876321',time:'١٠:٣٠ ص',svc:'جلسة تخطيط · أ. ليلى',deposit:'١٠٠ ر.س',status:'pending',day:4},
+  {id:'MW-1044',name:'عدنان الدوسري',phone:'0533344556',time:'١٢:٠٠ م',svc:'مراجعة عقد · د. ناصر',deposit:'٧٥ ر.س',status:'confirmed',day:4},
+  {id:'MW-1039',name:'منيرة العتيبي',phone:'0567781200',time:'٤:٠٠ م',svc:'استشارة مالية · أ. سعد',deposit:'١٢٠ ر.س',status:'completed',day:2},
+  {id:'MW-1031',name:'راكان الحربي',phone:'0544455667',time:'١:١٥ م',svc:'جلسة متابعة · أ. ليلى',deposit:'٦٠ ر.س',status:'noshow',day:9},
+  {id:'MW-1025',name:'هند الزهراني',phone:'0501122334',time:'١١:٠٠ ص',svc:'استشارة أعمال · د. ناصر',deposit:'٧٥ ر.س',status:'canceled',day:14},
+  {id:'MW-1051',name:'فيصل المطيري',phone:'0559988776',time:'٣:٣٠ م',svc:'تخطيط استراتيجي · أ. سعد',deposit:'١٥٠ ر.س',status:'pending',day:15},
+  {id:'MW-1052',name:'سارة العنزي',phone:'0522211009',time:'٩:٤٥ ص',svc:'مراجعة عقد · أ. ليلى',deposit:'٩٠ ر.س',status:'confirmed',day:15},
+];
+
+let state={view:'list',status:'all',q:''};
+
+// hybrid search: normalize phone (strip +966 / leading 0), fuzzy contains on name & id
+function normPhone(p){return p.replace(/\D/g,'').replace(/^966/,'').replace(/^0/,'')}
+function matches(b,q){
+  if(!q)return true;
+  const t=q.trim();
+  const np=normPhone(t);
+  return b.name.includes(t)
+    || b.id.toLowerCase().includes(t.toLowerCase())
+    || (np.length>=2 && normPhone(b.phone).includes(np));
+}
+function filtered(){
+  return bookings.filter(b=>(state.status==='all'||b.status===state.status)&&matches(b,state.q));
+}
+
+function badge(s){return `<span class="badge b-${s}">${STATUS_LABEL[s]}</span>`}
+
+function renderList(){
+  const rows=filtered();
+  const head=`<div class="lrow lhead"><div>العميل</div><div>الجوال</div><div>الوقت</div>
+    <div>الخدمة / المستشار</div><div>الحالة</div><div>إجراءات</div></div>`;
+  const body=rows.map(b=>`<div class="lrow">
+    <div><div class="name">${b.name}</div><div class="muted" style="font-size:12px">${b.id}</div></div>
+    <div class="muted">${b.phone}</div>
+    <div>${b.time}</div>
+    <div class="muted">${b.svc}</div>
+    <div>${badge(b.status)}</div>
+    <div class="qa"><button title="محادثة">💬</button><button title="تفاصيل">↗</button></div>
+  </div>`).join('');
+  document.getElementById('view-list').innerHTML=
+    `<div class="list">${head}${rows.length?body:'<div class="empty-state">لا توجد نتائج مطابقة</div>'}</div>`;
+}
+
+function renderCards(){
+  const rows=filtered();
+  document.getElementById('view-cards').innerHTML='<div class="cards">'+
+    (rows.length?rows.map(b=>`<div class="bcard">
+      <div class="top">
+        <div class="who"><div class="avatar">${b.name[0]}</div>
+          <div><div class="name">${b.name}</div><div class="muted" style="font-size:12px">${b.phone} · ${b.id}</div></div>
+        </div>${badge(b.status)}
+      </div>
+      <div class="meta">
+        <div><div class="k">الموعد</div><div class="v">${b.time}</div></div>
+        <div><div class="k">العربون</div><div class="v deposit">${b.deposit}</div></div>
+        <div style="grid-column:1/-1"><div class="k">الخدمة / المستشار</div><div class="v">${b.svc}</div></div>
+      </div>
+      <div class="actions">
+        <button class="primary">تأكيد</button>
+        <button>💬 محادثة</button>
+        <button>⭐ تقييم</button>
+        <button class="danger">إلغاء</button>
+      </div>
+    </div>`).join(''):'<div class="empty-state">لا توجد نتائج مطابقة</div>')+'</div>';
+}
+
+function renderCalendar(){
+  const wd=['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+  let cells='';
+  const firstDow=2; // demo offset
+  for(let i=0;i<firstDow;i++)cells+='<div class="day empty"></div>';
+  for(let d=1;d<=30;d++){
+    const dayB=bookings.filter(b=>b.day===d && (state.status==='all'||b.status===state.status));
+    const dots=dayB.slice(0,4).map(b=>`<span class="dot d-${b.status}"></span>`).join('');
+    cells+=`<div class="day ${d===4?'today':''}" onclick="openDay(${d})">
+      <span class="n">${d}</span><div class="dots">${dots}</div></div>`;
+  }
+  document.getElementById('view-calendar').innerHTML=`<div class="cal">
+    <div class="calhead"><button class="btn">‹</button><b>يوليو ٢٠٢٦</b><button class="btn">›</button></div>
+    <div class="calgrid">${wd.map(w=>`<div class="wd">${w}</div>`).join('')}${cells}</div>
+  </div>`;
+}
+
+function openDay(d){
+  const list=bookings.filter(b=>b.day===d);
+  document.getElementById('soDate').textContent=`${d} يوليو ٢٠٢٦ · ${list.length} موعد`;
+  document.getElementById('soList').innerHTML=list.length?list.map(b=>`<div class="so-item">
+    <div><div class="name">${b.name}</div><div class="muted" style="font-size:12px">${b.time} · ${b.svc}</div></div>
+    ${badge(b.status)}</div>`).join(''):'<div class="empty-state">لا مواعيد</div>';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('slideover').classList.add('open');
+}
+function closeSlide(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slideover').classList.remove('open');
+}
+
+function renderAll(){renderList();renderCards();renderCalendar();}
+
+function setView(v){
+  state.view=v;
+  try{localStorage.setItem('mawedly_view',v)}catch(e){}
+  ['list','cards','calendar'].forEach(x=>{
+    document.getElementById('view-'+x).classList.toggle('hidden',x!==v);
+    document.querySelector(`[data-view="${x}"]`).classList.toggle('active',x===v);
+  });
+}
+function setStatus(s){
+  state.status=s;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.status===s));
+  renderAll();
+}
+function applyFilters(){
+  state.q=document.getElementById('omni').value;
+  const np=normPhone(state.q);
+  document.getElementById('searchhint').textContent=
+    !state.q?'بحث ذكي':(np.length>=2&&/\d/.test(state.q)?'جوال':(/^mw/i.test(state.q)?'رقم حجز':'اسم'));
+  renderAll();
+}
+function toggleMenu(e){e.stopPropagation();document.getElementById('dateMenu').classList.toggle('open')}
+function setDate(k,label){
+  document.getElementById('dateLabel').textContent=label;
+  document.querySelectorAll('#dateMenu>button').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('dateMenu').classList.remove('open');
+}
+document.addEventListener('click',()=>document.getElementById('dateMenu').classList.remove('open'));
+
+// init — restore saved view
+let saved='list';try{saved=localStorage.getItem('mawedly_view')||'list'}catch(e){}
+renderAll();setView(saved);
+</script>
+</body>
+</html>
