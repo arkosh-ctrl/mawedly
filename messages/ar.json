@@ -707,5 +707,54 @@
     "contactTitle": "التواصل",
     "contactBody": "أسئلة حول هذه الشروط؟ راسلنا على hello@mawedly.com.",
     "updated": "آخر تحديث: يونيو 2026"
+  },
+  "Notifications": {
+    "title": "الإشعارات",
+    "markAll": "تحديد الكل كمقروء",
+    "settingsLink": "الإعدادات",
+    "empty": "لا توجد إشعارات",
+    "urgent": "عاجل",
+    "markRead": "تحديد كمقروء",
+    "archive": "أرشفة",
+    "tabs": {
+      "all": "الكل",
+      "unread": "غير المقروء",
+      "archived": "المؤرشف"
+    },
+    "groups": {
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "thisWeek": "هذا الأسبوع",
+      "older": "أقدم"
+    },
+    "types": {
+      "new_booking": "حجز جديد",
+      "reminder_1h": "تذكير قبل ساعة",
+      "reminder_30m": "تذكير قبل ٣٠ دقيقة",
+      "reminder_15m": "تذكير قبل ١٥ دقيقة",
+      "new_chat_message": "رسالة جديدة",
+      "appointment_cancelled": "إلغاء موعد",
+      "appointment_rescheduled": "إعادة جدولة",
+      "appointment_completed": "اكتمال موعد",
+      "no_show": "عدم حضور",
+      "payment_received": "استلام دفعة",
+      "payment_failed": "فشل دفعة",
+      "new_review": "تقييم جديد",
+      "system_announcement": "إعلان من النظام"
+    },
+    "settings": {
+      "title": "إعدادات الإشعارات",
+      "subtitle": "تحكّم في أنواع الإشعارات والأصوات وساعات الهدوء.",
+      "typeLabel": "النوع",
+      "inApp": "داخل التطبيق",
+      "sound": "الصوت",
+      "quietHours": "ساعات الهدوء",
+      "from": "من",
+      "to": "إلى",
+      "save": "حفظ",
+      "saving": "جارٍ الحفظ…",
+      "saved": "تم حفظ الإعدادات.",
+      "error": "تعذّر الحفظ، حاول مجدداً."
+    }
   }
 }

@@ -11,6 +11,7 @@ import { computeAvailableSlots, gulfNow } from "@/lib/booking/availability";
 import { INITIAL_APPOINTMENT_STATUS } from "@/lib/appointments/status";
 import { sendEmail } from "@/lib/email/resend";
 import { bookingMerchantEmail } from "@/lib/email/templates/booking-merchant";
+import { createNotification } from "@/lib/notifications/create";
 
 const RATE_LIMIT_MAX = 15; // attempts ...
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // ... per 10 minutes per IP
@@ -157,6 +158,27 @@ export async function POST(request: NextRequest) {
   // 8) Notify the merchant — AFTER the response, so it never delays or fails the
   // booking. A duplicate submit already failed at the EXCLUSION insert above, so
   // this only runs for a genuinely new appointment.
+  // In-app notification for the merchant's bell — independent of email, so it
+  // fires even when no notification address is configured. Idempotent per
+  // (appointment, type); best-effort (never throws).
+  after(async () => {
+    const lang = biz?.default_language === "en" ? "en" : "ar";
+    await createNotification(supabase, {
+      businessId: business.id,
+      type: "new_booking",
+      title: lang === "en" ? "🗓️ New booking" : "🗓️ حجز جديد",
+      message:
+        lang === "en"
+          ? `${v.customerName} booked ${service.name} on ${v.date} at ${v.startTime}.`
+          : `${v.customerName} حجز ${service.name} يوم ${v.date} الساعة ${v.startTime}.`,
+      priority: "high",
+      sourceType: "appointment",
+      sourceId: appointment.id,
+      actionUrl: `/${lang}/dashboard/appointments`,
+      actionType: "navigate",
+    });
+  });
+
   after(async () => {
     try {
       // Recipient: notification_email, else the confirmed login email.

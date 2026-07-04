@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { SignOutButton } from "./sign-out-button";
 
 // Protected shell. Middleware already guards /dashboard, but we re-check on the
@@ -30,6 +31,15 @@ export default async function DashboardLayout({
     redirect(`/${locale}/login`);
   }
 
+  // Business id drives the notification bell's Realtime subscription. Null until
+  // the merchant creates their business in settings — the bell is hidden then.
+  const userId = data.claims.sub as string | undefined;
+  const { data: business } = await supabase
+    .from("businesses")
+    .select("id")
+    .eq("user_id", userId ?? "")
+    .maybeSingle();
+
   const t = await getTranslations("Dashboard");
   const dir = locale === "ar" ? "rtl" : "ltr";
 
@@ -37,14 +47,17 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen bg-canvas text-ink">
       {/* Desktop sidebar — raised paper surface against the canvas content. */}
       <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-e border-line bg-paper lg:flex">
-        <div className="flex items-center gap-2 px-6 pb-5 pt-6">
-          <span className="h-2 w-2 rounded-full bg-saffron" aria-hidden />
-          <Link
-            href="/dashboard"
-            className="font-display text-lg font-extrabold tracking-tight text-ink"
-          >
-            {t("brand")}
-          </Link>
+        <div className="flex items-center justify-between gap-2 px-6 pb-5 pt-6">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-saffron" aria-hidden />
+            <Link
+              href="/dashboard"
+              className="font-display text-lg font-extrabold tracking-tight text-ink"
+            >
+              {t("brand")}
+            </Link>
+          </div>
+          {business && <NotificationBell businessId={business.id} />}
         </div>
         <SidebarNav orientation="vertical" />
         <div className="mt-auto flex flex-col items-start gap-3 border-t border-line px-5 py-4">
@@ -67,6 +80,7 @@ export default async function DashboardLayout({
               </Link>
             </div>
             <div className="flex items-center gap-2">
+              {business && <NotificationBell businessId={business.id} />}
               <LocaleSwitcher />
               <SignOutButton />
             </div>

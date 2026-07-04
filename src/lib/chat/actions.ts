@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createNotification } from "@/lib/notifications/create";
 import type { Database } from "@/lib/supabase/database.types";
 import type {
   ChatMessage,
@@ -216,7 +217,7 @@ export async function sendMessage(
     const admin = withChat(createAdminClient());
     const { data: appt } = await admin
       .from("appointments")
-      .select("id, status, customer_id")
+      .select("id, status, customer_id, business_id")
       .eq("id", appointmentId)
       .maybeSingle();
     if (!appt) return { status: "error", messageKey: "notFound" };
@@ -245,6 +246,41 @@ export async function sendMessage(
         return { status: "error", messageKey: "chatClosed" };
       }
       return { status: "error", messageKey: "saveFailed" };
+    }
+
+    // Notify the merchant of the incoming customer message (best-effort; the
+    // language follows the merchant's default, resolved inside the block).
+    if (appt.business_id) {
+      const { data: cust } = await admin
+        .from("customers")
+        .select("name")
+        .eq("id", appt.customer_id ?? "")
+        .maybeSingle();
+      const { data: biz } = await admin
+        .from("businesses")
+        .select("default_language")
+        .eq("id", appt.business_id)
+        .maybeSingle();
+      const lang = biz?.default_language === "en" ? "en" : "ar";
+      const name = cust?.name ?? (lang === "en" ? "A customer" : "عميل");
+      const preview =
+        content && content.length > 50 ? `${content.slice(0, 50)}…` : content;
+      const body = preview
+        ? `${name}: ${preview}`
+        : lang === "en"
+          ? `${name} sent an attachment`
+          : `${name} أرسل مرفقاً`;
+      await createNotification(createAdminClient(), {
+        businessId: appt.business_id,
+        type: "new_chat_message",
+        title: lang === "en" ? "💬 New message" : "💬 رسالة جديدة",
+        message: body,
+        priority: "medium",
+        sourceType: "chat_message",
+        sourceId: inserted.id,
+        actionUrl: `/${lang}/dashboard/appointments`,
+        actionType: "open_chat",
+      });
     }
 
     return {
