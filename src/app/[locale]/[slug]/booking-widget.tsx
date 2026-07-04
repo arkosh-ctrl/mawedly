@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { PublicProvider, PublicService } from "@/lib/booking/queries";
 import { buildWhatsappLink } from "@/lib/whatsapp";
@@ -36,6 +37,11 @@ export function BookingWidget({
   providers: PublicProvider[];
 }) {
   const t = useTranslations("Booking");
+  // locale isn't passed down from page.tsx today, so it's read the same way
+  // the chat components do (useParams + "ar" fallback) rather than adding a
+  // prop that would mean touching the parent page.
+  const params = useParams();
+  const locale = typeof params.locale === "string" ? params.locale : "ar";
 
   const [serviceId, setServiceId] = useState("");
   const [providerId, setProviderId] = useState("");
@@ -151,6 +157,7 @@ export function BookingWidget({
           }),
         )
       : null;
+    const chatUrl = `/${locale}/chat/${result.appointmentId}`;
 
     return (
       <div className="animate-fade-rise flex flex-col gap-5">
@@ -238,6 +245,17 @@ export function BookingWidget({
             {t("whatsappButton")}
           </a>
         )}
+
+        {/* Plain link, no modal — the chat page (/chat/[appointmentId]) is its
+            own capability-URL page, same access model as the review link. */}
+        <a
+          href={chatUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="self-start rounded-full border border-line px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-ink"
+        >
+          {t("chatButton")}
+        </a>
       </div>
     );
   }

@@ -347,6 +347,7 @@
     },
     "whatsappButton": "Contact via WhatsApp",
     "whatsappMessage": "Hello, I booked a {service} appointment on {date} at {time}, booking reference {ref}. I'll send you the transfer receipt shortly.",
+    "chatButton": "Chat with your service provider",
     "errors": {
       "rateLimited": "Too many attempts. Please wait a moment and try again.",
       "invalidInput": "Please check the entered details.",
