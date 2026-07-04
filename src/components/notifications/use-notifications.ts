@@ -62,8 +62,17 @@ export function useNotifications(businessId: string) {
   useEffect(() => {
     if (!businessId) return;
     const supabase = createClient();
+    // Unique channel name per mount: React StrictMode (dev) mounts effects
+    // twice, and reusing a channel name would try to add listeners to an
+    // already-subscribed channel ("cannot add postgres_changes ... after
+    // subscribe()"). A fresh name each mount sidesteps that entirely.
+    const channelName = `notifications:${businessId}:${
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : Math.random().toString(36).slice(2)
+    }`;
     const channel = supabase
-      .channel(`notifications:${businessId}`)
+      .channel(channelName)
       .on(
         "postgres_changes",
         {
