@@ -111,6 +111,8 @@ export type Database = {
           duration_minutes: number;
           price: number;
           deposit_amount: number;
+          // in_person | virtual | phone (migration 0011).
+          session_type: string;
           is_active: boolean | null;
           created_at: string | null;
         };
@@ -121,6 +123,7 @@ export type Database = {
           duration_minutes?: number;
           price: number;
           deposit_amount?: number;
+          session_type?: string;
           is_active?: boolean | null;
           created_at?: string | null;
         };
@@ -131,6 +134,7 @@ export type Database = {
           duration_minutes?: number;
           price?: number;
           deposit_amount?: number;
+          session_type?: string;
           is_active?: boolean | null;
           created_at?: string | null;
         };

@@ -10,6 +10,7 @@ import {
   STATUS_BADGE,
   hhmm,
 } from "./shared";
+import { VideoRoomButton } from "@/components/video/video-room-button";
 
 /**
  * Mode B — generous card layout. This is the detail-focused view (deposit,
@@ -164,6 +165,13 @@ export function CardView({
                 </button>
               )}
             </div>
+
+            {/* Virtual consultation entry — self-hides unless virtual + confirmed. */}
+            <VideoRoomButton
+              appointmentId={a.id}
+              sessionType={a.services?.session_type ?? null}
+              status={a.status}
+            />
           </li>
         );
       })}

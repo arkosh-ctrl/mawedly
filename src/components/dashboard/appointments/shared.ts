@@ -11,7 +11,12 @@ export type AppointmentRow = {
   deposit_screenshot_path: string | null;
   customer_notes: string | null;
   customers: { name: string; phone: string } | null;
-  services: { name: string; price: number; deposit_amount: number } | null;
+  services: {
+    name: string;
+    price: number;
+    deposit_amount: number;
+    session_type: string | null;
+  } | null;
   providers: { name: string } | null;
   // Present (non-empty) once a review exists for this appointment.
   reviews: { id: string }[] | null;

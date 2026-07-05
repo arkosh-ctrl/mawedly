@@ -13,6 +13,7 @@ import { saveService, setServiceActive } from "./actions";
 
 const EMPTY: ServiceInput = {
   name: "",
+  session_type: "in_person",
   duration_minutes: 30,
   price: 0,
   deposit_amount: 0,
@@ -46,6 +47,8 @@ export function ServicesManager({ services }: { services: Service[] }) {
     setEditing(s);
     reset({
       name: s.name,
+      session_type:
+        (s.session_type as ServiceInput["session_type"]) ?? "in_person",
       duration_minutes: s.duration_minutes,
       price: Number(s.price),
       deposit_amount: Number(s.deposit_amount),
@@ -57,6 +60,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
     const fd = new FormData();
     if (editing) fd.set("id", editing.id);
     fd.set("name", values.name);
+    fd.set("session_type", values.session_type);
     fd.set("duration_minutes", String(values.duration_minutes));
     fd.set("price", String(values.price));
     fd.set("deposit_amount", String(values.deposit_amount));
@@ -179,6 +183,15 @@ export function ServicesManager({ services }: { services: Service[] }) {
             {errors.name && (
               <span className={errorClass}>{t(errors.name.message!)}</span>
             )}
+          </label>
+
+          <label className={labelClass}>
+            <span>{t("fields.sessionType")}</span>
+            <select className={inputClass} {...register("session_type")}>
+              <option value="in_person">{t("sessionType.in_person")}</option>
+              <option value="virtual">{t("sessionType.virtual")}</option>
+              <option value="phone">{t("sessionType.phone")}</option>
+            </select>
           </label>
 
           <label className={labelClass}>
