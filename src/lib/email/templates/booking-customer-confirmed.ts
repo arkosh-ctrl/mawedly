@@ -14,6 +14,10 @@ export function bookingCustomerConfirmedEmail(p: {
   // Optional so existing callers/tests don't break. Same construction style
   // as review-request.ts's reviewUrl CTA.
   chatUrl?: string;
+  // Present only for virtual services: the consultation landing page + the
+  // room password (guidance) to enter the meet.jit.si room.
+  consultationUrl?: string;
+  consultationPassword?: string;
 }): { subject: string; html: string; text: string } {
   const time = p.time.slice(0, 5);
 
@@ -33,6 +37,14 @@ export function bookingCustomerConfirmedEmail(p: {
     const waButton = waUrl
       ? `<a href="${waUrl}" style="display:inline-block;background:#16a34a;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Contact via WhatsApp</a>`
       : "";
+    const videoBlock =
+      p.consultationUrl && p.consultationPassword
+        ? `<div style="margin:0 0 16px;padding:14px;border:1px solid #e5e5e5;border-radius:8px;background:#faf8f3;">
+             <p style="font-size:14px;margin:0 0 10px;color:#404040;">This is an online consultation — join from your browser, no app needed:</p>
+             <div style="margin-bottom:10px;"><a href="${p.consultationUrl}" style="display:inline-block;background:#244a40;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Join the video room</a></div>
+             <p style="font-size:13px;margin:0;color:#404040;">Room password: <strong style="font-family:monospace;letter-spacing:2px;">${escapeHtml(p.consultationPassword)}</strong></p>
+           </div>`
+        : "";
     const html = emailLayout(
       "en",
       `<h2 style="font-size:16px;margin:0 0 12px;">Your booking is confirmed ✅</h2>
@@ -43,14 +55,14 @@ export function bookingCustomerConfirmedEmail(p: {
          ${detailRow("Date", p.date)}
          ${detailRow("Time", time)}
        </table>
-       ${chatButton}${waButton}`,
+       ${videoBlock}${chatButton}${waButton}`,
     );
     const text = `Your booking is confirmed
 ${p.businessName} confirmed your appointment.
 Service: ${p.serviceName}
 Provider: ${p.providerName}
 Date: ${p.date}
-Time: ${time}${p.chatUrl ? `\n\nChat with your provider: ${p.chatUrl}` : ""}${waUrl ? `\n\nContact via WhatsApp: ${waUrl}` : ""}`;
+Time: ${time}${p.consultationUrl ? `\n\nJoin the video room: ${p.consultationUrl}\nRoom password: ${p.consultationPassword}` : ""}${p.chatUrl ? `\n\nChat with your provider: ${p.chatUrl}` : ""}${waUrl ? `\n\nContact via WhatsApp: ${waUrl}` : ""}`;
     return { subject, html, text };
   }
 
@@ -61,6 +73,14 @@ Time: ${time}${p.chatUrl ? `\n\nChat with your provider: ${p.chatUrl}` : ""}${wa
   const waButton = waUrl
     ? `<a href="${waUrl}" style="display:inline-block;background:#16a34a;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">تواصل عبر واتساب</a>`
     : "";
+  const videoBlock =
+    p.consultationUrl && p.consultationPassword
+      ? `<div style="margin:0 0 16px;padding:14px;border:1px solid #e5e5e5;border-radius:8px;background:#faf8f3;">
+           <p style="font-size:14px;margin:0 0 10px;color:#404040;">هذه استشارة عن بُعد — ادخل من متصفحك مباشرة بلا أي تطبيق:</p>
+           <div style="margin-bottom:10px;"><a href="${p.consultationUrl}" style="display:inline-block;background:#244a40;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">دخول غرفة الاستشارة</a></div>
+           <p style="font-size:13px;margin:0;color:#404040;">كلمة مرور الغرفة: <strong style="font-family:monospace;letter-spacing:2px;">${escapeHtml(p.consultationPassword)}</strong></p>
+         </div>`
+      : "";
   const html = emailLayout(
     "ar",
     `<h2 style="font-size:16px;margin:0 0 12px;">تم تأكيد حجزك ✅</h2>
@@ -71,13 +91,13 @@ Time: ${time}${p.chatUrl ? `\n\nChat with your provider: ${p.chatUrl}` : ""}${wa
        ${detailRow("التاريخ", p.date)}
        ${detailRow("الوقت", time)}
      </table>
-     ${chatButton}${waButton}`,
+     ${videoBlock}${chatButton}${waButton}`,
   );
   const text = `تم تأكيد حجزك
 أكّد ${p.businessName} موعدك.
 الخدمة: ${p.serviceName}
 مقدّم الخدمة: ${p.providerName}
 التاريخ: ${p.date}
-الوقت: ${time}${p.chatUrl ? `\n\nتواصل مع مزود الخدمة عبر المحادثة: ${p.chatUrl}` : ""}${waUrl ? `\n\nتواصل عبر واتساب: ${waUrl}` : ""}`;
+الوقت: ${time}${p.consultationUrl ? `\n\nدخول غرفة الاستشارة: ${p.consultationUrl}\nكلمة مرور الغرفة: ${p.consultationPassword}` : ""}${p.chatUrl ? `\n\nتواصل مع مزود الخدمة عبر المحادثة: ${p.chatUrl}` : ""}${waUrl ? `\n\nتواصل عبر واتساب: ${waUrl}` : ""}`;
   return { subject, html, text };
 }

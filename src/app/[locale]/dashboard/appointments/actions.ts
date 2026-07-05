@@ -14,6 +14,7 @@ import { rescheduleCustomerEmail } from "@/lib/email/templates/reschedule-custom
 import { rescheduleMerchantEmail } from "@/lib/email/templates/reschedule-merchant";
 import { getBookedRanges } from "@/lib/booking/queries";
 import { computeAvailableSlots, gulfNow } from "@/lib/booking/availability";
+import { deriveRoomPassword } from "@/lib/video/room-name";
 
 // Customer "booking confirmed" email — sent only when transitioning TO
 // 'confirmed', and only if the customer left an email. Best-effort: runs after
@@ -22,7 +23,7 @@ type ConfirmedApptRow = {
   appointment_date: string;
   start_time: string;
   customers: { name: string; email: string | null } | null;
-  services: { name: string } | null;
+  services: { name: string; session_type: string | null } | null;
   providers: { name: string } | null;
 };
 
@@ -35,7 +36,7 @@ async function notifyCustomerConfirmed(
     const { data: rawAppt } = await supabase
       .from("appointments")
       .select(
-        "appointment_date, start_time, customers(name, email), services(name), providers(name)",
+        "appointment_date, start_time, customers(name, email), services(name, session_type), providers(name)",
       )
       .eq("id", appointmentId)
       .eq("business_id", businessId)
@@ -55,6 +56,16 @@ async function notifyCustomerConfirmed(
     const origin =
       requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "";
     const chatUrl = `${origin}/${lang}/chat/${appointmentId}`;
+
+    // Virtual services get a consultation link + room password in the email.
+    const isVirtual = appt.services?.session_type === "virtual";
+    const consultationUrl = isVirtual
+      ? `${origin}/${lang}/consultation/${appointmentId}`
+      : undefined;
+    const consultationPassword = isVirtual
+      ? deriveRoomPassword(appointmentId)
+      : undefined;
+
     const { subject, html, text } = bookingCustomerConfirmedEmail({
       lang,
       businessName: biz?.name ?? "",
@@ -64,6 +75,8 @@ async function notifyCustomerConfirmed(
       time: appt.start_time,
       whatsappPhone: biz?.phone ?? null,
       chatUrl,
+      consultationUrl,
+      consultationPassword,
     });
 
     await sendEmail({
@@ -160,7 +173,7 @@ async function notifyCustomerRescheduled(
     const { data: rawAppt } = await supabase
       .from("appointments")
       .select(
-        "appointment_date, start_time, customers(name, email), services(name), providers(name)",
+        "appointment_date, start_time, customers(name, email), services(name, session_type), providers(name)",
       )
       .eq("id", appointmentId)
       .eq("business_id", businessId)

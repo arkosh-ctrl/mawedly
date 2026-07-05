@@ -2,6 +2,9 @@ import { z } from "zod";
 
 // Shared by the client form and the server action. The deposit <= price
 // cross-check is part of the schema, so it is enforced on the server too.
+export const sessionTypeEnum = z.enum(["in_person", "virtual", "phone"]);
+export type SessionType = z.infer<typeof sessionTypeEnum>;
+
 export const serviceSchema = z
   .object({
     name: z
@@ -9,6 +12,7 @@ export const serviceSchema = z
       .trim()
       .min(2, "errors.nameRequired")
       .max(100, "errors.nameLong"),
+    session_type: sessionTypeEnum,
     duration_minutes: z.coerce
       .number({ message: "errors.durationInt" })
       .int("errors.durationInt")

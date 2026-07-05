@@ -20,6 +20,7 @@ export async function saveService(formData: FormData): Promise<MutationResult> {
 
     const parsed = serviceSchema.safeParse({
       name: formData.get("name"),
+      session_type: formData.get("session_type") ?? "in_person",
       duration_minutes: formData.get("duration_minutes"),
       price: formData.get("price"),
       deposit_amount: formData.get("deposit_amount"),
@@ -44,6 +45,7 @@ export async function saveService(formData: FormData): Promise<MutationResult> {
         .from("services")
         .update({
           name: v.name,
+          session_type: v.session_type,
           duration_minutes: v.duration_minutes,
           price: v.price,
           deposit_amount: v.deposit_amount,
@@ -62,6 +64,7 @@ export async function saveService(formData: FormData): Promise<MutationResult> {
     const { error } = await supabase.from("services").insert({
       business_id: businessId,
       name: v.name,
+      session_type: v.session_type,
       duration_minutes: v.duration_minutes,
       price: v.price,
       deposit_amount: v.deposit_amount,

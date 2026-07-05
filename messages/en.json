@@ -232,7 +232,8 @@
       "name": "Service name",
       "duration": "Duration (minutes)",
       "price": "Price",
-      "deposit": "Deposit"
+      "deposit": "Deposit",
+      "sessionType": "Session type"
     },
     "units": {
       "minutes": "{n} min",
@@ -267,6 +268,11 @@
       "notFound": "Item not found or you don't have permission to edit it.",
       "noBusiness": "Create your business in Settings first.",
       "unauthorized": "Your session expired. Please sign in again."
+    },
+    "sessionType": {
+      "in_person": "In person",
+      "virtual": "Virtual (online)",
+      "phone": "Phone"
     }
   },
   "Providers": {
@@ -755,6 +761,25 @@
       "saving": "Saving…",
       "saved": "Settings saved.",
       "error": "Could not save, try again."
+    }
+  },
+  "Video": {
+    "joinButton": "Join video consultation",
+    "ready": "Video consultation ready",
+    "openRoom": "Open Jitsi room",
+    "enterRoom": "Enter room",
+    "lobbyTitle": "⚠️ Security step",
+    "lobbyHint": "On entry, enable the Lobby from the shield icon 🛡️, set the password below, then admit the customer manually:",
+    "consultationEyebrow": "Video consultation",
+    "consultationTitle": "Consultation room",
+    "consultationBody": "Tap to join straight from your browser — no app to install.",
+    "passwordLabel": "Password (from your provider):",
+    "noAppNeeded": "Runs in the browser, no app needed.",
+    "closedTitle": "Room unavailable",
+    "closedBody": "The consultation room opens 5 minutes before the appointment and closes 30 minutes after.",
+    "errors": {
+      "unauthorized": "Not authorized.",
+      "roomUnavailable": "The room is not available right now."
     }
   }
 }
