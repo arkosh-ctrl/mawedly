@@ -11,6 +11,8 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Build artifacts and generated files are not source — never lint them.
+  { ignores: [".next/**", "next-env.d.ts", "node_modules/**"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 
