@@ -34,6 +34,11 @@ export type AnalyticsData = {
   revenuePerSession: KPIResult;
   leadTime: KPIResult; // days
   slotUtilization: KPIResult; // percent
+  // Total completed-session revenue in the current window (with period-over-
+  // period change) — powers the dashboard scorecards.
+  totalRevenue: KPIResult;
+  // Raw no-show count in the current window — powers the dashboard alert.
+  noShowCount: number;
   dailyTrends: DailyTrendPoint[];
   heatmap: HeatCell[];
 };

@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/navigation";
 import { ShareCard } from "@/components/dashboard/share-card";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { DashboardInsights } from "@/components/dashboard/dashboard-insights";
+import { getAnalytics } from "@/lib/analytics/get-analytics";
 import { gulfNow } from "@/lib/booking/availability";
 import {
   INITIAL_APPOINTMENT_STATUS,
@@ -107,6 +109,10 @@ export default async function DashboardPage({
     stats.pending === 0 &&
     stats.completedMonth === 0;
 
+  // Smart insights (scorecards + alert) over the last 30 days. Only fetched when
+  // a business exists; reuses the analytics engine.
+  const insights = business ? await getAnalytics(30) : null;
+
   return (
     <main className="flex flex-col gap-8">
       <PageHeader
@@ -118,6 +124,8 @@ export default async function DashboardPage({
 
       {business ? (
         <>
+          {insights && <DashboardInsights data={insights} />}
+
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
             {/* Hero stat — today's ledger page. Dark ink surface; small text
                 uses canvas/paper for contrast, saffron is kept to the rule. */}

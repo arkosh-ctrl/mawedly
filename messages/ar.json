@@ -121,7 +121,23 @@
       "completedMonth": "مكتملة هذا الشهر",
       "emptyHint": "لا توجد حجوزات بعد — شارك رابط الحجز أدناه مع عملائك لتبدأ باستقبال المواعيد."
     },
-    "analyticsNav": "التحليلات"
+    "analyticsNav": "التحليلات",
+    "insights": {
+      "revenueGrowth": "نمو الإيراد",
+      "vsLastMonth": "عن الشهر السابق",
+      "monthRevenue": "إيراد ٣٠ يوماً",
+      "last30": "آخر ٣٠ يوماً",
+      "currency": "ريال",
+      "noShowAlert": "تنبيه غياب",
+      "noShowThisPeriod": "عملاء غابوا هذا الشهر",
+      "analyticsLink": "تحليلات الأداء",
+      "bannerNoShow": "🔴 نسبة الغياب مرتفعة — فعّل التذكيرات لتقليلها.",
+      "bannerNoShowCta": "الإعدادات",
+      "bannerBooking": "🟡 نسبة التحويل منخفضة — راجع أداء صفحة الحجز.",
+      "bannerBookingCta": "عرض التحليلات",
+      "bannerSlots": "🟡 أوقاتك شبه ممتلئة — أضف فترات أو مقدّمي خدمة.",
+      "bannerSlotsCta": "الإعدادات"
+    }
   },
   "Review": {
     "title": "قيّم زيارتك",
