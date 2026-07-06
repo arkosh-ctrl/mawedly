@@ -232,6 +232,12 @@ export function calculateKPIs(
       mPrev.slotUtilization,
       workMinutes > 0,
     ),
+    totalRevenue: kpi(
+      cCur.completedRevenue,
+      cPrev.completedRevenue,
+      cCur.total > 0,
+    ),
+    noShowCount: cCur.noShow,
     dailyTrends: buildDailyTrends(current, periodDays),
     heatmap: buildHeatmap(heatmapRows),
   };

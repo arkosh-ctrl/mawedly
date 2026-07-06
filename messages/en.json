@@ -121,7 +121,23 @@
       "completedMonth": "Completed this month",
       "emptyHint": "No bookings yet — share your booking link below to start receiving appointments."
     },
-    "analyticsNav": "Analytics"
+    "analyticsNav": "Analytics",
+    "insights": {
+      "revenueGrowth": "Revenue growth",
+      "vsLastMonth": "vs last month",
+      "monthRevenue": "30-day revenue",
+      "last30": "last 30 days",
+      "currency": "SAR",
+      "noShowAlert": "No-show alert",
+      "noShowThisPeriod": "customers missed this month",
+      "analyticsLink": "Performance analytics",
+      "bannerNoShow": "🔴 High no-show rate — enable reminders to reduce it.",
+      "bannerNoShowCta": "Settings",
+      "bannerBooking": "🟡 Low booking rate — review your booking page performance.",
+      "bannerBookingCta": "View analytics",
+      "bannerSlots": "🟡 Your slots are nearly full — add times or providers.",
+      "bannerSlotsCta": "Settings"
+    }
   },
   "Review": {
     "title": "Rate your visit",
