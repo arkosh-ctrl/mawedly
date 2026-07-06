@@ -120,7 +120,8 @@
       "pending": "Awaiting confirmation",
       "completedMonth": "Completed this month",
       "emptyHint": "No bookings yet — share your booking link below to start receiving appointments."
-    }
+    },
+    "analyticsNav": "Analytics"
   },
   "Review": {
     "title": "Rate your visit",
@@ -781,5 +782,38 @@
       "unauthorized": "Not authorized.",
       "roomUnavailable": "The room is not available right now."
     }
+  },
+  "Analytics": {
+    "title": "Performance Analytics",
+    "subtitle": "Overview",
+    "noBusiness": "Create your business first in Settings.",
+    "goToSettings": "Go to Settings",
+    "period": "Period",
+    "period_7d": "Last 7 days",
+    "period_30d": "Last 30 days",
+    "period_90d": "Last 90 days",
+    "vsPrevious": "vs previous",
+    "notEnoughData": "Not enough data",
+    "days": "days",
+    "currency": "SAR",
+    "bookingRate": "Booking Rate",
+    "noShowRate": "No-Show Rate",
+    "cancellationRate": "Cancellation Rate",
+    "depositCollectionRate": "Deposit Collection",
+    "revenuePerSession": "Revenue / Session",
+    "leadTime": "Lead Time",
+    "slotUtilization": "Slot Utilization",
+    "trendTitle": "Bookings & Revenue Trend",
+    "bookings": "Bookings",
+    "revenue": "Revenue",
+    "heatmapTitle": "Peak Hours Heatmap",
+    "heatmapHint": "Darker cells mean more bookings in that hour.",
+    "day_0": "Sat",
+    "day_1": "Sun",
+    "day_2": "Mon",
+    "day_3": "Tue",
+    "day_4": "Wed",
+    "day_5": "Thu",
+    "day_6": "Fri"
   }
 }
