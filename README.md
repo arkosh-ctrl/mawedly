@@ -1,4 +1,4 @@
-# Mawedly (موعدلي)
+# Mawedly 
 
 Bilingual (ar/en) deposit-based appointment booking platform for Gulf salons.
 Domain: mawedly.com.
