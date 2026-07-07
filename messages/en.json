@@ -831,5 +831,16 @@
     "day_4": "Wed",
     "day_5": "Thu",
     "day_6": "Fri"
+  },
+  "Calendar": {
+    "button": "Add to calendar",
+    "added": "Added",
+    "choose": "Choose a calendar app",
+    "google": "Google Calendar",
+    "googleHint": "Open directly on the web",
+    "icsFile": "Download calendar file (.ics)",
+    "icsHint": "Works with Apple, Outlook, Windows",
+    "phoneCalendar": "Phone calendar",
+    "phoneHint": "Opens in your calendar app"
   }
 }

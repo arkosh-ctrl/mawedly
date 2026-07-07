@@ -185,6 +185,9 @@ export type Database = {
           deposit_verified: boolean | null;
           customer_notes: string | null;
           created_at: string | null;
+          // Calendar-integration tracking (migration 0015).
+          calendar_added: boolean | null;
+          calendar_added_at: string | null;
         };
         Insert: {
           id?: string;
@@ -201,6 +204,8 @@ export type Database = {
           deposit_verified?: boolean | null;
           customer_notes?: string | null;
           created_at?: string | null;
+          calendar_added?: boolean | null;
+          calendar_added_at?: string | null;
         };
         Update: {
           id?: string;
@@ -216,6 +221,8 @@ export type Database = {
           deposit_verified?: boolean | null;
           customer_notes?: string | null;
           created_at?: string | null;
+          calendar_added?: boolean | null;
+          calendar_added_at?: string | null;
         };
         Relationships: [];
       };

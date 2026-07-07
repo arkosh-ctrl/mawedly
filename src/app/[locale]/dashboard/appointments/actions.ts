@@ -15,6 +15,8 @@ import { rescheduleMerchantEmail } from "@/lib/email/templates/reschedule-mercha
 import { getBookedRanges } from "@/lib/booking/queries";
 import { computeAvailableSlots, gulfNow } from "@/lib/booking/availability";
 import { deriveRoomPassword } from "@/lib/video/room-name";
+import { getCalendarEvent } from "@/lib/calendar/get-event";
+import { buildIcs } from "@/lib/calendar/ics";
 
 // Customer "booking confirmed" email — sent only when transitioning TO
 // 'confirmed', and only if the customer left an email. Best-effort: runs after
@@ -79,11 +81,29 @@ async function notifyCustomerConfirmed(
       consultationPassword,
     });
 
+    // Attach an .ics so the customer's mail client offers "add to calendar".
+    let attachments;
+    try {
+      const event = await getCalendarEvent(appointmentId);
+      if (event) {
+        attachments = [
+          {
+            filename: `mawedly-${appointmentId.slice(0, 8)}.ics`,
+            content: buildIcs(event),
+            contentType: "text/calendar",
+          },
+        ];
+      }
+    } catch {
+      // ICS is a nicety — never block the confirmation email.
+    }
+
     await sendEmail({
       to,
       subject,
       html,
       text,
+      attachments,
       context: { booking_id: appointmentId, business_id: businessId },
     });
   } catch (e) {

@@ -14,6 +14,13 @@ function getClient(): Resend | null {
   return client;
 }
 
+type EmailAttachment = {
+  filename: string;
+  // Raw file content (e.g. an .ics string). Resend accepts a string or Buffer.
+  content: string;
+  contentType?: string;
+};
+
 type SendArgs = {
   to: string;
   subject: string;
@@ -21,6 +28,7 @@ type SendArgs = {
   // Plain-text alternative. Sending multipart (text + html) improves
   // deliverability vs. HTML-only.
   text?: string;
+  attachments?: EmailAttachment[];
   // Context for structured failure logs (not sent in the email).
   context?: { booking_id?: string | null; business_id?: string | null };
 };
@@ -53,6 +61,15 @@ export async function sendEmail(args: SendArgs): Promise<void> {
       subject: args.subject,
       html: args.html,
       ...(args.text ? { text: args.text } : {}),
+      ...(args.attachments && args.attachments.length > 0
+        ? {
+            attachments: args.attachments.map((a) => ({
+              filename: a.filename,
+              content: a.content,
+              ...(a.contentType ? { contentType: a.contentType } : {}),
+            })),
+          }
+        : {}),
     });
     if (error) {
       logFailure("send_failed", args, error.message ?? String(error));
