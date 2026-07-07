@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { PublicProvider, PublicService } from "@/lib/booking/queries";
 import { buildWhatsappLink } from "@/lib/whatsapp";
+import { AddToCalendar } from "@/components/calendar/add-to-calendar";
 
 type TransferInfo = {
   bankName: string | null;
@@ -256,6 +257,9 @@ export function BookingWidget({
         >
           {t("chatButton")}
         </a>
+
+        {/* Add the appointment to the customer's calendar (ICS / Google). */}
+        <AddToCalendar appointmentId={result.appointmentId} />
       </div>
     );
   }

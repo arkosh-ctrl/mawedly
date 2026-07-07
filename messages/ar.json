@@ -831,5 +831,16 @@
     "day_4": "الأربعاء",
     "day_5": "الخميس",
     "day_6": "الجمعة"
+  },
+  "Calendar": {
+    "button": "أضف إلى التقويم",
+    "added": "تمت الإضافة",
+    "choose": "اختر تطبيق التقويم",
+    "google": "Google Calendar",
+    "googleHint": "فتح مباشر عبر الويب",
+    "icsFile": "تنزيل ملف التقويم (.ics)",
+    "icsHint": "يدعم Apple و Outlook و Windows",
+    "phoneCalendar": "تقويم الجوال",
+    "phoneHint": "يفتح في تطبيق التقويم مباشرة"
   }
 }
