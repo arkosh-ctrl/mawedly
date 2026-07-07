@@ -118,7 +118,7 @@ export function AddToCalendar({ appointmentId }: { appointmentId: string }) {
       </button>
 
       {open && !added && (
-        <div className="absolute top-[calc(100%+6px)] z-40 w-64 overflow-hidden rounded-xl border border-line bg-paper shadow-xl">
+        <div className="absolute bottom-[calc(100%+6px)] end-0 z-50 w-64 overflow-hidden rounded-xl border border-line bg-paper shadow-xl">
           <p className="border-b border-line bg-canvas px-4 py-2 text-[11px] font-bold uppercase text-muted">
             {t("choose")}
           </p>
