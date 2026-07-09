@@ -44,7 +44,15 @@ function CalendarGlyph() {
  * mobile it offers the universal .ics (opens the default calendar app); on
  * desktop it adds a Google Calendar option. Links are resolved server-side.
  */
-export function AddToCalendar({ appointmentId }: { appointmentId: string }) {
+export function AddToCalendar({
+  appointmentId,
+  variant = "prominent",
+}: {
+  appointmentId: string;
+  // "prominent" = solid pill for the booking success screen; "compact" = small
+  // outline pill that matches the merchant appointment-card action buttons.
+  variant?: "prominent" | "compact";
+}) {
   const t = useTranslations("Calendar");
   const [open, setOpen] = useState(false);
   const [added, setAdded] = useState(false);
@@ -88,20 +96,25 @@ export function AddToCalendar({ appointmentId }: { appointmentId: string }) {
     setOpen(false);
   }
 
+  const compact = variant === "compact";
+  const triggerClass = compact
+    ? `inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors ${
+        added
+          ? "border-pine/30 bg-canvas text-pine"
+          : "border-line text-ink hover:border-ink"
+      }`
+    : `inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
+        added
+          ? "border border-pine/30 bg-canvas text-pine"
+          : "bg-pine text-paper hover:bg-ink"
+      }`;
+
   return (
     <div className="relative self-start" ref={ref}>
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
-          added
-            ? "border border-pine/30 bg-canvas text-pine"
-            : "bg-pine text-paper hover:bg-ink"
-        }`}
-      >
+      <button type="button" onClick={() => setOpen((o) => !o)} className={triggerClass}>
         {added ? (
           <svg
-            className="size-4"
+            className={compact ? "size-3.5" : "size-4"}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -114,7 +127,7 @@ export function AddToCalendar({ appointmentId }: { appointmentId: string }) {
           <CalendarGlyph />
         )}
         <span>{added ? t("added") : t("button")}</span>
-        {!added && <Chevron open={open} />}
+        {!added && !compact && <Chevron open={open} />}
       </button>
 
       {open && !added && (

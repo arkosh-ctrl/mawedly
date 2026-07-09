@@ -11,6 +11,7 @@ import {
   hhmm,
 } from "./shared";
 import { VideoRoomButton } from "@/components/video/video-room-button";
+import { AddToCalendar } from "@/components/calendar/add-to-calendar";
 
 /**
  * Mode B — generous card layout. This is the detail-focused view (deposit,
@@ -154,6 +155,9 @@ export function CardView({
               >
                 {t("actions.chat")}
               </button>
+
+              {/* Merchant adds the appointment to their own calendar. */}
+              <AddToCalendar appointmentId={a.id} variant="compact" />
 
               {needsReviewLink && (
                 <button
