@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireAdmin } from "@/lib/admin/guard";
 import { getPlatformBusinesses } from "@/lib/admin/queries";
+import { BusinessToggle } from "@/components/admin/business-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +12,8 @@ export default async function AdminBusinessesPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  await requireAdmin(locale);
+  const session = await requireAdmin(locale);
+  const canManage = session.role === "admin";
   const businesses = await getPlatformBusinesses();
 
   return (
@@ -34,12 +36,13 @@ export default async function AdminBusinessesPage({
                 <th className="p-3 text-start">الخطة</th>
                 <th className="p-3 text-start">الحالة</th>
                 <th className="p-3 text-start">أُنشئ</th>
+                {canManage && <th className="p-3 text-start">إجراء</th>}
               </tr>
             </thead>
             <tbody>
               {businesses.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-muted">
+                  <td colSpan={canManage ? 7 : 6} className="p-8 text-center text-muted">
                     لا أنشطة بعد.
                   </td>
                 </tr>
@@ -66,6 +69,11 @@ export default async function AdminBusinessesPage({
                     <td className="p-3 font-mono text-xs text-muted" dir="ltr">
                       {b.created_at?.slice(0, 10) ?? "—"}
                     </td>
+                    {canManage && (
+                      <td className="p-3">
+                        <BusinessToggle id={b.id} isActive={b.is_active} />
+                      </td>
+                    )}
                   </tr>
                 ))
               )}

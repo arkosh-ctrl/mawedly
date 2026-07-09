@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { withAdmin } from "./db";
+import { withAdmin, type AdminActionRow } from "./db";
 import type { AdminRole, SystemEvent } from "./types";
 
 const GULF_OFFSET_MS = 3 * 60 * 60 * 1000;
@@ -173,4 +173,56 @@ export async function getSystemHealth(): Promise<SystemHealth> {
   }
 
   return { events, scopes: [...map.values()] };
+}
+
+export type AuditEntry = AdminActionRow & {
+  admin_email: string | null;
+  business_name: string | null;
+};
+
+/** Recent admin management actions, enriched with admin email + business name. */
+export async function getAuditLog(limit = 100): Promise<AuditEntry[]> {
+  const supabase = withAdmin(createAdminClient());
+  const { data } = await supabase
+    .from("admin_actions")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  const rows = (data as AdminActionRow[]) ?? [];
+  if (rows.length === 0) return [];
+
+  const plain = createAdminClient();
+  const adminIds = [...new Set(rows.map((r) => r.admin_user_id).filter(Boolean))];
+  const bizIds = [
+    ...new Set(
+      rows
+        .filter((r) => r.target_type === "business" && r.target_id)
+        .map((r) => r.target_id as string),
+    ),
+  ];
+
+  const [{ data: bizRows }] = await Promise.all([
+    bizIds.length
+      ? plain.from("businesses").select("id, name").in("id", bizIds)
+      : Promise.resolve({ data: [] as { id: string; name: string }[] }),
+  ]);
+  const bizName = new Map((bizRows ?? []).map((b) => [b.id, b.name]));
+
+  // Emails come from auth.admin (service-role only).
+  const emailById = new Map<string, string | null>();
+  await Promise.all(
+    adminIds.map(async (id) => {
+      const { data: u } = await plain.auth.admin.getUserById(id);
+      emailById.set(id, u?.user?.email ?? null);
+    }),
+  );
+
+  return rows.map((r) => ({
+    ...r,
+    admin_email: emailById.get(r.admin_user_id) ?? null,
+    business_name:
+      r.target_type === "business" && r.target_id
+        ? bizName.get(r.target_id) ?? null
+        : null,
+  }));
 }
