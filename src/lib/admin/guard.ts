@@ -30,3 +30,23 @@ export async function requireAdmin(locale: string): Promise<AdminSession> {
 
   return { userId, role: record.role as AdminRole };
 }
+
+/**
+ * Non-redirecting variant for server actions: returns the admin session or null
+ * (the caller decides how to respond, e.g. a toast). Same service-role check.
+ */
+export async function getAdminSession(): Promise<AdminSession | null> {
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  const userId = claims?.claims?.sub as string | undefined;
+  if (!userId) return null;
+
+  const admin = withAdmin(createAdminClient());
+  const { data: record } = await admin
+    .from("admins")
+    .select("role")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (!record) return null;
+  return { userId, role: record.role as AdminRole };
+}

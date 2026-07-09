@@ -1,0 +1,57 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { getAdminSession } from "@/lib/admin/guard";
+import { withAdmin } from "@/lib/admin/db";
+import { logSystemEvent } from "@/lib/admin/log-event";
+
+export type AdminActionResult =
+  | { status: "success" }
+  | { status: "error"; messageKey: "forbidden" | "notFound" | "saveFailed" };
+
+/**
+ * Activate or suspend a business. Full admins only (viewers are read-only).
+ * Writes an audit row and mirrors to the health monitor. RLS-bypassing via the
+ * service-role client, but ONLY after the admin-role check.
+ */
+export async function setBusinessActive(
+  businessId: string,
+  active: boolean,
+): Promise<AdminActionResult> {
+  const session = await getAdminSession();
+  if (!session) return { status: "error", messageKey: "forbidden" };
+  if (session.role !== "admin") return { status: "error", messageKey: "forbidden" };
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("businesses")
+    .update({ is_active: active })
+    .eq("id", businessId)
+    .select("id");
+
+  if (error) return { status: "error", messageKey: "saveFailed" };
+  if (!data || data.length === 0) return { status: "error", messageKey: "notFound" };
+
+  // Audit trail (accountability / PDPL).
+  await withAdmin(admin)
+    .from("admin_actions")
+    .insert({
+      admin_user_id: session.userId,
+      action: active ? "activate_business" : "suspend_business",
+      target_type: "business",
+      target_id: businessId,
+      meta: {},
+    });
+
+  await logSystemEvent({
+    scope: "system",
+    event: active ? "business activated" : "business suspended",
+    level: "info",
+    meta: { by: session.userId },
+    businessId,
+  });
+
+  revalidatePath("/[locale]/admin/businesses", "page");
+  return { status: "success" };
+}

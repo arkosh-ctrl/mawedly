@@ -18,6 +18,24 @@ type SystemEventInsert = {
   business_id?: string | null;
 };
 
+export type AdminActionRow = {
+  id: string;
+  admin_user_id: string;
+  action: string;
+  target_type: string;
+  target_id: string | null;
+  meta: Record<string, unknown>;
+  created_at: string;
+};
+
+type AdminActionInsert = {
+  admin_user_id: string;
+  action: string;
+  target_type: string;
+  target_id?: string | null;
+  meta?: Record<string, unknown>;
+};
+
 export type AdminDatabase = {
   public: Omit<Database["public"], "Tables"> & {
     Tables: Database["public"]["Tables"] & {
@@ -31,6 +49,12 @@ export type AdminDatabase = {
         Row: SystemEvent;
         Insert: SystemEventInsert;
         Update: Partial<SystemEventInsert>;
+        Relationships: [];
+      };
+      admin_actions: {
+        Row: AdminActionRow;
+        Insert: AdminActionInsert;
+        Update: Partial<AdminActionInsert>;
         Relationships: [];
       };
     };
