@@ -5,8 +5,10 @@ import { Link, usePathname } from "@/i18n/navigation";
 const ITEMS = [
   { href: "/admin", label: "نظرة عامة", exact: true },
   { href: "/admin/businesses", label: "الأنشطة" },
+  { href: "/admin/contacts", label: "المشتركون" },
   { href: "/admin/appointments", label: "المواعيد" },
   { href: "/admin/health", label: "صحة الأنظمة" },
+  { href: "/admin/audit", label: "سجل التدقيق" },
 ];
 
 export function AdminNav() {
