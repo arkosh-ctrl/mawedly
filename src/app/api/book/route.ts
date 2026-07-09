@@ -12,6 +12,7 @@ import { INITIAL_APPOINTMENT_STATUS } from "@/lib/appointments/status";
 import { sendEmail } from "@/lib/email/resend";
 import { bookingMerchantEmail } from "@/lib/email/templates/booking-merchant";
 import { createNotification } from "@/lib/notifications/create";
+import { logSystemEvent } from "@/lib/admin/log-event";
 
 const RATE_LIMIT_MAX = 15; // attempts ...
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // ... per 10 minutes per IP
@@ -133,6 +134,13 @@ export async function POST(request: NextRequest) {
     if (apptError.code === "23P01") {
       return NextResponse.json({ error: "slotTaken" }, { status: 409 });
     }
+    await logSystemEvent({
+      scope: "booking_api",
+      event: "appointment insert failed",
+      level: "error",
+      meta: { code: apptError.code, error: apptError.message.slice(0, 300) },
+      businessId: business.id,
+    });
     return NextResponse.json({ error: "saveFailed" }, { status: 500 });
   }
 

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { Resend } from "resend";
+import { logSystemEvent } from "@/lib/admin/log-event";
 
 // Sender on the verified mawedly.com domain.
 const FROM = "Mawedly <support@mawedly.com>";
@@ -44,6 +45,17 @@ function logFailure(event: string, args: SendArgs, errorMessage: string) {
       timestamp: new Date().toISOString(),
     }),
   );
+  // Mirror into the admin health monitor (refs only, no raw PII).
+  void logSystemEvent({
+    scope: "email",
+    event,
+    level: event === "skipped_no_api_key" ? "warn" : "error",
+    meta: {
+      booking_id: args.context?.booking_id ?? null,
+      error: errorMessage.slice(0, 300),
+    },
+    businessId: args.context?.business_id ?? null,
+  });
 }
 
 // Best-effort email send. NEVER throws — a failed email must not break the

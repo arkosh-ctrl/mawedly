@@ -3,6 +3,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
 import { GULF_OFFSET_MINUTES } from "@/lib/booking/availability";
+import { logSystemEvent } from "@/lib/admin/log-event";
 import { withNotifications } from "./db";
 import type { CreateNotificationInput, Notification, TypeSetting } from "./types";
 
@@ -105,6 +106,13 @@ export async function createNotification(
           timestamp: new Date().toISOString(),
         }),
       );
+      void logSystemEvent({
+        scope: "notifications",
+        event: `create failed (${input.type})`,
+        level: "error",
+        meta: { type: input.type, error: error.message.slice(0, 300) },
+        businessId: input.businessId,
+      });
       return null;
     }
 
