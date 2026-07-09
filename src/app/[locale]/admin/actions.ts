@@ -19,39 +19,54 @@ export async function setBusinessActive(
   businessId: string,
   active: boolean,
 ): Promise<AdminActionResult> {
-  const session = await getAdminSession();
-  if (!session) return { status: "error", messageKey: "forbidden" };
-  if (session.role !== "admin") return { status: "error", messageKey: "forbidden" };
+  try {
+    const session = await getAdminSession();
+    if (!session) return { status: "error", messageKey: "forbidden" };
+    if (session.role !== "admin")
+      return { status: "error", messageKey: "forbidden" };
 
-  const admin = createAdminClient();
-  const { data, error } = await admin
-    .from("businesses")
-    .update({ is_active: active })
-    .eq("id", businessId)
-    .select("id");
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("businesses")
+      .update({ is_active: active })
+      .eq("id", businessId)
+      .select("id");
 
-  if (error) return { status: "error", messageKey: "saveFailed" };
-  if (!data || data.length === 0) return { status: "error", messageKey: "notFound" };
+    if (error) return { status: "error", messageKey: "saveFailed" };
+    if (!data || data.length === 0)
+      return { status: "error", messageKey: "notFound" };
 
-  // Audit trail (accountability / PDPL).
-  await withAdmin(admin)
-    .from("admin_actions")
-    .insert({
-      admin_user_id: session.userId,
-      action: active ? "activate_business" : "suspend_business",
-      target_type: "business",
-      target_id: businessId,
-      meta: {},
+    // Audit trail (best-effort — a missing table must not fail the action).
+    try {
+      await withAdmin(admin)
+        .from("admin_actions")
+        .insert({
+          admin_user_id: session.userId,
+          action: active ? "activate_business" : "suspend_business",
+          target_type: "business",
+          target_id: businessId,
+          meta: {},
+        });
+    } catch {
+      // ignore — the primary state change already succeeded.
+    }
+
+    await logSystemEvent({
+      scope: "system",
+      event: active ? "business activated" : "business suspended",
+      level: "info",
+      meta: { by: session.userId },
+      businessId,
     });
 
-  await logSystemEvent({
-    scope: "system",
-    event: active ? "business activated" : "business suspended",
-    level: "info",
-    meta: { by: session.userId },
-    businessId,
-  });
+    try {
+      revalidatePath("/[locale]/admin/businesses", "page");
+    } catch {
+      // revalidation is a nicety; the client also calls router.refresh().
+    }
 
-  revalidatePath("/[locale]/admin/businesses", "page");
-  return { status: "success" };
+    return { status: "success" };
+  } catch {
+    return { status: "error", messageKey: "saveFailed" };
+  }
 }

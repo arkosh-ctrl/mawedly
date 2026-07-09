@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { Toaster } from "sonner";
 import { Link } from "@/i18n/navigation";
 import { requireAdmin } from "@/lib/admin/guard";
 import { AdminNav } from "@/components/admin/admin-nav";
@@ -42,6 +43,8 @@ export default async function AdminLayout({
       </header>
 
       <main className="mx-auto max-w-6xl px-5 py-8 sm:px-8">{children}</main>
+
+      <Toaster dir="rtl" richColors position="top-center" />
     </div>
   );
 }
