@@ -175,6 +175,90 @@ export async function getSystemHealth(): Promise<SystemHealth> {
   return { events, scopes: [...map.values()] };
 }
 
+export type SubscriberStatus =
+  | "active"
+  | "trial"
+  | "trial_expired"
+  | "suspended";
+
+export type Subscriber = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string | null;
+  plan: string;
+  trialEndsAt: string | null;
+  isActive: boolean;
+  createdAt: string | null;
+  appointments: number;
+  lastActivity: string | null; // latest appointment created_at
+  status: SubscriberStatus;
+};
+
+function subscriberStatus(
+  isActive: boolean,
+  plan: string,
+  trialEndsAt: string | null,
+): SubscriberStatus {
+  if (!isActive) return "suspended";
+  const trialLive = trialEndsAt ? new Date(trialEndsAt).getTime() > Date.now() : false;
+  if (plan !== "free") return "active";
+  return trialLive ? "trial" : "trial_expired";
+}
+
+/**
+ * Subscriber (merchant) contact directory for admin outreach. Admin-role only.
+ * Emails come from auth (service-role); status is derived from plan + trial
+ * window + is_active (there is no billing system — deposits are manual).
+ */
+export async function getSubscribers(): Promise<Subscriber[]> {
+  const supabase = createAdminClient();
+
+  const [{ data: bizRows }, { data: apptRows }] = await Promise.all([
+    supabase
+      .from("businesses")
+      .select("id, user_id, name, phone, plan, trial_ends_at, is_active, created_at")
+      .order("created_at", { ascending: false }),
+    supabase.from("appointments").select("business_id, created_at"),
+  ]);
+
+  const businesses = bizRows ?? [];
+
+  // Aggregate appointment counts + last activity per business.
+  const counts = new Map<string, number>();
+  const lastAt = new Map<string, string>();
+  for (const a of apptRows ?? []) {
+    counts.set(a.business_id, (counts.get(a.business_id) ?? 0) + 1);
+    const prev = lastAt.get(a.business_id);
+    if (a.created_at && (!prev || a.created_at > prev)) {
+      lastAt.set(a.business_id, a.created_at);
+    }
+  }
+
+  // Resolve login emails (service-role only).
+  const emailByUser = new Map<string, string | null>();
+  await Promise.all(
+    [...new Set(businesses.map((b) => b.user_id))].map(async (uid) => {
+      const { data } = await supabase.auth.admin.getUserById(uid);
+      emailByUser.set(uid, data?.user?.email ?? null);
+    }),
+  );
+
+  return businesses.map((b) => ({
+    id: b.id,
+    name: b.name,
+    phone: b.phone,
+    email: emailByUser.get(b.user_id) ?? null,
+    plan: b.plan,
+    trialEndsAt: b.trial_ends_at,
+    isActive: b.is_active ?? true,
+    createdAt: b.created_at,
+    appointments: counts.get(b.id) ?? 0,
+    lastActivity: lastAt.get(b.id) ?? null,
+    status: subscriberStatus(b.is_active ?? true, b.plan, b.trial_ends_at),
+  }));
+}
+
 export type AuditEntry = AdminActionRow & {
   admin_email: string | null;
   business_name: string | null;
