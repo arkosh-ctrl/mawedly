@@ -5,7 +5,7 @@ import type { Database } from "./database.types";
 
 // Pathname is already locale-prefixed at this point (e.g. /ar/dashboard).
 function isProtectedPath(pathname: string): boolean {
-  return /^\/(ar|en)\/dashboard(\/|$)/.test(pathname);
+  return /^\/(ar|en)\/(dashboard|admin)(\/|$)/.test(pathname);
 }
 
 function localeFromPath(pathname: string): string {

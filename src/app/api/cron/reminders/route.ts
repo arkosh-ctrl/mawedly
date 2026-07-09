@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { GULF_OFFSET_MINUTES } from "@/lib/booking/availability";
 import { createNotification } from "@/lib/notifications/create";
+import { logSystemEvent } from "@/lib/admin/log-event";
 import type { NotificationType } from "@/lib/notifications/types";
 
 // Scheduled every 5 minutes (see vercel.json). Reminders are idempotent per
@@ -92,6 +93,12 @@ export async function GET(request: NextRequest) {
     .returns<ApptRow[]>();
 
   if (error) {
+    await logSystemEvent({
+      scope: "cron_reminders",
+      event: "reminder scan query failed",
+      level: "error",
+      meta: { error: error.message.slice(0, 300) },
+    });
     return NextResponse.json({ error: "query_failed" }, { status: 500 });
   }
 
@@ -145,6 +152,14 @@ export async function GET(request: NextRequest) {
       if (res) created++;
     }
   }
+
+  // Heartbeat: lets the admin health monitor confirm the cron actually ran.
+  await logSystemEvent({
+    scope: "cron_reminders",
+    event: "reminder scan completed",
+    level: "info",
+    meta: { scanned: data?.length ?? 0, created },
+  });
 
   return NextResponse.json({ ok: true, scanned: data?.length ?? 0, created });
 }
