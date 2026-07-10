@@ -10,7 +10,7 @@ import type {
 } from "./types";
 
 // The hand-written Database type doesn't know the 0013 tables. Following the
-// exact pattern established for chat_messages (src/lib/chat/actions.ts): the
+// exact pattern once established for chat_messages (feature since retired): the
 // table row/insert/update shapes are declared here and merged into the client
 // generic locally, so the original tables stay fully typed and no shared file
 // changes. Follow-up: fold notifications + notification_settings into

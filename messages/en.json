@@ -370,7 +370,6 @@
     },
     "whatsappButton": "Contact via WhatsApp",
     "whatsappMessage": "Hello, I booked a {service} appointment on {date} at {time}, booking reference {ref}. I'll send you the transfer receipt shortly.",
-    "chatButton": "Chat with your service provider",
     "errors": {
       "rateLimited": "Too many attempts. Please wait a moment and try again.",
       "invalidInput": "Please check the entered details.",
@@ -429,10 +428,10 @@
       "no_show": "No-show",
       "canceled": "Cancel",
       "reschedule": "Reschedule",
-      "chat": "💬 Chat",
       "verifyDeposit": "Mark deposit received",
       "clearDeposit": "Clear deposit",
-      "viewReceipt": "View receipt"
+      "viewReceipt": "View receipt",
+      "whatsapp": "WhatsApp"
     },
     "reschedule": {
       "title": "Reschedule appointment",
@@ -501,35 +500,9 @@
       "next": "Next month",
       "dayTitle": "Appointments",
       "close": "Close"
-    }
-  },
-  "Chat": {
-    "loading": "Loading messages…",
-    "empty": "No messages yet — start the conversation.",
-    "today": "Today",
-    "yesterday": "Yesterday",
-    "inputLabel": "Message",
-    "inputPlaceholder": "Type your message…",
-    "send": "Send",
-    "sending": "Sending…",
-    "attach": "Attach file",
-    "typingIndicator": "Customer is typing...",
-    "messages": {
-      "invalidInput": "Invalid data.",
-      "notFound": "Appointment not found.",
-      "chatClosed": "Chat is closed for this appointment.",
-      "saveFailed": "Couldn't send. Please try again.",
-      "unauthorized": "Your session expired. Please sign in again.",
-      "noBusiness": "Create your business in Settings first.",
-      "invalidType": "File type not supported.",
-      "tooLarge": "File exceeds 10MB."
     },
-    "customer": {
-      "title": "Chat with your provider",
-      "subtitle": "Message them directly about your appointment",
-      "closedTitle": "Chat Closed",
-      "closedMessage": "This chat is no longer available because the appointment's status changed."
-    }
+    "whatsappMessage": "Hello {name}, you have a consultation appointment on {date} at {time}.",
+    "whatsappUnavailable": "The customer's phone number can't open WhatsApp."
   },
   "Nav": {
     "brand": "Mawedly",

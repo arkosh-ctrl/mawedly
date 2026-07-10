@@ -12,6 +12,7 @@ import {
 } from "./shared";
 import { VideoRoomButton } from "@/components/video/video-room-button";
 import { AddToCalendar } from "@/components/calendar/add-to-calendar";
+import { WhatsappIcon } from "./whatsapp-icon";
 
 /**
  * Mode B — generous card layout. This is the detail-focused view (deposit,
@@ -150,10 +151,11 @@ export function CardView({
 
               <button
                 type="button"
-                onClick={() => actions.openChat(a)}
-                className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-muted"
+                onClick={() => actions.openWhatsapp(a)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-2.5 py-1 text-xs font-medium text-paper transition-colors hover:bg-[#1DA851]"
               >
-                {t("actions.chat")}
+                <WhatsappIcon />
+                {t("actions.whatsapp")}
               </button>
 
               {/* Merchant adds the appointment to their own calendar. */}

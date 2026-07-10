@@ -8,6 +8,7 @@ import {
   STATUS_BADGE,
   hhmm,
 } from "./shared";
+import { WhatsappIcon } from "./whatsapp-icon";
 
 /**
  * Mode A — dense, row-based table for high-volume scanning. Logical grid
@@ -90,24 +91,12 @@ export function CompactListView({
                 )}
                 <button
                   type="button"
-                  onClick={() => actions.openChat(a)}
-                  title={t("actions.chat")}
-                  aria-label={t("actions.chat")}
-                  className="rounded-lg border border-line p-1.5 text-muted transition-colors hover:border-primary hover:text-primary"
+                  onClick={() => actions.openWhatsapp(a)}
+                  title={t("actions.whatsapp")}
+                  aria-label={t("actions.whatsapp")}
+                  className="rounded-lg bg-[#25D366] p-1.5 text-paper transition-colors hover:bg-[#1DA851]"
                 >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                  >
-                    <path d="M21 12a8 8 0 0 1-8 8H4l2.5-2.5A8 8 0 1 1 21 12Z" />
-                  </svg>
+                  <WhatsappIcon size={14} />
                 </button>
               </div>
             </li>

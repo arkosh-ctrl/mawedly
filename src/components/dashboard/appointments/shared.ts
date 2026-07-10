@@ -59,5 +59,7 @@ export type AppointmentActions = {
   copyReviewLink: (id: string) => void;
   requestCancel: (row: AppointmentRow) => void;
   requestReschedule: (row: AppointmentRow) => void;
-  openChat: (row: AppointmentRow) => void;
+  // Opens WhatsApp to the CUSTOMER's phone (wa.me deep link) — the in-app
+  // chat was retired in favour of WhatsApp as the primary channel.
+  openWhatsapp: (row: AppointmentRow) => void;
 };

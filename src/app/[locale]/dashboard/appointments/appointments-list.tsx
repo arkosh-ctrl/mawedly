@@ -10,7 +10,7 @@ import { useViewMode } from "@/lib/appointments/use-view-mode";
 import { useBookingFilters } from "@/lib/appointments/use-booking-filters";
 import { setAppointmentStatus, setDepositVerified } from "./actions";
 import { RescheduleDialog } from "./reschedule-dialog";
-import { ChatContainer } from "@/components/chat/ChatContainer";
+import { buildWhatsappLink } from "@/lib/whatsapp";
 import { AppointmentsToolbar } from "@/components/dashboard/appointments/appointments-toolbar";
 import { StatusTabs } from "@/components/dashboard/appointments/status-tabs";
 import { CompactListView } from "@/components/dashboard/appointments/compact-list-view";
@@ -19,6 +19,7 @@ import { CalendarView } from "@/components/dashboard/appointments/calendar-view"
 import {
   type AppointmentRow,
   type AppointmentActions,
+  hhmm,
 } from "@/components/dashboard/appointments/shared";
 
 // Re-exported for the page (server component) that types the query result.
@@ -53,7 +54,6 @@ export function AppointmentsList({
   const [confirmCancel, setConfirmCancel] = useState<AppointmentRow | null>(null);
   const [rescheduleTarget, setRescheduleTarget] =
     useState<AppointmentRow | null>(null);
-  const [chatTarget, setChatTarget] = useState<AppointmentRow | null>(null);
 
   function changeStatus(id: string, next: AppointmentStatus) {
     const fd = new FormData();
@@ -92,6 +92,24 @@ export function AppointmentsList({
     toast.success(t("reviewLinkCopied"));
   }
 
+  // WhatsApp replaced the in-app chat: the merchant reaches the customer on
+  // their own phone directly (wa.me deep link with a prefilled message).
+  function openWhatsapp(row: AppointmentRow) {
+    const link = buildWhatsappLink(
+      row.customers?.phone ?? "",
+      t("whatsappMessage", {
+        name: row.customers?.name ?? "",
+        date: row.appointment_date,
+        time: hhmm(row.start_time),
+      }),
+    );
+    if (link) {
+      window.open(link, "_blank", "noopener,noreferrer");
+    } else {
+      toast.error(t("whatsappUnavailable"));
+    }
+  }
+
   const actions: AppointmentActions = useMemo(
     () => ({
       isPending,
@@ -101,7 +119,7 @@ export function AppointmentsList({
       copyReviewLink,
       requestCancel: setConfirmCancel,
       requestReschedule: setRescheduleTarget,
-      openChat: setChatTarget,
+      openWhatsapp,
     }),
     // changeStatus/toggleDeposit/copyReviewLink are stable within a render and
     // only depend on values captured below.
@@ -166,16 +184,6 @@ export function AppointmentsList({
         appointment={rescheduleTarget}
         onClose={() => setRescheduleTarget(null)}
       />
-
-      <Modal
-        open={!!chatTarget}
-        onClose={() => setChatTarget(null)}
-        title={chatTarget?.customers?.name ?? t("actions.chat")}
-      >
-        {chatTarget && (
-          <ChatContainer appointmentId={chatTarget.id} callerType="business" />
-        )}
-      </Modal>
     </div>
   );
 }

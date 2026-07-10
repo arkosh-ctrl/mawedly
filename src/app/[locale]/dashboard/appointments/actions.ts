@@ -57,7 +57,6 @@ async function notifyCustomerConfirmed(
     const requestHeaders = await headers();
     const origin =
       requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "";
-    const chatUrl = `${origin}/${lang}/chat/${appointmentId}`;
 
     // Virtual services get a consultation link + room password in the email.
     const isVirtual = appt.services?.session_type === "virtual";
@@ -76,7 +75,6 @@ async function notifyCustomerConfirmed(
       date: appt.appointment_date,
       time: appt.start_time,
       whatsappPhone: biz?.phone ?? null,
-      chatUrl,
       consultationUrl,
       consultationPassword,
     });
@@ -212,7 +210,6 @@ async function notifyCustomerRescheduled(
     const requestHeaders = await headers();
     const origin =
       requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "";
-    const chatUrl = `${origin}/${lang}/chat/${appointmentId}`;
     const { subject, html, text } = rescheduleCustomerEmail({
       lang,
       businessName: biz?.name ?? "",
@@ -221,7 +218,6 @@ async function notifyCustomerRescheduled(
       date: appt.appointment_date,
       time: appt.start_time,
       whatsappPhone: biz?.phone ?? null,
-      chatUrl,
     });
 
     await sendEmail({
