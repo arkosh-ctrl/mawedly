@@ -21,8 +21,10 @@ export function CompactListView({
   actions: AppointmentActions;
 }) {
   const t = useTranslations("Appointments");
+  // Fixed rem tracks for status/actions so header labels and cell content stay
+  // vertically aligned in every row (auto tracks drifted with content width).
   const cols =
-    "grid grid-cols-[1.4fr_1fr_0.8fr_1.3fr_auto_auto] items-center gap-3";
+    "grid grid-cols-[1.2fr_1.1fr_1.1fr_1.5fr_7rem_8.5rem] items-center gap-3";
 
   return (
     <div className="overflow-hidden rounded-xl border border-line bg-paper">
@@ -55,15 +57,22 @@ export function CompactListView({
               <span className="truncate font-mono text-xs text-muted" dir="ltr">
                 {a.customers?.phone ?? ""}
               </span>
-              <span className="font-mono text-xs text-ink" dir="ltr">
-                {hhmm(a.start_time)}
-              </span>
+              {/* Date + time together — with month/week filters a bare hour
+                  reads as random noise. */}
+              <div className="flex min-w-0 flex-col">
+                <span className="font-mono text-xs text-ink" dir="ltr">
+                  {hhmm(a.start_time)}
+                </span>
+                <span className="font-mono text-[11px] text-muted" dir="ltr">
+                  {a.appointment_date}
+                </span>
+              </div>
               <span className="truncate text-xs text-muted">
                 {a.services?.name ?? "—"}
                 {a.providers?.name ? ` · ${a.providers.name}` : ""}
               </span>
               <span
-                className={`w-fit rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_BADGE[a.status]}`}
+                className={`w-fit whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_BADGE[a.status]}`}
               >
                 {t(`status.${a.status}`)}
               </span>
@@ -74,7 +83,7 @@ export function CompactListView({
                     disabled={actions.isPending}
                     onClick={() => actions.changeStatus(a.id, nextTransition)}
                     title={t(`actions.${nextTransition}`)}
-                    className="rounded-lg bg-primary px-2 py-1 text-xs font-medium text-paper transition-colors hover:bg-primary-hover"
+                    className="whitespace-nowrap rounded-lg bg-primary px-2 py-1 text-xs font-medium text-paper transition-colors hover:bg-primary-hover"
                   >
                     {t(`actions.${nextTransition}`)}
                   </button>
@@ -84,9 +93,21 @@ export function CompactListView({
                   onClick={() => actions.openChat(a)}
                   title={t("actions.chat")}
                   aria-label={t("actions.chat")}
-                  className="rounded-lg border border-line px-2 py-1 text-xs text-ink transition-colors hover:border-muted"
+                  className="rounded-lg border border-line p-1.5 text-muted transition-colors hover:border-primary hover:text-primary"
                 >
-                  💬
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M21 12a8 8 0 0 1-8 8H4l2.5-2.5A8 8 0 1 1 21 12Z" />
+                  </svg>
                 </button>
               </div>
             </li>
