@@ -7,11 +7,11 @@ import type { HeatCell } from "@/lib/analytics/types";
 const DAYS = [0, 1, 2, 3, 4, 5, 6];
 const HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
-// saffron (#c2881b) as rgb, tinted by intensity.
+// primary blue (#006bff) as rgb, tinted by intensity.
 function cellColor(count: number, max: number): string {
   if (count <= 0) return "var(--color-canvas)";
   const intensity = 0.15 + 0.85 * (count / max);
-  return `rgba(194, 136, 27, ${intensity.toFixed(2)})`;
+  return `rgba(0, 107, 255, ${intensity.toFixed(2)})`;
 }
 
 /**

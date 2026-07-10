@@ -41,7 +41,7 @@ export function bookingCustomerConfirmedEmail(p: {
       p.consultationUrl && p.consultationPassword
         ? `<div style="margin:0 0 16px;padding:14px;border:1px solid #e5e5e5;border-radius:8px;background:#faf8f3;">
              <p style="font-size:14px;margin:0 0 10px;color:#404040;">This is an online consultation — join from your browser, no app needed:</p>
-             <div style="margin-bottom:10px;"><a href="${p.consultationUrl}" style="display:inline-block;background:#244a40;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Join the video room</a></div>
+             <div style="margin-bottom:10px;"><a href="${p.consultationUrl}" style="display:inline-block;background:#006bff;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">Join the video room</a></div>
              <p style="font-size:13px;margin:0;color:#404040;">Room password: <strong style="font-family:monospace;letter-spacing:2px;">${escapeHtml(p.consultationPassword)}</strong></p>
            </div>`
         : "";
@@ -77,7 +77,7 @@ Time: ${time}${p.consultationUrl ? `\n\nJoin the video room: ${p.consultationUrl
     p.consultationUrl && p.consultationPassword
       ? `<div style="margin:0 0 16px;padding:14px;border:1px solid #e5e5e5;border-radius:8px;background:#faf8f3;">
            <p style="font-size:14px;margin:0 0 10px;color:#404040;">هذه استشارة عن بُعد — ادخل من متصفحك مباشرة بلا أي تطبيق:</p>
-           <div style="margin-bottom:10px;"><a href="${p.consultationUrl}" style="display:inline-block;background:#244a40;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">دخول غرفة الاستشارة</a></div>
+           <div style="margin-bottom:10px;"><a href="${p.consultationUrl}" style="display:inline-block;background:#006bff;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">دخول غرفة الاستشارة</a></div>
            <p style="font-size:13px;margin:0;color:#404040;">كلمة مرور الغرفة: <strong style="font-family:monospace;letter-spacing:2px;">${escapeHtml(p.consultationPassword)}</strong></p>
          </div>`
       : "";
