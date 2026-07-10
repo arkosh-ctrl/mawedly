@@ -137,7 +137,8 @@
       "bannerBookingCta": "View analytics",
       "bannerSlots": "🟡 Your slots are nearly full — add times or providers.",
       "bannerSlotsCta": "Settings"
-    }
+    },
+    "socialNav": "Social media"
   },
   "Review": {
     "title": "Rate your visit",
@@ -829,5 +830,20 @@
     "icsHint": "Works with Apple, Outlook, Windows",
     "phoneCalendar": "Phone calendar",
     "phoneHint": "Opens in your calendar app"
+  },
+  "Social": {
+    "title": "Social media",
+    "subtitle": "Your profiles, visible to clients",
+    "hint": "Add your profile links — they appear as icons on your public booking page for every visitor. Leave a field empty to hide that platform.",
+    "noBusiness": "Create your business first from Settings.",
+    "save": "Save links",
+    "saving": "Saving…",
+    "messages": {
+      "saved": "Links saved.",
+      "invalidUrl": "One of the links is invalid — it must start with https://",
+      "saveFailed": "Couldn't save, try again.",
+      "unauthorized": "Session expired, sign in again.",
+      "noBusiness": "Create your business first from Settings."
+    }
   }
 }

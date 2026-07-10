@@ -5,7 +5,9 @@ import {
   getBusinessForBooking,
   getActiveServices,
   getActiveProviders,
+  getActiveSocialLinks,
 } from "@/lib/booking/queries";
+import { PlatformIcon } from "@/components/social/platform-icon";
 import { BookingWidget } from "./booking-widget";
 
 // Every business category with a label in Signup.types — the five consultation
@@ -34,9 +36,10 @@ export default async function BookingPage({
   const business = await getBusinessForBooking(slug);
   if (!business) notFound();
 
-  const [services, providers] = await Promise.all([
+  const [services, providers, socialLinks] = await Promise.all([
     getActiveServices(business.id),
     getActiveProviders(business.id),
+    getActiveSocialLinks(business.id),
   ]);
 
   const t = await getTranslations("Booking");
@@ -80,6 +83,24 @@ export default async function BookingPage({
             )}
 
             <div className="mt-auto flex flex-col items-start gap-4 border-t border-line pt-5">
+              {/* The merchant's public social profiles (managed in
+                  /dashboard/social) — free discovery for every visitor. */}
+              {socialLinks.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {socialLinks.map((l) => (
+                    <a
+                      key={l.platform}
+                      href={l.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={l.platform}
+                      className="flex size-9 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary"
+                    >
+                      <PlatformIcon platform={l.platform} size={16} />
+                    </a>
+                  ))}
+                </div>
+              )}
               <p className="text-sm leading-[1.6] text-muted">
                 {t("subtitle")}
               </p>

@@ -10,7 +10,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 
 type NavItem = {
   href: string;
-  labelKey: "overviewNav" | "appointmentsNav" | "servicesNav" | "providersNav" | "analyticsNav" | "reviewsNav" | "settingsNav";
+  labelKey: "overviewNav" | "appointmentsNav" | "servicesNav" | "providersNav" | "analyticsNav" | "reviewsNav" | "socialNav" | "settingsNav";
   icon: React.ReactNode;
   // Overview must match exactly, otherwise it stays lit on every subpage.
   exact?: boolean;
@@ -26,6 +26,7 @@ const PRIMARY_ITEMS: NavItem[] = [
 const SECONDARY_ITEMS: NavItem[] = [
   { href: "/dashboard/analytics", labelKey: "analyticsNav", icon: <ChartIcon /> },
   { href: "/dashboard/reviews", labelKey: "reviewsNav", icon: <StarIcon /> },
+  { href: "/dashboard/social", labelKey: "socialNav", icon: <ShareNodesIcon /> },
   { href: "/dashboard/settings", labelKey: "settingsNav", icon: <GearIcon /> },
 ];
 
@@ -171,6 +172,17 @@ function StarIcon() {
   return (
     <svg {...iconProps()}>
       <path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6L3.2 9.4l6.1-.8L12 3Z" />
+    </svg>
+  );
+}
+
+function ShareNodesIcon() {
+  return (
+    <svg {...iconProps()}>
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <path d="m8.6 10.6 6.8-3.9M8.6 13.4l6.8 3.9" />
     </svg>
   );
 }

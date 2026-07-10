@@ -27,6 +27,11 @@ export type PublicProvider = {
   title: string | null;
 };
 
+export type PublicSocialLink = {
+  platform: string;
+  url: string;
+};
+
 // Resolve a slug to its (active) business. Returns ONLY non-sensitive fields —
 // bank details are never exposed here; they are fetched separately after a
 // successful booking.
@@ -76,6 +81,20 @@ export async function getActiveProviders(
     .eq("is_active", true)
     .order("created_at", { ascending: true });
   return (data ?? []) as PublicProvider[];
+}
+
+// The merchant's public social profiles — shown as icons on the booking page.
+export async function getActiveSocialLinks(
+  businessId: string,
+): Promise<PublicSocialLink[]> {
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("business_social_links")
+    .select("platform, url")
+    .eq("business_id", businessId)
+    .eq("is_active", true)
+    .order("platform", { ascending: true });
+  return (data ?? []) as PublicSocialLink[];
 }
 
 // One active service of a business (used to read its duration server-side).
