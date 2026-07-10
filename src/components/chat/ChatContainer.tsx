@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { fetchChatHistory, markMessagesRead } from "@/lib/chat/actions";
 import type { ChatMessage } from "@/lib/chat/types";
-import { ChatMessagesList } from "./ChatMessagesList";
+import { ChatMessagesList, type ClientChatMessage } from "./ChatMessagesList";
 import { ChatInputArea } from "./ChatInputArea";
 
 const PAGE_SIZE = 50;
@@ -24,11 +25,12 @@ export function ChatContainer({
   callerType: "business" | "customer";
 }) {
   const t = useTranslations("Chat");
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ClientChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCustomerTyping, setIsCustomerTyping] = useState(false);
   const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const channelRef = useRef<RealtimeChannel | null>(null);
 
   // Single append point with id-dedupe: the sender's own action response and
   // the realtime INSERT event both deliver the same row.
@@ -37,6 +39,35 @@ export function ChatContainer({
       prev.some((m) => m.id === msg.id) ? prev : [...prev, msg],
     );
   }, []);
+
+  // Optimistic pipeline for the merchant's own text sends: temp bubble now,
+  // replaced by (or removed on failure) the server row, which is then
+  // broadcast on the thread channel so the anonymous customer page — which
+  // can't hold a postgres_changes subscription (no session, RLS) — receives
+  // it instantly instead of waiting for its poll tick.
+  const handleOptimistic = useCallback((msg: ChatMessage) => {
+    setMessages((prev) => [...prev, { ...msg, _state: "pending" as const }]);
+  }, []);
+
+  const handleSettled = useCallback(
+    (tempId: string, real: ChatMessage | null) => {
+      setMessages((prev) => {
+        const withoutTemp = prev.filter((m) => m.id !== tempId);
+        if (!real) return withoutTemp;
+        return withoutTemp.some((m) => m.id === real.id)
+          ? withoutTemp
+          : [...withoutTemp, real];
+      });
+      if (real) {
+        void channelRef.current?.send({
+          type: "broadcast",
+          event: "message",
+          payload: { message: real },
+        });
+      }
+    },
+    [],
+  );
 
   // Initial history (newest page, returned ASC by the action).
   useEffect(() => {
@@ -97,8 +128,10 @@ export function ChatContainer({
         },
       )
       .subscribe();
+    channelRef.current = channel;
     return () => {
       if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+      channelRef.current = null;
       void supabase.removeChannel(channel);
     };
   }, [appointmentId, appendMessage]);
@@ -121,7 +154,13 @@ export function ChatContainer({
       ) : (
         <ChatMessagesList messages={messages} isTyping={isCustomerTyping} />
       )}
-      <ChatInputArea appointmentId={appointmentId} onSent={appendMessage} />
+      <ChatInputArea
+        appointmentId={appointmentId}
+        onSent={appendMessage}
+        senderType={callerType}
+        onOptimistic={handleOptimistic}
+        onSettled={handleSettled}
+      />
     </div>
   );
 }

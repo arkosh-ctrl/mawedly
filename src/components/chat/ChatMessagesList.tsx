@@ -16,11 +16,15 @@ import type { ChatMessage } from "@/lib/chat/types";
 // the locale, so this is a deliberate, documented exception to the
 // logical-properties rule: physical auto cross-margins (ml-auto = hug right,
 // mr-auto = hug left) pin each bubble to its side in every direction.
+// A message row plus optional client-only delivery state: optimistic sends
+// render at reduced opacity until the server's row replaces them.
+export type ClientChatMessage = ChatMessage & { _state?: "pending" };
+
 export function ChatMessagesList({
   messages,
   isTyping,
 }: {
-  messages: ChatMessage[];
+  messages: ClientChatMessage[];
   isTyping?: boolean;
 }) {
   const t = useTranslations("Chat");
@@ -106,7 +110,7 @@ function hhmm(iso: string) {
   });
 }
 
-function MessageBubble({ message }: { message: ChatMessage }) {
+function MessageBubble({ message }: { message: ClientChatMessage }) {
   if (message.sender_type === "system") {
     return (
       <span className="max-w-[85%] self-center text-center text-xs text-muted">
@@ -119,7 +123,9 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   const isAttachment = message.type === "image" || message.type === "file";
   return (
     <div
-      className={`flex max-w-[75%] flex-col gap-0.5 rounded-2xl px-3.5 py-2 ${
+      className={`flex max-w-[75%] flex-col gap-0.5 rounded-2xl px-3.5 py-2 transition-opacity ${
+        message._state === "pending" ? "opacity-60" : ""
+      } ${
         isBusiness
           ? "ml-auto bg-primary text-paper"
           : "mr-auto border border-line bg-canvas text-ink"

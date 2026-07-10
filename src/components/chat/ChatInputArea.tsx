@@ -21,22 +21,34 @@ const ATTACHMENT_TYPES: Record<string, ChatMessageType> = {
 };
 
 // Composer: auto-resizing textarea (no external lib), Enter sends,
-// Shift+Enter inserts a newline. The successfully created message is handed
-// back to the parent so it appears immediately without waiting for realtime.
+// Shift+Enter inserts a newline.
+//
+// Text messages send OPTIMISTICALLY when the parent provides senderType +
+// onOptimistic + onSettled: the bubble appears instantly, the box clears and
+// stays enabled, and the temp row is replaced by (or removed on failure, with
+// the draft restored) the server's answer. Attachments keep the confirmed
+// path — the upload dominates their latency anyway.
 export function ChatInputArea({
   appointmentId,
   onSent,
   onTyping,
+  senderType,
+  onOptimistic,
+  onSettled,
 }: {
   appointmentId: string;
   onSent: (message: ChatMessage) => void;
   onTyping?: () => void;
+  senderType?: "business" | "customer";
+  onOptimistic?: (message: ChatMessage) => void;
+  onSettled?: (tempId: string, real: ChatMessage | null) => void;
 }) {
   const t = useTranslations("Chat");
   const [value, setValue] = useState("");
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
   const busy = sending || uploading;
+  const optimistic = Boolean(senderType && onOptimistic && onSettled);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,20 +60,68 @@ export function ChatInputArea({
     el.style.height = `${Math.min(el.scrollHeight, MAX_HEIGHT_PX)}px`;
   }
 
+  function resetBox() {
+    setValue("");
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.focus();
+    }
+  }
+
+  // On failure, put the draft back only if the user hasn't typed a new one.
+  function restoreDraft(content: string) {
+    setValue((v) => (v.trim() ? v : content));
+  }
+
   async function submit() {
     const content = value.trim();
-    if (!content || busy) return;
+    if (!content || uploading) return;
+
+    if (optimistic) {
+      // Instant path: temp bubble now, box freed now, server settles later.
+      const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      onOptimistic!({
+        id: tempId,
+        appointment_id: appointmentId,
+        business_id: "",
+        sender_type: senderType!,
+        sender_id: null,
+        type: "text",
+        content,
+        file_path: null,
+        file_name: null,
+        file_size: null,
+        mime_type: null,
+        is_read: false,
+        read_at: null,
+        created_at: new Date().toISOString(),
+      });
+      resetBox();
+      try {
+        const res = await sendMessage({ appointmentId, content, type: "text" });
+        if (res.status === "success") {
+          onSettled!(tempId, res.message);
+        } else {
+          onSettled!(tempId, null);
+          restoreDraft(content);
+          toast.error(t(`messages.${res.messageKey}`));
+        }
+      } catch {
+        onSettled!(tempId, null);
+        restoreDraft(content);
+        toast.error(t("messages.saveFailed"));
+      }
+      return;
+    }
+
+    if (sending) return;
     setSending(true);
     try {
       const res = await sendMessage({ appointmentId, content, type: "text" });
       if (res.status === "success") {
         onSent(res.message);
-        setValue("");
-        const el = textareaRef.current;
-        if (el) {
-          el.style.height = "auto";
-          el.focus();
-        }
+        resetBox();
       } else {
         toast.error(t(`messages.${res.messageKey}`));
       }
@@ -149,7 +209,7 @@ export function ChatInputArea({
         ref={textareaRef}
         rows={1}
         value={value}
-        disabled={busy}
+        disabled={optimistic ? uploading : busy}
         aria-label={t("inputLabel")}
         placeholder={t("inputPlaceholder")}
         onChange={(e) => {
@@ -168,11 +228,11 @@ export function ChatInputArea({
       />
       <button
         type="button"
-        disabled={busy || !value.trim()}
+        disabled={(optimistic ? uploading : busy) || !value.trim()}
         onClick={() => void submit()}
         className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-50"
       >
-        {sending ? t("sending") : t("send")}
+        {!optimistic && sending ? t("sending") : t("send")}
       </button>
     </div>
   );

@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -158,21 +157,27 @@ export async function sendMessage(
 
     if (userId) {
       // Merchant path — ownership enforced explicitly (business lookup +
-      // business_id filter) and again by RLS on the insert.
-      const { data: business } = await supabase
-        .from("businesses")
-        .select("id")
-        .eq("user_id", userId)
-        .maybeSingle();
+      // business_id cross-check) and again by RLS on the insert. The two
+      // lookups are independent, so they run in parallel: one DB round trip
+      // of latency instead of two (chat sends were noticeably slow from GCC
+      // to a remote Supabase region).
+      const [{ data: business }, { data: appt }] = await Promise.all([
+        supabase
+          .from("businesses")
+          .select("id")
+          .eq("user_id", userId)
+          .maybeSingle(),
+        // RLS already scopes appointments to the caller's own business.
+        supabase
+          .from("appointments")
+          .select("id, status, business_id")
+          .eq("id", appointmentId)
+          .maybeSingle(),
+      ]);
       if (!business) return { status: "error", messageKey: "noBusiness" };
-
-      const { data: appt } = await supabase
-        .from("appointments")
-        .select("id, status")
-        .eq("id", appointmentId)
-        .eq("business_id", business.id)
-        .maybeSingle();
-      if (!appt) return { status: "error", messageKey: "notFound" };
+      if (!appt || appt.business_id !== business.id) {
+        return { status: "error", messageKey: "notFound" };
+      }
       // Friendly pre-check; the trigger re-enforces this on insert.
       if (!CHAT_OPEN_STATUSES.includes(appt.status)) {
         return { status: "error", messageKey: "chatClosed" };
@@ -204,7 +209,9 @@ export async function sendMessage(
         return { status: "error", messageKey: "saveFailed" };
       }
 
-      revalidatePath("/[locale]/dashboard/appointments", "page");
+      // No revalidatePath here: the thread UI appends the returned row itself
+      // and unread badges arrive over Realtime — revalidating the whole
+      // appointments page per message only added latency.
       return {
         status: "success",
         messageKey: "messageSent",
@@ -251,16 +258,21 @@ export async function sendMessage(
     // Notify the merchant of the incoming customer message (best-effort; the
     // language follows the merchant's default, resolved inside the block).
     if (appt.business_id) {
-      const { data: cust } = await admin
-        .from("customers")
-        .select("name")
-        .eq("id", appt.customer_id ?? "")
-        .maybeSingle();
-      const { data: biz } = await admin
-        .from("businesses")
-        .select("default_language")
-        .eq("id", appt.business_id)
-        .maybeSingle();
+      // Independent lookups — parallelized to shave a DB round trip off the
+      // customer send path (the notification insert itself stays awaited so
+      // serverless doesn't drop it).
+      const [{ data: cust }, { data: biz }] = await Promise.all([
+        admin
+          .from("customers")
+          .select("name")
+          .eq("id", appt.customer_id ?? "")
+          .maybeSingle(),
+        admin
+          .from("businesses")
+          .select("default_language")
+          .eq("id", appt.business_id)
+          .maybeSingle(),
+      ]);
       const lang = biz?.default_language === "en" ? "en" : "ar";
       const name = cust?.name ?? (lang === "en" ? "A customer" : "عميل");
       const preview =
@@ -407,7 +419,8 @@ export async function markMessagesRead(
       .eq("is_read", false);
     if (error) return { status: "error", messageKey: "saveFailed" };
 
-    revalidatePath("/[locale]/dashboard/appointments", "page");
+    // No revalidatePath: opening a thread shouldn't rebuild the appointments
+    // page — the unread state is client-local once the dropdown/thread is open.
     return { status: "success", messageKey: "messagesRead" };
   } catch {
     return { status: "error", messageKey: "saveFailed" };
