@@ -28,19 +28,19 @@ export function BookingPreview({
   return (
     <div
       aria-hidden
-      className="animate-fade-rise overflow-hidden rounded-2xl border border-line bg-paper shadow-xl shadow-ink/5"
+      className="animate-fade-rise overflow-hidden rounded-2xl border border-line bg-paper shadow-lg"
     >
       <div className="grid grid-cols-[2fr_3fr]">
         {/* Identity rail — inline-start, right in RTL, exactly like /[slug]. */}
-        <div className="flex flex-col gap-3 bg-ink p-5 text-paper">
-          <span className="h-1 w-8 rounded-full bg-saffron" />
-          <span className="font-display text-lg font-extrabold leading-snug">
+        <div className="flex flex-col gap-3 border-e border-line bg-paper p-5 text-ink">
+          <span className="h-1 w-8 rounded-full bg-primary" />
+          <span className="font-display text-lg font-bold leading-snug">
             {sampleName}
           </span>
-          <span className="self-start rounded-full border border-pine px-2.5 py-0.5 text-[0.6875rem] font-semibold text-canvas">
+          <span className="self-start rounded-full bg-primary-light px-2.5 py-0.5 text-[0.6875rem] font-semibold text-primary">
             {typeBadge}
           </span>
-          <span className="font-mono text-xs text-canvas" dir="ltr">
+          <span className="font-mono text-xs text-muted" dir="ltr">
             09:00–21:00
           </span>
         </div>
@@ -48,12 +48,12 @@ export function BookingPreview({
         {/* Booking flow miniature. */}
         <div className="flex flex-col gap-3 p-5">
           <PreviewStep num="01" label={stepService} />
-          <div className="flex flex-col items-start gap-1 rounded-lg border-2 border-ink bg-canvas px-3 py-2">
+          <div className="flex flex-col items-start gap-1 rounded-lg border-2 border-primary bg-primary-light/40 px-3 py-2">
             <span className="flex w-full items-center justify-between gap-2">
               <span className="text-xs font-semibold text-ink">
                 {sampleService}
               </span>
-              <span className="h-2 w-2 shrink-0 rounded-full bg-saffron" />
+              <span className="h-2 w-2 shrink-0 rounded-full bg-primary" />
             </span>
             <span className="font-mono text-[0.6875rem] text-muted">
               {sampleServiceMeta}
@@ -70,8 +70,8 @@ export function BookingPreview({
                   dir="ltr"
                   className={`rounded-md border px-2 py-1.5 text-center font-mono text-xs ${
                     locked
-                      ? "border-ink bg-ink font-semibold text-paper"
-                      : "border-line bg-canvas text-ink"
+                      ? "border-primary bg-primary font-semibold text-paper"
+                      : "border-line bg-paper text-ink"
                   }`}
                 >
                   {time}
@@ -85,7 +85,7 @@ export function BookingPreview({
             <span className="text-xs font-medium">
               {confirmed} · <span dir="ltr" className="font-mono">{lockedTime}</span>
             </span>
-            <span className="rounded-full bg-saffron px-2 py-0.5 text-[0.6875rem] font-semibold text-ink">
+            <span className="rounded-full bg-success px-2 py-0.5 text-[0.6875rem] font-semibold text-paper">
               {depositPaid}
             </span>
           </div>
@@ -98,8 +98,8 @@ export function BookingPreview({
 function PreviewStep({ num, label }: { num: string; label: string }) {
   return (
     <div className="flex items-baseline gap-2">
-      <span className="font-mono text-[0.6875rem] font-bold tracking-widest text-saffron">
-        {num}
+      <span className="flex size-5 items-center justify-center rounded-full bg-primary-light text-[0.625rem] font-bold text-primary">
+        {num.replace(/^0/, "")}
       </span>
       <span className="font-display text-sm font-bold text-ink">{label}</span>
     </div>

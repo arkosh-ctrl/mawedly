@@ -22,7 +22,7 @@ export function SiteNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5">
         <Link
           href="/"
@@ -43,7 +43,7 @@ export function SiteNav() {
                 aria-current={active ? "page" : undefined}
                 className={`relative rounded-md px-3 py-1.5 text-sm transition-colors ${
                   active
-                    ? "text-ink after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:bg-saffron after:content-['']"
+                    ? "font-semibold text-ink"
                     : "text-muted hover:text-ink"
                 }`}
               >
@@ -63,7 +63,7 @@ export function SiteNav() {
           </Link>
           <Link
             href="/login"
-            className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
           >
             {t("cta")}
           </Link>
@@ -83,14 +83,14 @@ export function SiteNav() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-line bg-canvas md:hidden">
+        <div className="border-t border-line bg-paper md:hidden">
           <div className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-3">
             {NAV_LINKS.map((l) => (
               <Link
                 key={l.key}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-2 text-sm text-pine hover:bg-paper"
+                className="rounded-md px-2 py-2 text-sm text-muted hover:bg-canvas hover:text-ink"
               >
                 {t(l.key)}
               </Link>
@@ -101,7 +101,7 @@ export function SiteNav() {
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-paper"
+                className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper"
               >
                 {t("cta")}
               </Link>

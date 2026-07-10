@@ -45,9 +45,9 @@ export default async function HomePage({
   ];
 
   const steps = [
-    { num: "01", title: t("step1Title"), body: t("step1Body"), accent: "border-t-pine" },
-    { num: "02", title: t("step2Title"), body: t("step2Body"), accent: "border-t-saffron" },
-    { num: "03", title: t("step3Title"), body: t("step3Body"), accent: "border-t-ink" },
+    { num: "1", title: t("step1Title"), body: t("step1Body") },
+    { num: "2", title: t("step2Title"), body: t("step2Body") },
+    { num: "3", title: t("step3Title"), body: t("step3Body") },
   ];
 
   // The five consultation fields of the platform, labelled via Signup.types so
@@ -69,26 +69,26 @@ export default async function HomePage({
 
       {/* Hero — headline as thesis, beside a working miniature of the real
           booking page (the same split card shipped at /[slug]). */}
-      <section className="ledger-lines border-b border-line">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="border-b border-line bg-paper">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:py-28 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col items-start">
             <span className="animate-fade-rise eyebrow">{t("heroBadge")}</span>
-            <h1 className="animate-fade-rise mt-5 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl [animation-delay:60ms]">
+            <h1 className="animate-fade-rise mt-5 font-display text-4xl font-bold leading-[1.25] tracking-tight text-ink sm:text-5xl md:text-6xl [animation-delay:60ms]">
               {t("heroTitle")}
             </h1>
-            <p className="animate-fade-rise mt-6 max-w-xl text-lg leading-relaxed text-muted [animation-delay:120ms]">
+            <p className="animate-fade-rise mt-6 max-w-xl text-lg leading-[1.6] text-muted [animation-delay:120ms]">
               {t("heroSubtitle")}
             </p>
-            <div className="animate-fade-rise mt-9 flex w-full flex-col gap-3 sm:flex-row sm:items-center [animation-delay:180ms]">
+            <div className="animate-fade-rise mt-10 flex w-full flex-col gap-3 sm:flex-row sm:items-center [animation-delay:180ms]">
               <Link
                 href="/signup"
-                className="rounded-full bg-ink px-7 py-3 text-center text-base font-semibold text-paper transition-colors hover:bg-pine"
+                className="rounded-full bg-primary px-8 py-3.5 text-center text-base font-semibold text-paper shadow-sm transition-all hover:scale-[1.02] hover:bg-primary-hover"
               >
                 {t("heroCtaPrimary")}
               </Link>
               <Link
                 href="/how-it-works"
-                className="rounded-full border border-line bg-paper px-7 py-3 text-center text-base font-semibold text-ink transition-colors hover:border-ink"
+                className="rounded-full border border-line bg-paper px-8 py-3.5 text-center text-base font-semibold text-ink transition-colors hover:border-muted"
               >
                 {t("heroCtaSecondary")}
               </Link>
@@ -109,20 +109,20 @@ export default async function HomePage({
       </section>
 
       {/* The five consultation fields — the same labels the signup form uses. */}
-      <section className="mx-auto max-w-5xl px-5 pt-20">
+      <section className="mx-auto max-w-5xl px-5 pt-24">
         <div className="flex flex-col gap-2">
           <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             {t("categoriesTitle")}
           </h2>
-          <p className="max-w-2xl text-muted">{t("categoriesSubtitle")}</p>
+          <p className="max-w-2xl leading-[1.6] text-muted">{t("categoriesSubtitle")}</p>
         </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((c) => (
             <div
               key={c.key}
-              className="flex flex-col gap-3 rounded-xl border border-line bg-paper p-6 shadow-sm"
+              className="flex flex-col gap-3 rounded-2xl border border-line bg-paper p-6 shadow-sm transition-shadow hover:shadow-md"
             >
-              <span className="flex size-10 items-center justify-center rounded-full bg-ink text-paper">
+              <span className="flex size-11 items-center justify-center rounded-full bg-primary-light text-primary">
                 {c.icon}
               </span>
               <h3 className="font-display text-lg font-bold text-ink">
@@ -136,18 +136,18 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* How it works — the numbered daybook rhythm shared with /[slug]. */}
-      <section className="mx-auto max-w-5xl px-5 pt-20">
+      {/* How it works — three numbered steps, no more. */}
+      <section className="mx-auto max-w-5xl px-5 pt-24">
         <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           {t("stepsTitle")}
         </h2>
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+        <div className="mt-12 grid gap-4 sm:grid-cols-3">
           {steps.map((s) => (
             <div
               key={s.num}
-              className={`flex flex-col gap-3 rounded-xl border border-line ${s.accent} border-t-[3px] bg-paper p-6 shadow-sm`}
+              className="flex flex-col gap-3 rounded-2xl border border-line bg-paper p-6 shadow-sm transition-shadow hover:shadow-md"
             >
-              <span className="font-mono text-xs font-bold tracking-widest text-saffron">
+              <span className="flex size-9 items-center justify-center rounded-full bg-primary-light text-sm font-bold text-primary">
                 {s.num}
               </span>
               <h3 className="font-display text-lg font-bold text-ink">
@@ -160,54 +160,54 @@ export default async function HomePage({
       </section>
 
       {/* Problem / Solution — the solution deliberately gets the wider page. */}
-      <section className="mx-auto max-w-5xl px-5 py-20">
-        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-[2fr_3fr]">
-          <div className="bg-canvas p-8 sm:p-10">
+      <section className="mx-auto max-w-5xl px-5 py-24">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line shadow-sm md:grid-cols-[2fr_3fr]">
+          <div className="bg-section p-8 sm:p-10">
             <span className="eyebrow text-muted">{t("problemTitle")}</span>
-            <p className="mt-5 leading-relaxed text-pine">{t("problemBody")}</p>
+            <p className="mt-5 leading-[1.6] text-muted">{t("problemBody")}</p>
           </div>
           <div className="bg-ink p-8 text-paper sm:p-10">
-            <span className="eyebrow">{t("solutionTitle")}</span>
-            <p className="mt-5 leading-relaxed text-canvas">
+            <span className="eyebrow text-sage">{t("solutionTitle")}</span>
+            <p className="mt-5 leading-[1.6] text-canvas">
               {t("solutionBody")}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Features — an asymmetric zigzag: the lead capability on dark ink,
-          the rest on paper with identity-coloured top rules. */}
-      <section className="mx-auto max-w-5xl px-5 pb-20">
+      {/* Features — an asymmetric grid: the lead capability on near-black,
+          the rest on white cards with hairline borders. */}
+      <section className="mx-auto max-w-5xl px-5 pb-24">
         <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           {t("featuresTitle")}
         </h2>
-        <div className="mt-10 grid gap-4 lg:grid-cols-12">
+        <div className="mt-12 grid gap-4 lg:grid-cols-12">
           <div className="flex flex-col gap-3 rounded-2xl bg-ink p-8 text-paper shadow-md lg:col-span-7">
-            <span className="h-1 w-10 rounded-full bg-saffron" aria-hidden />
+            <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
             <h3 className="font-display text-xl font-bold text-paper">
               {features[0].title}
             </h3>
-            <p className="leading-relaxed text-canvas">{features[0].body}</p>
+            <p className="leading-[1.6] text-sage">{features[0].body}</p>
           </div>
-          <FeatureCard feature={features[1]} accent="border-t-pine" span="lg:col-span-5" />
-          <FeatureCard feature={features[2]} accent="border-t-saffron" span="lg:col-span-5" />
-          <FeatureCard feature={features[3]} accent="border-t-ink" span="lg:col-span-7" />
+          <FeatureCard feature={features[1]} accent="" span="lg:col-span-5" />
+          <FeatureCard feature={features[2]} accent="" span="lg:col-span-5" />
+          <FeatureCard feature={features[3]} accent="" span="lg:col-span-7" />
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="mx-auto max-w-5xl px-5 pb-24">
-        <div className="flex flex-col items-center rounded-3xl bg-ink px-8 py-16 text-center text-paper">
-          <span className="h-1 w-10 rounded-full bg-saffron" aria-hidden />
+        <div className="flex flex-col items-center rounded-3xl bg-ink px-8 py-20 text-center text-paper">
+          <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
           <h2 className="mx-auto mt-6 max-w-2xl font-display text-2xl font-bold tracking-tight sm:text-3xl">
             {t("finalCtaTitle")}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-canvas">
+          <p className="mx-auto mt-4 max-w-xl leading-[1.6] text-sage">
             {t("finalCtaBody")}
           </p>
           <Link
             href="/signup"
-            className="mt-9 inline-block rounded-full bg-saffron px-8 py-3 text-base font-semibold text-ink transition-transform hover:scale-[1.02]"
+            className="mt-10 inline-block rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-paper transition-all hover:scale-[1.02] hover:bg-primary-hover"
           >
             {t("finalCtaButton")}
           </Link>
@@ -228,9 +228,9 @@ function FeatureCard({
 }) {
   return (
     <div
-      className={`flex flex-col gap-3 rounded-xl border border-line ${accent} border-t-[3px] bg-paper p-8 shadow-sm ${span}`}
+      className={`flex flex-col gap-3 rounded-2xl border border-line ${accent} bg-paper p-8 shadow-sm transition-shadow hover:shadow-md ${span}`}
     >
-      <span className="size-2.5 rounded-[2px] bg-saffron" aria-hidden />
+      <span className="size-2.5 rounded-full bg-primary" aria-hidden />
       <h3 className="font-display text-lg font-bold text-ink">
         {feature.title}
       </h3>

@@ -71,7 +71,7 @@ function FooterCol({
 }) {
   return (
     <div className="flex flex-col gap-3">
-      <span className="eyebrow">{title}</span>
+      <span className="eyebrow text-sage">{title}</span>
       <ul className="flex flex-col gap-2">{children}</ul>
     </div>
   );

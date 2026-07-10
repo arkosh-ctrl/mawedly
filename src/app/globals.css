@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Mawedly — "Daybook" visual identity.
- * Time is the material: a warm ruled-paper canvas, deep pine ink, and a
- * single saffron accent reserved for the booking signature (a locked /
- * confirmed slot). Numbers and times are set in a tabular mono so the UI
- * reads like an appointment ledger.
+ * Mawedly — "Cal-Apple" visual identity.
+ * Cal.com's scheduling clarity on Apple's premium restraint: pure white
+ * surfaces on a neutral near-white canvas, near-black text, one vivid
+ * blue reserved for actions and focus, and barely-there shadows.
+ * Maximum whitespace; every element earns its place.
  * ------------------------------------------------------------------ */
 
 @theme inline {
@@ -13,29 +13,53 @@
      by the locale layout (Arabic first, Latin fallback). */
   --font-sans: var(--font-arabic), var(--font-latin), ui-sans-serif, system-ui,
     sans-serif;
-  --font-display: var(--font-display), var(--font-arabic), var(--font-latin),
-    ui-sans-serif, system-ui, sans-serif;
+  /* Headings share the body face — one clean voice (IBM Plex), no display
+     font, per the Apple-neutral direction. */
+  --font-display: var(--font-arabic), var(--font-latin), ui-sans-serif,
+    system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
 @theme {
   /* Surfaces */
-  --color-canvas: #f1eee4; /* warm ruled paper — page background */
-  --color-paper: #fbfaf3; /* near-white warm — cards / raised surfaces */
+  --color-canvas: #f9fafb; /* neutral near-white — page background */
+  --color-paper: #ffffff; /* pure white — cards / raised surfaces */
+  --color-section: #f5f5f7; /* Apple grey — alternating landing sections */
 
-  /* Ink (deep pine) family */
-  --color-ink: #12302a; /* primary text, dark surfaces, primary CTA */
-  --color-pine: #244a40; /* mid pine — hover / secondary dark */
-  --color-sage: #8fa59b; /* muted text on ink surfaces */
+  /* Ink (near-black) family */
+  --color-ink: #111827; /* primary text, dark surfaces */
+  --color-pine: #1f2937; /* hover / secondary dark */
+  --color-sage: #9ca3af; /* muted text on dark surfaces */
 
-  /* Accent — the signature. Reserved for confirmed / deposit / focus. */
-  --color-saffron: #c2881b;
-  --color-saffron-soft: #e7c66a;
+  /* Accent — one blue. Actions, links, active states, focus. */
+  --color-saffron: #006bff;
+  --color-saffron-soft: #e6f0ff;
 
-  /* Lines & secondary text on canvas */
-  --color-line: #ddd8c9; /* hairline rule, borders */
-  --color-muted: #5c5b4d; /* secondary text on canvas (AA on canvas) */
-  --color-brick: #a6441f; /* destructive / error */
+  /* Lines & secondary text */
+  --color-line: #e5e7eb; /* hairline borders, dividers */
+  --color-muted: #6b7280; /* secondary text (AA on white) */
+  --color-brick: #ef4444; /* destructive / error */
+
+  /* Semantic aliases */
+  --color-primary: #006bff;
+  --color-primary-hover: #0052cc;
+  --color-primary-light: #e6f0ff;
+  --color-success: #10b981;
+  --color-success-light: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fffbeb;
+  --color-danger: #ef4444;
+  --color-danger-light: #fef2f2;
+
+  /* Elevation — Apple-subtle, almost invisible until needed. */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.12);
+
+  /* Radii */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
 }
 
 :root {
@@ -51,44 +75,47 @@
     font-family: var(--font-sans);
   }
 
-  /* Tabular, slashed-zero figures for the ledger feel wherever mono is used. */
+  /* Arabic script needs looser leading than Latin: tight line-heights clip
+     ascenders/descenders and diacritics. Give headings a safe floor. */
+  :lang(ar) h1,
+  :lang(ar) h2,
+  :lang(ar) h3 {
+    line-height: 1.3;
+  }
+
+  /* Tabular, slashed-zero figures wherever mono is used (times, prices). */
   .font-mono {
     font-variant-numeric: tabular-nums slashed-zero;
   }
 
   ::selection {
-    background: var(--color-saffron);
+    background: var(--color-primary-light);
     color: var(--color-ink);
   }
 
   /* One consistent, highly visible focus ring across the whole app. */
   :focus-visible {
-    outline: 2px solid var(--color-saffron);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
 @layer components {
-  /* Faint ruled-paper backdrop — the daybook motif. Sits behind hero / panels. */
+  /* Former ruled-paper motif — retired. The class stays (used across pages)
+     but now renders nothing: pure surfaces only, per the no-gradients rule. */
   .ledger-lines {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 39px,
-      color-mix(in srgb, var(--color-line) 60%, transparent) 39px,
-      color-mix(in srgb, var(--color-line) 60%, transparent) 40px
-    );
+    background-image: none;
   }
 
   /* Small uppercase functional label used as section eyebrows. */
   .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
+    font-weight: 600;
     line-height: 1;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-saffron);
+    color: var(--color-primary);
   }
 }
 
@@ -102,7 +129,7 @@
   }
 }
 
-/* Hero daybook: the confirmed slot "locks" in on load. */
+/* Hero: the confirmed slot "locks" in on load. */
 @keyframes slot-lock {
   0% {
     transform: translateY(6px);
@@ -122,7 +149,7 @@
   animation: slot-lock 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* Cards rising into place on page entry. Staggered per card via inline
+/* Cards rising into place on page entry — subtle, staggered via inline
    animation-delay; `both` keeps delayed cards hidden until their turn. */
 @keyframes fade-rise {
   from {
