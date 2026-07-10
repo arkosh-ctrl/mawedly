@@ -56,7 +56,7 @@ export function SidebarNav({
               aria-current={active ? "page" : undefined}
               className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-sm transition-colors ${
                 active
-                  ? "border-saffron font-semibold text-ink"
+                  ? "border-saffron font-semibold text-primary"
                   : "border-transparent text-muted hover:text-ink"
               }`}
             >
@@ -100,7 +100,7 @@ function VerticalLink({
       aria-current={active ? "page" : undefined}
       className={`flex items-center gap-3 rounded-lg border-s-[3px] px-3 py-2.5 text-sm transition-colors ${
         active
-          ? "border-saffron bg-ink font-semibold text-paper"
+          ? "border-saffron bg-primary-light font-semibold text-primary"
           : "border-transparent text-muted hover:bg-canvas hover:text-ink"
       }`}
     >

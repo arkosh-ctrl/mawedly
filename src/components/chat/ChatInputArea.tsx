@@ -140,7 +140,7 @@ export function ChatInputArea({
         disabled={busy}
         aria-label={t("attach")}
         onClick={() => fileInputRef.current?.click()}
-        className="shrink-0 rounded-full border border-line px-3 py-2 text-sm text-ink transition-colors hover:border-ink disabled:opacity-50"
+        className="shrink-0 rounded-full border border-line px-3 py-2 text-sm text-ink transition-colors hover:border-muted disabled:opacity-50"
       >
         <span aria-hidden>📎</span>
       </button>
@@ -164,13 +164,13 @@ export function ChatInputArea({
             void submit();
           }
         }}
-        className="max-h-[120px] flex-1 resize-none rounded-lg border border-line bg-canvas px-3 py-2 text-start text-sm text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-ink disabled:opacity-60"
+        className="max-h-[120px] flex-1 resize-none rounded-lg border border-line bg-paper px-3 py-2 text-start text-sm text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-primary focus:ring-2 focus:ring-primary-light disabled:opacity-60"
       />
       <button
         type="button"
         disabled={busy || !value.trim()}
         onClick={() => void submit()}
-        className="shrink-0 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-50"
+        className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-50"
       >
         {sending ? t("sending") : t("send")}
       </button>

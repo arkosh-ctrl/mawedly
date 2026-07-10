@@ -121,7 +121,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
     <div
       className={`flex max-w-[75%] flex-col gap-0.5 rounded-2xl px-3.5 py-2 ${
         isBusiness
-          ? "ml-auto bg-ink text-paper"
+          ? "ml-auto bg-primary text-paper"
           : "mr-auto border border-line bg-canvas text-ink"
       }`}
     >
@@ -135,7 +135,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
       <span
         dir="ltr"
         className={`self-end font-mono text-[10px] ${
-          isBusiness ? "text-sage" : "text-muted"
+          isBusiness ? "text-paper/70" : "text-muted"
         }`}
       >
         {hhmm(message.created_at)}

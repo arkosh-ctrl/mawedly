@@ -86,7 +86,7 @@ export function CalendarView({
           type="button"
           onClick={() => shift(-1)}
           aria-label={t("calendar.prev")}
-          className="rounded-lg border border-line px-3 py-1 text-ink transition-colors hover:border-ink"
+          className="rounded-lg border border-line px-3 py-1 text-ink transition-colors hover:border-muted"
         >
           {dir === "rtl" ? "›" : "‹"}
         </button>
@@ -95,7 +95,7 @@ export function CalendarView({
           type="button"
           onClick={() => shift(1)}
           aria-label={t("calendar.next")}
-          className="rounded-lg border border-line px-3 py-1 text-ink transition-colors hover:border-ink"
+          className="rounded-lg border border-line px-3 py-1 text-ink transition-colors hover:border-muted"
         >
           {dir === "rtl" ? "‹" : "›"}
         </button>
@@ -129,7 +129,7 @@ export function CalendarView({
               <span
                 className={`text-xs font-semibold ${
                   isToday
-                    ? "flex size-5 items-center justify-center rounded-full bg-ink text-paper"
+                    ? "flex size-5 items-center justify-center rounded-full bg-primary text-paper"
                     : "text-ink"
                 }`}
               >
@@ -181,7 +181,7 @@ export function CalendarView({
             type="button"
             onClick={() => setSelectedDay(null)}
             aria-label={t("calendar.close")}
-            className="rounded-lg border border-line px-3 py-1 text-ink transition-colors hover:border-ink"
+            className="rounded-lg border border-line px-3 py-1 text-ink transition-colors hover:border-muted"
           >
             ✕
           </button>

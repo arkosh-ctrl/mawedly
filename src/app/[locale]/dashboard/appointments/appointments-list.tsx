@@ -145,7 +145,7 @@ export function AppointmentsList({
           <button
             type="button"
             onClick={() => setConfirmCancel(null)}
-            className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
+            className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-muted"
           >
             {t("keep")}
           </button>

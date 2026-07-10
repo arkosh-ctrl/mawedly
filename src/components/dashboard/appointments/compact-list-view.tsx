@@ -74,7 +74,7 @@ export function CompactListView({
                     disabled={actions.isPending}
                     onClick={() => actions.changeStatus(a.id, nextTransition)}
                     title={t(`actions.${nextTransition}`)}
-                    className="rounded-lg bg-ink px-2 py-1 text-xs font-medium text-paper transition-colors hover:bg-pine"
+                    className="rounded-lg bg-primary px-2 py-1 text-xs font-medium text-paper transition-colors hover:bg-primary-hover"
                   >
                     {t(`actions.${nextTransition}`)}
                   </button>
@@ -84,7 +84,7 @@ export function CompactListView({
                   onClick={() => actions.openChat(a)}
                   title={t("actions.chat")}
                   aria-label={t("actions.chat")}
-                  className="rounded-lg border border-line px-2 py-1 text-xs text-ink transition-colors hover:border-ink"
+                  className="rounded-lg border border-line px-2 py-1 text-xs text-ink transition-colors hover:border-muted"
                 >
                   💬
                 </button>

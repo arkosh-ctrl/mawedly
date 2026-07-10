@@ -33,7 +33,7 @@ export function StatusTabs({
             className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
               active
                 ? "border-ink bg-ink text-paper"
-                : "border-line text-muted hover:border-ink hover:text-ink"
+                : "border-line text-muted hover:border-muted hover:text-ink"
             }`}
           >
             {tab.label}

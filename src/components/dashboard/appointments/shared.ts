@@ -22,23 +22,24 @@ export type AppointmentRow = {
   reviews: { id: string }[] | null;
 };
 
-// Badge classes per status, reusing the existing design tokens (ink = deep
-// green, saffron = gold, pine, brick). Shared by every view.
+// Badge classes per status — soft pills: pale background, saturated text
+// (success green = confirmed, amber = pending, blue = completed, red =
+// canceled, grey = no-show). Shared by every view.
 export const STATUS_BADGE: Record<AppointmentStatus, string> = {
-  pending_verification: "bg-saffron/15 text-pine border-saffron/45",
-  confirmed: "bg-ink text-paper border-ink",
-  completed: "bg-pine/10 text-pine border-pine/35",
+  pending_verification: "bg-warning-light text-warning border-warning/30",
+  confirmed: "bg-success-light text-success border-success/30",
+  completed: "bg-primary-light text-primary border-primary/30",
   no_show: "bg-canvas text-muted border-line",
-  canceled: "bg-brick/10 text-brick border-brick/35",
+  canceled: "bg-danger-light text-danger border-danger/30",
 };
 
 // Solid dot color per status — used by the calendar density dots.
 export const STATUS_DOT: Record<AppointmentStatus, string> = {
-  pending_verification: "bg-saffron",
-  confirmed: "bg-ink",
-  completed: "bg-pine",
+  pending_verification: "bg-warning",
+  confirmed: "bg-success",
+  completed: "bg-primary",
   no_show: "bg-muted",
-  canceled: "bg-brick",
+  canceled: "bg-danger",
 };
 
 export function hhmm(time: string) {

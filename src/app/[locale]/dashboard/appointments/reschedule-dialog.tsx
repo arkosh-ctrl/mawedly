@@ -104,7 +104,7 @@ export function RescheduleDialog({
               min={today}
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+              className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
             />
           </label>
 
@@ -130,8 +130,8 @@ export function RescheduleDialog({
                       onClick={() => setSlot(s)}
                       className={`rounded-lg border px-3 py-2 font-mono text-sm transition-colors ${
                         slot === s
-                          ? "border-ink bg-ink font-semibold text-paper"
-                          : "border-line bg-canvas text-ink hover:border-ink"
+                          ? "border-primary bg-primary font-semibold text-paper"
+                          : "border-line bg-paper text-primary hover:border-primary hover:bg-primary-light/40"
                       }`}
                     >
                       {s}
@@ -146,7 +146,7 @@ export function RescheduleDialog({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
+              className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-muted"
             >
               {t("reschedule.cancel")}
             </button>
@@ -154,7 +154,7 @@ export function RescheduleDialog({
               type="button"
               disabled={!slot || isSaving}
               onClick={save}
-              className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-50"
+              className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-50"
             >
               {isSaving ? t("reschedule.saving") : t("reschedule.save")}
             </button>

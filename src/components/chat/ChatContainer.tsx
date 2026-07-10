@@ -109,7 +109,7 @@ export function ChatContainer({
   }, [appointmentId, callerType]);
 
   return (
-    <div className="flex h-96 flex-col overflow-hidden rounded-xl border border-line bg-paper">
+    <div className="flex h-96 flex-col overflow-hidden rounded-2xl border border-line bg-paper shadow-sm">
       {loading ? (
         <p className="flex flex-1 items-center justify-center text-sm text-muted">
           {t("loading")}

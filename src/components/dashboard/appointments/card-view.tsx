@@ -36,7 +36,7 @@ export function CardView({
         return (
           <li
             key={a.id}
-            className="flex flex-col gap-3 rounded-xl border border-line bg-paper px-4 py-3.5"
+            className="flex flex-col gap-3 rounded-2xl border border-line bg-paper px-4 py-3.5 shadow-sm transition-shadow hover:shadow-md"
           >
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="flex flex-col gap-1">
@@ -54,7 +54,7 @@ export function CardView({
               </span>
             </div>
 
-            <div className="text-sm text-pine">
+            <div className="text-sm text-muted">
               <span>{a.services?.name ?? "—"}</span>
               <span className="text-muted"> · </span>
               <span>{a.providers?.name ?? "—"}</span>
@@ -79,12 +79,12 @@ export function CardView({
               <span
                 className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   a.deposit_verified
-                    ? "bg-saffron/15 text-pine"
+                    ? "bg-success-light text-success"
                     : "bg-canvas text-muted"
                 }`}
               >
                 {a.deposit_verified && (
-                  <span className="size-1.5 rounded-full bg-saffron" aria-hidden />
+                  <span className="size-1.5 rounded-full bg-success" aria-hidden />
                 )}
                 {a.deposit_verified
                   ? t("depositBadge.verified")
@@ -94,7 +94,7 @@ export function CardView({
                 type="button"
                 disabled={isPending}
                 onClick={() => actions.toggleDeposit(a.id, !a.deposit_verified)}
-                className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-ink"
+                className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-muted"
               >
                 {a.deposit_verified
                   ? t("actions.clearDeposit")
@@ -105,7 +105,7 @@ export function CardView({
                   href={receiptUrls[a.id]}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-line px-2.5 py-1 text-xs text-pine transition-colors hover:border-pine"
+                  className="rounded-full border border-line px-2.5 py-1 text-xs text-primary transition-colors hover:border-primary"
                 >
                   {t("actions.viewReceipt")}
                 </a>
@@ -130,7 +130,7 @@ export function CardView({
                     type="button"
                     disabled={isPending}
                     onClick={() => actions.changeStatus(a.id, target)}
-                    className="rounded-full bg-ink px-2.5 py-1 text-xs font-medium text-paper transition-colors hover:bg-pine"
+                    className="rounded-full bg-primary px-2.5 py-1 text-xs font-medium text-paper transition-colors hover:bg-primary-hover"
                   >
                     {t(`actions.${target}`)}
                   </button>
@@ -142,7 +142,7 @@ export function CardView({
                   type="button"
                   disabled={isPending}
                   onClick={() => actions.requestReschedule(a)}
-                  className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-ink"
+                  className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-muted"
                 >
                   {t("actions.reschedule")}
                 </button>
@@ -151,7 +151,7 @@ export function CardView({
               <button
                 type="button"
                 onClick={() => actions.openChat(a)}
-                className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-ink"
+                className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition-colors hover:border-muted"
               >
                 {t("actions.chat")}
               </button>
@@ -163,7 +163,7 @@ export function CardView({
                 <button
                   type="button"
                   onClick={() => actions.copyReviewLink(a.id)}
-                  className="rounded-full border border-line px-2.5 py-1 text-xs text-pine transition-colors hover:border-pine"
+                  className="rounded-full border border-line px-2.5 py-1 text-xs text-primary transition-colors hover:border-primary"
                 >
                   {t("reviewLinkButton")}
                 </button>
