@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
@@ -73,8 +74,22 @@ export default async function HomePage({
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:py-28 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col items-start">
             <span className="animate-fade-rise eyebrow">{t("heroBadge")}</span>
-            <h1 className="animate-fade-rise mt-5 font-display text-4xl font-bold leading-[1.25] tracking-tight text-ink sm:text-5xl md:text-6xl [animation-delay:60ms]">
-              {t("heroTitle")}
+            <h1 className="mt-5 font-display text-4xl font-bold leading-[1.25] tracking-tight text-ink sm:text-5xl md:text-6xl">
+              {/* Word-by-word kinetic reveal — word-level (never per-letter:
+                  Arabic letterforms reshape as they join). Whitespace between
+                  spans keeps normal wrapping in both directions. */}
+              {t("heroTitle")
+                .split(" ")
+                .map((word, i) => (
+                  <Fragment key={`${word}-${i}`}>
+                    <span
+                      className="animate-word"
+                      style={{ animationDelay: `${0.2 + i * 0.12}s` }}
+                    >
+                      {word}
+                    </span>{" "}
+                  </Fragment>
+                ))}
             </h1>
             <p className="animate-fade-rise mt-6 max-w-xl text-lg leading-[1.6] text-muted [animation-delay:120ms]">
               {t("heroSubtitle")}

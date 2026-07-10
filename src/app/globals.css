@@ -166,6 +166,114 @@
   animation: fade-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* ------------------------------------------------------------------ *
+ * Hero live demo — the booking-preview card plays the product story on
+ * an 8s loop: service gets picked → slot locks → confirmation + deposit.
+ * Pure CSS choreography over one shared timeline. Base (non-animated)
+ * styles are the composed final frame, so under prefers-reduced-motion
+ * (which forces a single instant iteration) the card renders as the
+ * finished static composition.
+ * ------------------------------------------------------------------ */
+
+/* Word-by-word headline reveal — delay staggered inline per word. */
+.animate-word {
+  display: inline-block;
+  animation: fade-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes demo-pick {
+  0%,
+  10% {
+    border-color: var(--color-line);
+    background-color: transparent;
+  }
+  14%,
+  100% {
+    border-color: var(--color-primary);
+    background-color: color-mix(
+      in srgb,
+      var(--color-primary-light) 40%,
+      transparent
+    );
+  }
+}
+
+.demo-pick {
+  animation: demo-pick 8s linear infinite both;
+}
+
+@keyframes demo-dot {
+  0%,
+  11% {
+    transform: scale(0);
+  }
+  15%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+.demo-dot {
+  animation: demo-dot 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
+}
+
+@keyframes demo-lock {
+  0%,
+  36% {
+    background-color: transparent;
+    border-color: var(--color-line);
+    color: var(--color-ink);
+  }
+  42%,
+  100% {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-paper);
+  }
+}
+
+.demo-lock {
+  animation: demo-lock 8s linear infinite both;
+}
+
+@keyframes demo-confirm {
+  0%,
+  48% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  55%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demo-confirm {
+  animation: demo-confirm 8s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+}
+
+@keyframes demo-badge {
+  0%,
+  58% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  64% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  68%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.demo-badge {
+  animation: demo-badge 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
+}
+
 /* Notification bell: a brief swing when a new notification arrives. */
 @keyframes notif-ring {
   0%,

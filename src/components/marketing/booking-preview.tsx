@@ -1,7 +1,8 @@
-// Static miniature of the real public booking page (the Phase-2 split card):
-// dark identity rail + numbered flow with a slot grid, one slot locking in
-// with the deposit badge. Pure presentation — every string arrives as a prop
-// and nothing is fetched; what the visitor sees here is what merchants get.
+// Live miniature of the real public booking page (the Phase-2 split card):
+// identity rail + numbered flow with a slot grid. On an 8s CSS loop the card
+// plays the whole product story — service picked, slot locked, confirmation
+// with the deposit badge — via the demo-* classes in globals.css. Pure
+// presentation — every string arrives as a prop and nothing is fetched.
 // Decorative for screen readers: the surrounding hero copy carries the message.
 export function BookingPreview({
   sampleName,
@@ -48,12 +49,12 @@ export function BookingPreview({
         {/* Booking flow miniature. */}
         <div className="flex flex-col gap-3 p-5">
           <PreviewStep num="01" label={stepService} />
-          <div className="flex flex-col items-start gap-1 rounded-lg border-2 border-primary bg-primary-light/40 px-3 py-2">
+          <div className="demo-pick flex flex-col items-start gap-1 rounded-lg border-2 border-primary bg-primary-light/40 px-3 py-2">
             <span className="flex w-full items-center justify-between gap-2">
               <span className="text-xs font-semibold text-ink">
                 {sampleService}
               </span>
-              <span className="h-2 w-2 shrink-0 rounded-full bg-primary" />
+              <span className="demo-dot h-2 w-2 shrink-0 rounded-full bg-primary" />
             </span>
             <span className="font-mono text-[0.6875rem] text-muted">
               {sampleServiceMeta}
@@ -70,7 +71,7 @@ export function BookingPreview({
                   dir="ltr"
                   className={`rounded-md border px-2 py-1.5 text-center font-mono text-xs ${
                     locked
-                      ? "border-primary bg-primary font-semibold text-paper"
+                      ? "demo-lock border-primary bg-primary font-semibold text-paper"
                       : "border-line bg-paper text-ink"
                   }`}
                 >
@@ -81,11 +82,11 @@ export function BookingPreview({
           </div>
 
           {/* The signature moment: the chosen slot locks in, deposit paid. */}
-          <div className="animate-slot-lock flex items-center justify-between gap-2 rounded-lg bg-ink px-3 py-2 text-paper">
+          <div className="demo-confirm flex items-center justify-between gap-2 rounded-lg bg-ink px-3 py-2 text-paper">
             <span className="text-xs font-medium">
               {confirmed} · <span dir="ltr" className="font-mono">{lockedTime}</span>
             </span>
-            <span className="rounded-full bg-success px-2 py-0.5 text-[0.6875rem] font-semibold text-paper">
+            <span className="demo-badge rounded-full bg-success px-2 py-0.5 text-[0.6875rem] font-semibold text-paper">
               {depositPaid}
             </span>
           </div>
