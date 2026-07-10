@@ -68,7 +68,7 @@ export default async function PricingPage({
             }`}
           >
             {p.featured && (
-              <span className="absolute -top-3 start-8 rounded-full bg-saffron px-3 py-1 text-xs font-semibold text-ink">
+              <span className="absolute -top-3 start-8 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-paper">
                 {t("mostPopular")}
               </span>
             )}
@@ -108,8 +108,8 @@ export default async function PricingPage({
               href="/login"
               className={`mt-8 rounded-full px-6 py-3 text-center text-sm font-semibold transition-colors ${
                 p.featured
-                  ? "bg-saffron text-ink hover:bg-saffron-soft"
-                  : "border border-line bg-canvas text-ink hover:border-ink"
+                  ? "bg-primary text-paper hover:bg-primary-hover"
+                  : "border border-line bg-canvas text-ink hover:border-muted"
               }`}
             >
               {p.cta}

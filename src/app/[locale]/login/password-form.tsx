@@ -36,14 +36,14 @@ export function PasswordForm({ next }: { next: string }) {
             autoComplete="email"
             dir="ltr"
             placeholder="you@example.com"
-            className="rounded-lg border border-line bg-canvas px-3 py-2.5 font-mono text-start text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-ink"
+            className="rounded-lg border border-line bg-canvas px-3 py-2.5 font-mono text-start text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-primary"
           />
         </label>
 
         <button
           type="submit"
           disabled={resetPending}
-          className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+          className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
         >
           {resetPending ? t("sending") : t("sendResetSubmit")}
         </button>
@@ -83,7 +83,7 @@ export function PasswordForm({ next }: { next: string }) {
           autoComplete="email"
           dir="ltr"
           placeholder="you@example.com"
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 font-mono text-start text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 font-mono text-start text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-primary"
         />
       </label>
 
@@ -95,14 +95,14 @@ export function PasswordForm({ next }: { next: string }) {
           required
           autoComplete="current-password"
           dir="ltr"
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
         />
       </label>
 
       <button
         type="submit"
         disabled={signInPending}
-        className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+        className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
         {signInPending ? t("signingIn") : t("signInSubmit")}
       </button>

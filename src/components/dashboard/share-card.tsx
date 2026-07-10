@@ -39,7 +39,7 @@ export function ShareCard({
         <p className="text-sm text-muted">{t("setSlugFirst")}</p>
         <Link
           href="/dashboard/settings"
-          className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+          className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
         >
           {t("completeSetup")}
         </Link>
@@ -93,7 +93,7 @@ export function ShareCard({
             type="button"
             onClick={copy}
             aria-live="polite"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
           >
             <CopyIcon />
             {copied ? t("copied") : t("copyLink")}
@@ -102,7 +102,7 @@ export function ShareCard({
             href={waShareLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-ink"
+            className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-muted"
           >
             {t("shareWhatsApp")}
           </a>
@@ -126,7 +126,7 @@ export function ShareCard({
         <button
           type="button"
           onClick={downloadQr}
-          className="mt-1 inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+          className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
         >
           <DownloadIcon />
           {t("downloadQr")}

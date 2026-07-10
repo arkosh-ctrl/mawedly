@@ -60,7 +60,7 @@ export function SignupForm({ next }: { next: string }) {
   }, [slug]);
 
   const inputClass =
-    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary";
   const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
 
   const slugUnavailable =
@@ -161,7 +161,7 @@ export function SignupForm({ next }: { next: string }) {
       <button
         type="submit"
         disabled={pending || slugUnavailable || slugStatus === "checking"}
-        className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+        className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
         {pending ? t("creating") : t("submit")}
       </button>

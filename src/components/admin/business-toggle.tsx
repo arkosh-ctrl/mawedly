@@ -41,7 +41,7 @@ export function BusinessToggle({
       className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-50 ${
         isActive
           ? "border-brick/40 text-brick hover:bg-brick/5"
-          : "border-pine/40 text-pine hover:bg-pine/5"
+          : "border-pine/40 text-pine hover:bg-primary-hover/5"
       }`}
     >
       {isActive ? "تعليق" : "تفعيل"}

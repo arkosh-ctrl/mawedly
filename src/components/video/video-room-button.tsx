@@ -70,7 +70,7 @@ export function VideoRoomButton({
           href={room.jitsiUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex w-fit items-center gap-2 rounded-full bg-pine px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-ink"
+          className="inline-flex w-fit items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-primary-hover"
         >
           <VideoIcon />
           {t("openRoom")}
@@ -94,7 +94,7 @@ export function VideoRoomButton({
       type="button"
       onClick={open}
       disabled={isPending}
-      className="inline-flex items-center gap-2 rounded-full bg-pine px-3 py-1.5 text-xs font-medium text-paper transition-colors hover:bg-ink disabled:opacity-50"
+      className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-paper transition-colors hover:bg-primary-hover disabled:opacity-50"
     >
       {isPending ? (
         <span className="size-3.5 animate-spin rounded-full border-2 border-paper border-t-transparent" />

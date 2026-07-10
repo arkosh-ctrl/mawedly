@@ -59,7 +59,7 @@ export default async function AdminBusinessesPage({
                       <span
                         className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           b.is_active
-                            ? "bg-pine/10 text-pine"
+                            ? "bg-success-light text-success"
                             : "bg-brick/10 text-brick"
                         }`}
                       >

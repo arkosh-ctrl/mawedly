@@ -62,7 +62,7 @@ export function ReviewForm({ appointmentId }: { appointmentId: string }) {
           rows={4}
           maxLength={1000}
           placeholder={t("commentPlaceholder")}
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-primary"
         />
       </label>
 
@@ -72,7 +72,7 @@ export function ReviewForm({ appointmentId }: { appointmentId: string }) {
           name="reviewer_name"
           maxLength={100}
           autoComplete="name"
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
         />
       </label>
 
@@ -84,7 +84,7 @@ export function ReviewForm({ appointmentId }: { appointmentId: string }) {
           dir="ltr"
           inputMode="tel"
           autoComplete="tel"
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
         />
         <span className="text-xs text-muted">{t("reviewer_phone_hint")}</span>
       </label>
@@ -92,7 +92,7 @@ export function ReviewForm({ appointmentId }: { appointmentId: string }) {
       <button
         type="submit"
         disabled={pending || rating === 0}
-        className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+        className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
         {pending ? t("submitting") : t("submit")}
       </button>

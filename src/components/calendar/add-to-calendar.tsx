@@ -101,12 +101,12 @@ export function AddToCalendar({
     ? `inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors ${
         added
           ? "border-pine/30 bg-canvas text-pine"
-          : "border-line text-ink hover:border-ink"
+          : "border-line text-ink hover:border-muted"
       }`
     : `inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
         added
           ? "border border-pine/30 bg-canvas text-pine"
-          : "bg-pine text-paper hover:bg-ink"
+          : "bg-primary text-paper hover:bg-primary-hover"
       }`;
 
   return (

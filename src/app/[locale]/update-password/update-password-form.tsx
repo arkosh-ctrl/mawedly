@@ -24,7 +24,7 @@ export function UpdatePasswordForm() {
           required
           autoComplete="new-password"
           dir="ltr"
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
         />
       </label>
 
@@ -36,14 +36,14 @@ export function UpdatePasswordForm() {
           required
           autoComplete="new-password"
           dir="ltr"
-          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+          className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
         />
       </label>
 
       <button
         type="submit"
         disabled={pending}
-        className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+        className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
         {pending ? t("saving") : t("submit")}
       </button>

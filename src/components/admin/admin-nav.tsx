@@ -29,7 +29,7 @@ export function AdminNav() {
             aria-current={on ? "page" : undefined}
             className={`rounded-full px-3.5 py-1.5 text-sm transition-colors ${
               on
-                ? "bg-ink font-semibold text-paper"
+                ? "bg-primary-light font-semibold text-primary"
                 : "text-muted hover:bg-canvas hover:text-ink"
             }`}
           >

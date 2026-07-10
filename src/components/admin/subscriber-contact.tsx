@@ -36,7 +36,7 @@ export function SubscriberContact({
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-pine/40 px-2.5 py-1 text-xs font-medium text-pine transition-colors hover:bg-pine/5"
+          className="rounded-full border border-pine/40 px-2.5 py-1 text-xs font-medium text-pine transition-colors hover:bg-primary-hover/5"
         >
           واتساب
         </a>
@@ -44,7 +44,7 @@ export function SubscriberContact({
       {mailUrl && (
         <a
           href={mailUrl}
-          className="rounded-full border border-line px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-ink"
+          className="rounded-full border border-line px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-muted"
         >
           إيميل
         </a>

@@ -13,9 +13,9 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 const STATUS_CLASS: Record<string, string> = {
-  pending_verification: "bg-saffron/15 text-pine",
-  confirmed: "bg-ink text-paper",
-  completed: "bg-pine/10 text-pine",
+  pending_verification: "bg-warning-light text-warning",
+  confirmed: "bg-success-light text-success",
+  completed: "bg-primary-light text-primary",
   no_show: "bg-canvas text-muted",
   canceled: "bg-brick/10 text-brick",
 };

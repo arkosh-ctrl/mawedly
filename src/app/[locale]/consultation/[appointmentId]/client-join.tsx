@@ -27,7 +27,7 @@ export function ClientJoin({
     <button
       type="button"
       onClick={join}
-      className="inline-flex items-center gap-2 rounded-full bg-pine px-6 py-3 text-base font-medium text-paper transition-colors hover:bg-ink"
+      className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-medium text-paper transition-colors hover:bg-primary-hover"
     >
       {t("enterRoom")}
     </button>

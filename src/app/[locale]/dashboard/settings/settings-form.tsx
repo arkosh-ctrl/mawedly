@@ -55,7 +55,7 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
   }
 
   const inputClass =
-    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary";
   const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
   const errorClass = "text-xs text-brick";
 
@@ -182,7 +182,7 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+          className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
         >
           {isPending ? t("saving") : t("save")}
         </button>

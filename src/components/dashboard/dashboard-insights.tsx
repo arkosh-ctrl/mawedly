@@ -79,7 +79,7 @@ export function DashboardInsights({ data }: { data: AnalyticsData }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* Revenue growth vs previous 30 days */}
         <div className="flex items-center gap-4 rounded-2xl border border-line bg-paper p-4">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-pine/10 text-pine">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-light text-primary">
             <Icon>
               <path d="M23 6l-9.5 9.5-5-5L1 18" />
               <path d="M17 6h6v6" />
@@ -173,7 +173,7 @@ export function DashboardInsights({ data }: { data: AnalyticsData }) {
           </p>
           <Link
             href={banner.href}
-            className="rounded-full border border-line bg-paper px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:border-ink"
+            className="rounded-full border border-line bg-paper px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:border-muted"
           >
             {t(banner.ctaKey)}
           </Link>

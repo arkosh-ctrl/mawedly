@@ -17,8 +17,8 @@ const SCOPE_LABEL: Record<string, string> = {
 
 const LEVEL_CLASS: Record<string, string> = {
   error: "bg-brick/10 text-brick",
-  warn: "bg-saffron/15 text-pine",
-  info: "bg-pine/10 text-pine",
+  warn: "bg-warning-light text-warning",
+  info: "bg-primary-light text-primary",
 };
 
 function fmt(iso: string) {

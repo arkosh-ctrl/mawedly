@@ -89,7 +89,7 @@ export function ReviewsTools({
             <select
               value={selectedId}
               onChange={(e) => setSelectedId(e.target.value)}
-              className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink"
+              className="rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary"
             >
               <option value="">{t("select_appointment_placeholder")}</option>
               {unreviewed.map((a) => (
@@ -112,7 +112,7 @@ export function ReviewsTools({
                   <button
                     type="button"
                     onClick={copyLink}
-                    className="rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-paper transition-colors hover:bg-pine"
+                    className="rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-paper transition-colors hover:bg-primary-hover"
                   >
                     {t("copyLink")}
                   </button>
@@ -121,7 +121,7 @@ export function ReviewsTools({
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-full border border-pine/40 px-3.5 py-1.5 text-xs font-semibold text-pine transition-colors hover:bg-pine/5"
+                      className="rounded-full border border-pine/40 px-3.5 py-1.5 text-xs font-semibold text-pine transition-colors hover:bg-primary-hover/5"
                     >
                       {t("whatsappSend")}
                     </a>
@@ -139,7 +139,7 @@ export function ReviewsTools({
           <button
             type="button"
             onClick={exportExcel}
-            className="rounded-full border border-line px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:border-ink"
+            className="rounded-full border border-line px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:border-muted"
           >
             {t("export_excel")}
           </button>

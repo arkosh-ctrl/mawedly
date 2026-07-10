@@ -64,7 +64,7 @@ export default async function HowItWorksPage({
         </p>
         <Link
           href="/login"
-          className="mt-7 inline-block rounded-full bg-saffron px-7 py-3 text-base font-semibold text-ink transition-transform hover:scale-[1.02]"
+          className="mt-7 inline-block rounded-full bg-primary px-7 py-3 text-base font-semibold text-paper transition-all hover:scale-[1.02] hover:bg-primary-hover"
         >
           {t("ctaButton")}
         </Link>

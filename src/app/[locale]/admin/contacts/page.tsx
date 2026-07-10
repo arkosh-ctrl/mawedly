@@ -14,8 +14,8 @@ const STATUS_LABEL: Record<SubscriberStatus, string> = {
 };
 
 const STATUS_CLASS: Record<SubscriberStatus, string> = {
-  active: "bg-pine/10 text-pine",
-  trial: "bg-saffron/15 text-pine",
+  active: "bg-success-light text-success",
+  trial: "bg-warning-light text-warning",
   trial_expired: "bg-brick/10 text-brick",
   suspended: "bg-brick/10 text-brick",
 };
@@ -88,7 +88,7 @@ export default async function AdminContactsPage({
             className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
               filter === ff.key
                 ? "border-ink bg-ink text-paper"
-                : "border-line text-muted hover:border-ink hover:text-ink"
+                : "border-line text-muted hover:border-muted hover:text-ink"
             }`}
           >
             {ff.label}

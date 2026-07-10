@@ -33,7 +33,7 @@ export default async function ProvidersPage({
           <p className="text-sm text-muted">{t("noBusiness")}</p>
           <Link
             href="/dashboard/settings"
-            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
           >
             {t("goToSettings")}
           </Link>

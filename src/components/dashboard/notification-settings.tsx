@@ -169,7 +169,7 @@ export function NotificationSettings() {
           type="button"
           onClick={save}
           disabled={isPending}
-          className="rounded-full bg-ink px-5 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+          className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
         >
           {isPending ? t("settings.saving") : t("settings.save")}
         </button>
@@ -198,7 +198,7 @@ function Toggle({
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-40 ${
-        checked ? "bg-ink" : "bg-line"
+        checked ? "bg-primary" : "bg-line"
       }`}
     >
       <span

@@ -150,7 +150,7 @@ export default async function DashboardPage({
                 </span>
                 <Link
                   href="/dashboard/appointments"
-                  className="rounded-full border border-pine px-4 py-2 text-sm font-semibold text-canvas transition-colors hover:bg-pine hover:text-paper"
+                  className="rounded-full border border-pine px-4 py-2 text-sm font-semibold text-canvas transition-colors hover:bg-primary-hover hover:text-paper"
                 >
                   {t("appointmentsNav")}
                 </Link>
@@ -204,7 +204,7 @@ export default async function DashboardPage({
           <p className="text-sm text-muted">{t("noBusiness")}</p>
           <Link
             href="/dashboard/settings"
-            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
           >
             {t("completeSetup")}
           </Link>

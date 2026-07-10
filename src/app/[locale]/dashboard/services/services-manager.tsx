@@ -94,7 +94,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
   }
 
   const inputClass =
-    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+    "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary";
   const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
   const errorClass = "text-xs text-brick";
 
@@ -104,7 +104,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
         <button
           type="button"
           onClick={openCreate}
-          className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+          className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
         >
           {t("add")}
         </button>
@@ -143,7 +143,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
                 <button
                   type="button"
                   onClick={() => openEdit(s)}
-                  className="rounded-full border border-line px-3 py-1 text-sm text-ink transition-colors hover:border-ink"
+                  className="rounded-full border border-line px-3 py-1 text-sm text-ink transition-colors hover:border-muted"
                 >
                   {t("edit")}
                 </button>
@@ -160,7 +160,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
                     type="button"
                     onClick={() => changeActive(s, true)}
                     disabled={isPending}
-                    className="rounded-full border border-pine/40 px-3 py-1 text-sm text-pine transition-colors hover:bg-pine/5"
+                    className="rounded-full border border-pine/40 px-3 py-1 text-sm text-pine transition-colors hover:bg-primary-hover/5"
                   >
                     {t("activate")}
                   </button>
@@ -243,14 +243,14 @@ export function ServicesManager({ services }: { services: Service[] }) {
             <button
               type="button"
               onClick={() => setDialogOpen(false)}
-              className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
+              className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-muted"
             >
               {t("cancel")}
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-60"
+              className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
             >
               {isPending ? t("saving") : t("save")}
             </button>
@@ -268,7 +268,7 @@ export function ServicesManager({ services }: { services: Service[] }) {
           <button
             type="button"
             onClick={() => setConfirmArchive(null)}
-            className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-ink"
+            className="rounded-full border border-line px-4 py-2 text-sm text-ink transition-colors hover:border-muted"
           >
             {t("cancel")}
           </button>
