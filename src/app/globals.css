@@ -168,7 +168,7 @@
 
 /* ------------------------------------------------------------------ *
  * Hero live demo — the booking-preview card plays the product story on
- * an 8s loop: service gets picked → slot locks → confirmation + deposit.
+ * a 12s loop: service gets picked → slot locks → confirmation + deposit.
  * Pure CSS choreography over one shared timeline. Base (non-animated)
  * styles are the composed final frame, so under prefers-reduced-motion
  * (which forces a single instant iteration) the card renders as the
@@ -199,7 +199,7 @@
 }
 
 .demo-pick {
-  animation: demo-pick 8s linear infinite both;
+  animation: demo-pick 12s linear infinite both;
 }
 
 @keyframes demo-dot {
@@ -214,7 +214,7 @@
 }
 
 .demo-dot {
-  animation: demo-dot 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
+  animation: demo-dot 12s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
 }
 
 @keyframes demo-lock {
@@ -233,7 +233,7 @@
 }
 
 .demo-lock {
-  animation: demo-lock 8s linear infinite both;
+  animation: demo-lock 12s linear infinite both;
 }
 
 @keyframes demo-confirm {
@@ -250,7 +250,7 @@
 }
 
 .demo-confirm {
-  animation: demo-confirm 8s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  animation: demo-confirm 12s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
 }
 
 @keyframes demo-badge {
@@ -271,7 +271,7 @@
 }
 
 .demo-badge {
-  animation: demo-badge 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
+  animation: demo-badge 12s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
 }
 
 /* Notification bell: a brief swing when a new notification arrives. */
