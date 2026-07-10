@@ -1,9 +1,11 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { ShareReview } from "@/components/reviews/share-review";
 import { ReviewsTools, type ExportRow, type UnreviewedAppt } from "./reviews-tools";
 
 type ReviewRow = {
+  id: string;
   rating: number;
   comment: string | null;
   reviewer_name: string | null;
@@ -46,7 +48,7 @@ export default async function ReviewsPage({
   // dashboard home / settings pages).
   const { data: business } = await supabase
     .from("businesses")
-    .select("id")
+    .select("id, slug")
     .eq("user_id", userId ?? "")
     .maybeSingle();
 
@@ -55,7 +57,7 @@ export default async function ReviewsPage({
   if (business) {
     const { data } = await supabase
       .from("reviews")
-      .select("rating, comment, reviewer_name, reviewer_phone, created_at")
+      .select("id, rating, comment, reviewer_name, reviewer_phone, created_at")
       .eq("business_id", business.id)
       .order("created_at", { ascending: false })
       .returns<ReviewRow[]>();
@@ -125,9 +127,9 @@ export default async function ReviewsPage({
           </div>
 
           <ul className="flex flex-col gap-3">
-            {reviews.map((r, i) => (
+            {reviews.map((r) => (
               <li
-                key={i}
+                key={r.id}
                 className="flex flex-col gap-2 rounded-2xl border border-line bg-paper px-5 py-4"
               >
                 <div className="flex items-center justify-between gap-3">
@@ -137,20 +139,29 @@ export default async function ReviewsPage({
                   </time>
                 </div>
                 {r.comment && <p className="text-sm text-ink">{r.comment}</p>}
-                {(r.reviewer_name || r.reviewer_phone) && (
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
-                    {r.reviewer_name && (
-                      <span>
-                        {t("nameColumn")}: {r.reviewer_name}
-                      </span>
-                    )}
-                    {r.reviewer_phone && (
-                      <span dir="ltr">
-                        {t("phoneColumn")}: {r.reviewer_phone}
-                      </span>
-                    )}
-                  </div>
-                )}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
+                  {r.reviewer_name && (
+                    <span>
+                      {t("nameColumn")}: {r.reviewer_name}
+                    </span>
+                  )}
+                  {r.reviewer_phone && (
+                    <span dir="ltr">
+                      {t("phoneColumn")}: {r.reviewer_phone}
+                    </span>
+                  )}
+                  {/* Positive reviews (4–5★) can be shared to social media. */}
+                  {r.rating >= 4 && business && (
+                    <span className="ms-auto">
+                      <ShareReview
+                        reviewId={r.id}
+                        rating={r.rating}
+                        comment={r.comment}
+                        bookingPath={`/${locale}/${business.slug}`}
+                      />
+                    </span>
+                  )}
+                </div>
               </li>
             ))}
           </ul>

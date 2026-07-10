@@ -178,6 +178,20 @@
       "rating": "Rating",
       "comment": "Comment",
       "date": "Date"
+    },
+    "share": {
+      "button": "Share",
+      "title": "Share this review",
+      "previewAlt": "Review card",
+      "captionLabel": "Post text",
+      "defaultCaption": "“{quote}” — rated {rating}/5 by our clients. Book your appointment: {link}",
+      "noQuoteFallback": "An excellent experience",
+      "copy": "Copy text",
+      "copied": "Text copied.",
+      "download": "Download card",
+      "cardFailed": "Couldn't generate the card, try again.",
+      "instagramHint": "Instagram doesn't support browser sharing: download the card, copy the text, then post from the app.",
+      "nativeShare": "Share…"
     }
   },
   "Settings": {

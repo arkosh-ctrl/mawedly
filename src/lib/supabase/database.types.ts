@@ -311,6 +311,60 @@ export type Database = {
         };
         Relationships: [];
       };
+      business_social_links: {
+        Row: {
+          id: string;
+          business_id: string;
+          platform: string;
+          url: string;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          business_id: string;
+          platform: string;
+          url: string;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          business_id?: string;
+          platform?: string;
+          url?: string;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      social_shares: {
+        Row: {
+          id: string;
+          business_id: string;
+          review_id: string;
+          platform: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          business_id: string;
+          review_id: string;
+          platform: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          business_id?: string;
+          review_id?: string;
+          platform?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -328,3 +382,5 @@ export type Customer = PublicTables["customers"]["Row"];
 export type Appointment = PublicTables["appointments"]["Row"];
 export type Review = PublicTables["reviews"]["Row"];
 export type AuditLog = PublicTables["audit_log"]["Row"];
+export type BusinessSocialLink = PublicTables["business_social_links"]["Row"];
+export type SocialShare = PublicTables["social_shares"]["Row"];
