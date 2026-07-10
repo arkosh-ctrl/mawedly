@@ -22,7 +22,7 @@ type BookingResult = {
 };
 
 const inputClass =
-  "rounded-lg border border-line bg-canvas px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-ink";
+  "rounded-lg border border-line bg-paper px-3 py-2.5 text-start text-ink outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary-light";
 const labelClass = "flex flex-col gap-1.5 text-sm font-medium text-ink";
 
 // Above this count, choice cards/chips would sprawl — fall back to a select.
@@ -164,7 +164,7 @@ export function BookingWidget({
       <div className="animate-fade-rise flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <span
-            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-saffron text-base font-bold text-ink"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-success-light text-base font-bold text-success"
             aria-hidden
           >
             ✓
@@ -207,7 +207,7 @@ export function BookingWidget({
           </span>
           <p className="text-xs text-muted">{t("receipt.hint")}</p>
           {receiptState === "done" ? (
-            <p className="rounded-lg border border-saffron/40 bg-saffron/10 px-3 py-2 text-sm text-pine">
+            <p className="rounded-lg border border-success/30 bg-success-light px-3 py-2 text-sm font-medium text-success">
               {t("receipt.done")}
             </p>
           ) : (
@@ -220,7 +220,7 @@ export function BookingWidget({
                   const f = e.target.files?.[0];
                   if (f) void uploadReceipt(f);
                 }}
-                className="text-sm text-ink file:me-3 file:rounded-full file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-paper"
+                className="text-sm text-ink file:me-3 file:rounded-full file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-paper"
               />
               {receiptState === "uploading" && (
                 <p className="text-xs text-muted">{t("receipt.uploading")}</p>
@@ -241,7 +241,7 @@ export function BookingWidget({
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="self-start rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-pine"
+            className="self-start rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
           >
             {t("whatsappButton")}
           </a>
@@ -253,7 +253,7 @@ export function BookingWidget({
           href={chatUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="self-start rounded-full border border-line px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-ink"
+          className="self-start rounded-full border border-line px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-muted"
         >
           {t("chatButton")}
         </a>
@@ -288,8 +288,8 @@ export function BookingWidget({
                 onClick={() => setServiceId(s.id)}
                 className={`flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-start transition-colors ${
                   active
-                    ? "border-ink bg-canvas"
-                    : "border-line bg-paper hover:border-ink"
+                    ? "border-primary bg-primary-light/40"
+                    : "border-line bg-paper hover:border-muted"
                 }`}
               >
                 <span className="flex w-full items-center justify-between gap-2">
@@ -298,7 +298,7 @@ export function BookingWidget({
                   </span>
                   {active && (
                     <span
-                      className="h-2.5 w-2.5 shrink-0 rounded-full bg-saffron"
+                      className="h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
                       aria-hidden
                     />
                   )}
@@ -348,8 +348,8 @@ export function BookingWidget({
                 onClick={() => setProviderId(p.id)}
                 className={`rounded-full border px-4 py-2 text-sm transition-colors ${
                   active
-                    ? "border-ink bg-ink font-semibold text-paper"
-                    : "border-line bg-canvas text-ink hover:border-ink"
+                    ? "border-primary bg-primary font-semibold text-paper"
+                    : "border-line bg-paper text-ink hover:border-muted"
                 }`}
               >
                 {p.name}
@@ -409,8 +409,8 @@ export function BookingWidget({
                   onClick={() => setSlot(s)}
                   className={`rounded-lg border px-3 py-2 font-mono text-sm transition-colors ${
                     slot === s
-                      ? "border-ink bg-ink font-semibold text-paper"
-                      : "border-line bg-canvas text-ink hover:border-ink"
+                      ? "border-primary bg-primary font-semibold text-paper"
+                      : "border-line bg-paper text-primary hover:border-primary hover:bg-primary-light/40"
                   }`}
                 >
                   {s}
@@ -467,7 +467,7 @@ export function BookingWidget({
         type="button"
         disabled={!canSubmit}
         onClick={submit}
-        className="w-full rounded-full bg-ink px-5 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-pine disabled:opacity-50"
+        className="w-full rounded-full bg-primary px-5 py-3.5 text-sm font-semibold text-paper shadow-sm transition-all hover:scale-[1.01] hover:bg-primary-hover disabled:opacity-50 disabled:hover:scale-100"
       >
         {submitting ? t("submitting") : t("submit")}
       </button>
@@ -488,12 +488,12 @@ function StepHeading({
 }) {
   return (
     <div
-      className={`flex items-baseline gap-2.5 ${
+      className={`flex items-center gap-2.5 ${
         first ? "" : "border-t border-line pt-5"
       }`}
     >
-      <span className="font-mono text-xs font-bold tracking-widest text-saffron">
-        {num}
+      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-light text-[0.6875rem] font-bold text-primary">
+        {num.replace(/^0/, "")}
       </span>
       <span className="font-display text-base font-bold text-ink">{label}</span>
     </div>

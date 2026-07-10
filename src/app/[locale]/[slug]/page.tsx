@@ -56,31 +56,31 @@ export default async function BookingPage({
         {/* One card, split Calendly-style: a dark identity rail (~35%) and the
             booking flow (~65%). The rail is the first grid child, so it sits
             inline-start — right in RTL — with no locale conditionals. */}
-        <div className="animate-fade-rise grid overflow-hidden rounded-2xl border border-line bg-paper shadow-xl shadow-ink/5 lg:grid-cols-[7fr_13fr]">
-          <aside className="flex flex-col gap-5 bg-ink p-6 text-paper sm:p-8">
-            <span className="h-1 w-10 rounded-full bg-saffron" aria-hidden />
+        <div className="animate-fade-rise grid overflow-hidden rounded-2xl border border-line bg-paper shadow-lg lg:grid-cols-[7fr_13fr]">
+          <aside className="flex flex-col gap-5 border-e border-line bg-paper p-6 text-ink sm:p-8">
+            <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
 
             <div className="flex flex-col items-start gap-3">
-              <h1 className="font-display text-3xl font-extrabold tracking-tight text-paper">
+              <h1 className="font-display text-3xl font-bold tracking-tight text-ink">
                 {business.name}
               </h1>
               {typeLabel && (
-                <span className="rounded-full border border-pine px-3 py-1 text-xs font-semibold text-canvas">
+                <span className="rounded-full bg-primary-light px-3 py-1 text-xs font-semibold text-primary">
                   {typeLabel}
                 </span>
               )}
             </div>
 
             {hours && (
-              <p className="flex items-center gap-2 font-mono text-sm text-canvas">
+              <p className="flex items-center gap-2 font-mono text-sm text-muted">
                 <ClockIcon />
                 <span className="sr-only">{t("hoursLabel")}</span>
                 <span dir="ltr">{hours}</span>
               </p>
             )}
 
-            <div className="mt-auto flex flex-col items-start gap-4 border-t border-pine pt-5">
-              <p className="text-sm leading-relaxed text-canvas">
+            <div className="mt-auto flex flex-col items-start gap-4 border-t border-line pt-5">
+              <p className="text-sm leading-[1.6] text-muted">
                 {t("subtitle")}
               </p>
               <LocaleSwitcher />
