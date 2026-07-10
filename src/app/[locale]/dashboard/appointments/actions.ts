@@ -207,9 +207,6 @@ async function notifyCustomerRescheduled(
       .maybeSingle();
 
     const lang = biz?.default_language === "en" ? "en" : "ar";
-    const requestHeaders = await headers();
-    const origin =
-      requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL ?? "";
     const { subject, html, text } = rescheduleCustomerEmail({
       lang,
       businessName: biz?.name ?? "",
