@@ -108,6 +108,31 @@
     background-image: none;
   }
 
+  /* Faint blue radial glow following the cursor on cards (GlowCard). ~5%
+     primary at the pointer, fading out by 70% of the radius — Apple-subtle. */
+  .glow-card {
+    position: relative;
+  }
+
+  .glow-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      240px circle at var(--gx, 50%) var(--gy, 50%),
+      color-mix(in srgb, var(--color-primary) 5%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .glow-card:hover::before {
+    opacity: 1;
+  }
+
   /* Small uppercase functional label used as section eyebrows. */
   .eyebrow {
     font-size: 0.75rem;

@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
 import { BookingPreview } from "@/components/marketing/booking-preview";
+import { Reveal, GlowCard } from "@/components/marketing/motion";
 
 export async function generateMetadata({
   params,
@@ -132,21 +133,20 @@ export default async function HomePage({
           <p className="max-w-2xl leading-[1.6] text-muted">{t("categoriesSubtitle")}</p>
         </div>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((c) => (
-            <div
-              key={c.key}
-              className="flex flex-col gap-3 rounded-2xl border border-line bg-paper p-6 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <span className="flex size-11 items-center justify-center rounded-full bg-primary-light text-primary">
-                {c.icon}
-              </span>
-              <h3 className="font-display text-lg font-bold text-ink">
-                {tSignup(`types.${c.key}`)}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted">
-                {t(`categoryDesc.${c.key}`)}
-              </p>
-            </div>
+          {categories.map((c, i) => (
+            <Reveal key={c.key} delay={i * 90}>
+              <div className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-paper p-6 shadow-sm transition-shadow hover:shadow-md">
+                <span className="flex size-11 items-center justify-center rounded-full bg-primary-light text-primary">
+                  {c.icon}
+                </span>
+                <h3 className="font-display text-lg font-bold text-ink">
+                  {tSignup(`types.${c.key}`)}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted">
+                  {t(`categoryDesc.${c.key}`)}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -157,25 +157,25 @@ export default async function HomePage({
           {t("stepsTitle")}
         </h2>
         <div className="mt-12 grid gap-4 sm:grid-cols-3">
-          {steps.map((s) => (
-            <div
-              key={s.num}
-              className="flex flex-col gap-3 rounded-2xl border border-line bg-paper p-6 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <span className="flex size-9 items-center justify-center rounded-full bg-primary-light text-sm font-bold text-primary">
-                {s.num}
-              </span>
-              <h3 className="font-display text-lg font-bold text-ink">
-                {s.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted">{s.body}</p>
-            </div>
+          {steps.map((s, i) => (
+            <Reveal key={s.num} delay={i * 90}>
+              <div className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-paper p-6 shadow-sm transition-shadow hover:shadow-md">
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary-light text-sm font-bold text-primary">
+                  {s.num}
+                </span>
+                <h3 className="font-display text-lg font-bold text-ink">
+                  {s.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted">{s.body}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Problem / Solution — the solution deliberately gets the wider page. */}
       <section className="mx-auto max-w-5xl px-5 py-24">
+        <Reveal>
         <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line shadow-sm md:grid-cols-[2fr_3fr]">
           <div className="bg-section p-8 sm:p-10">
             <span className="eyebrow text-muted">{t("problemTitle")}</span>
@@ -188,6 +188,7 @@ export default async function HomePage({
             </p>
           </div>
         </div>
+        </Reveal>
       </section>
 
       {/* Features — an asymmetric grid: the lead capability on near-black,
@@ -197,21 +198,30 @@ export default async function HomePage({
           {t("featuresTitle")}
         </h2>
         <div className="mt-12 grid gap-4 lg:grid-cols-12">
-          <div className="flex flex-col gap-3 rounded-2xl bg-ink p-8 text-paper shadow-md lg:col-span-7">
-            <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
-            <h3 className="font-display text-xl font-bold text-paper">
-              {features[0].title}
-            </h3>
-            <p className="leading-[1.6] text-sage">{features[0].body}</p>
-          </div>
-          <FeatureCard feature={features[1]} accent="" span="lg:col-span-5" />
-          <FeatureCard feature={features[2]} accent="" span="lg:col-span-5" />
-          <FeatureCard feature={features[3]} accent="" span="lg:col-span-7" />
+          <Reveal className="lg:col-span-7">
+            <div className="flex h-full flex-col gap-3 rounded-2xl bg-ink p-8 text-paper shadow-md">
+              <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
+              <h3 className="font-display text-xl font-bold text-paper">
+                {features[0].title}
+              </h3>
+              <p className="leading-[1.6] text-sage">{features[0].body}</p>
+            </div>
+          </Reveal>
+          <Reveal delay={90} className="lg:col-span-5">
+            <FeatureCard feature={features[1]} accent="" span="h-full" />
+          </Reveal>
+          <Reveal delay={180} className="lg:col-span-5">
+            <FeatureCard feature={features[2]} accent="" span="h-full" />
+          </Reveal>
+          <Reveal delay={270} className="lg:col-span-7">
+            <FeatureCard feature={features[3]} accent="" span="h-full" />
+          </Reveal>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="mx-auto max-w-5xl px-5 pb-24">
+        <Reveal>
         <div className="flex flex-col items-center rounded-3xl bg-ink px-8 py-20 text-center text-paper">
           <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
           <h2 className="mx-auto mt-6 max-w-2xl font-display text-2xl font-bold tracking-tight sm:text-3xl">
@@ -227,6 +237,7 @@ export default async function HomePage({
             {t("finalCtaButton")}
           </Link>
         </div>
+        </Reveal>
       </section>
     </MarketingShell>
   );
@@ -242,7 +253,7 @@ function FeatureCard({
   span: string;
 }) {
   return (
-    <div
+    <GlowCard
       className={`flex flex-col gap-3 rounded-2xl border border-line ${accent} bg-paper p-8 shadow-sm transition-shadow hover:shadow-md ${span}`}
     >
       <span className="size-2.5 rounded-full bg-primary" aria-hidden />
@@ -250,7 +261,7 @@ function FeatureCard({
         {feature.title}
       </h3>
       <p className="leading-relaxed text-muted">{feature.body}</p>
-    </div>
+    </GlowCard>
   );
 }
 
