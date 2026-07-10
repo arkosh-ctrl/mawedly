@@ -54,8 +54,11 @@ export function ShareReview({
   const [open, setOpen] = useState(false);
   const [caption, setCaption] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Cache-buster fixed per mount: guarantees a fresh card even for browsers
+  // that cached a response from before the route went no-store.
+  const [cacheKey] = useState(() => Date.now());
 
-  const cardUrl = `/api/share-card/${reviewId}`;
+  const cardUrl = `/api/share-card/${reviewId}?v=${cacheKey}`;
 
   function bookingLink() {
     return `${window.location.origin}${bookingPath}`;

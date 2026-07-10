@@ -13,6 +13,31 @@ import { createClient } from "@/lib/supabase/server";
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// Satori has no bidi algorithm: it lays out space-separated words LTR, which
+// reverses Arabic word order. Workaround: join each visual LINE with NBSP so
+// the whole line is a single shaping run (correct RTL inside a run), and do
+// the line wrapping ourselves by a character budget.
+function rtlRun(s: string) {
+  return s.replace(/ /g, " ");
+}
+
+function wrapRtlLines(text: string, charsPerLine: number): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let line = "";
+  for (const w of words) {
+    const candidate = line ? `${line} ${w}` : w;
+    if (candidate.length > charsPerLine && line) {
+      lines.push(line);
+      line = w;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.map(rtlRun);
+}
+
 // IBM Plex Sans Arabic fetched at runtime (module-cached). Satori needs raw
 // font data and has no system-font fallback; runtime fetch keeps the repo
 // font-file-free and works both on localhost and Vercel.
@@ -81,7 +106,10 @@ export async function GET(
     const fonts = await loadFonts();
     const comment = (review.comment ?? "").trim();
     const quote =
-      comment.length > 220 ? `${comment.slice(0, 220)}…` : comment;
+      comment.length > 180 ? `${comment.slice(0, 180)}…` : comment;
+    const quoteLines = quote
+      ? wrapRtlLines(`”${quote}“`, quote.length > 110 ? 40 : 30)
+      : [rtlRun("تقييم خمس نجوم من عملائنا")];
     const bookingUrl = `mawedly.com/ar/${business.slug}`;
 
     return new ImageResponse(
@@ -97,6 +125,9 @@ export async function GET(
             backgroundColor: "#f5f5f7",
             fontFamily: "Plex",
             padding: 64,
+            // Satori doesn't infer bidi: without an explicit RTL direction the
+            // Arabic words render in reversed order.
+            direction: "rtl",
           }}
         >
           <div
@@ -137,38 +168,46 @@ export async function GET(
               موعدلي
             </div>
 
-            {/* Stars */}
-            <div
-              style={{
-                display: "flex",
-                fontSize: 72,
-                color: "#f59e0b",
-                letterSpacing: 6,
-              }}
-            >
-              {"★".repeat(review.rating)}
-              <span style={{ color: "#e5e7eb" }}>
-                {"★".repeat(5 - review.rating)}
-              </span>
+            {/* Stars — drawn as SVG: the ★ glyph isn't in IBM Plex and would
+                render as tofu boxes. */}
+            <div style={{ display: "flex", gap: 12 }}>
+              {[1, 2, 3, 4, 5].map((i) => (
+                <svg
+                  key={i}
+                  width="64"
+                  height="64"
+                  viewBox="0 0 24 24"
+                  fill={i <= review.rating ? "#f59e0b" : "#e5e7eb"}
+                >
+                  <path d="m12 2.5 2.9 6 6.6.9-4.8 4.5 1.2 6.5L12 17.3l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9 2.9-6Z" />
+                </svg>
+              ))}
             </div>
 
-            {/* Quote */}
+            {/* Quote — manual RTL line wrapping (see wrapRtlLines). */}
             <div
               style={{
                 display: "flex",
-                fontSize: quote.length > 120 ? 44 : 54,
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 8,
+                fontSize: quote.length > 110 ? 44 : 54,
                 fontWeight: 700,
                 color: "#111827",
                 lineHeight: 1.5,
-                maxWidth: 820,
+                maxWidth: 860,
               }}
             >
-              {quote ? `”${quote}“` : "تقييم 5 نجوم من عميل"}
+              {quoteLines.map((line, i) => (
+                <div key={i} style={{ display: "flex" }}>
+                  {line}
+                </div>
+              ))}
             </div>
 
             {/* Attribution — anonymised by design */}
             <div style={{ display: "flex", fontSize: 30, color: "#6b7280" }}>
-              رأي عميل موثّق عبر موعدلي
+              {rtlRun("رأي عميل موثّق عبر موعدلي")}
             </div>
 
             {/* Business + CTA */}
@@ -181,11 +220,13 @@ export async function GET(
               }}
             >
               <div style={{ fontSize: 44, fontWeight: 700, color: "#111827" }}>
-                {business.name}
+                {rtlRun(business.name)}
               </div>
               <div
                 style={{
                   display: "flex",
+                  alignItems: "center",
+                  gap: 14,
                   backgroundColor: "#006bff",
                   color: "#ffffff",
                   fontSize: 32,
@@ -194,7 +235,10 @@ export async function GET(
                   borderRadius: 999,
                 }}
               >
-                {`احجز موعدك — ${bookingUrl}`}
+                {/* Two runs (Arabic + latin URL); root direction:rtl puts the
+                    Arabic span on the right. */}
+                <span>{rtlRun("احجز موعدك —")}</span>
+                <span>{bookingUrl}</span>
               </div>
             </div>
           </div>
@@ -208,8 +252,10 @@ export async function GET(
           { name: "Plex", data: fonts.bold, weight: 700, style: "normal" },
         ],
         headers: {
-          // Private: the card is merchant-session gated.
-          "Cache-Control": "private, max-age=300",
+          // Merchant-session gated AND uncached: generation is cheap once the
+          // fonts are module-cached, and a stale cached card (old design /
+          // edited review) is worse than a 200ms regeneration.
+          "Cache-Control": "no-store",
         },
       },
     );
