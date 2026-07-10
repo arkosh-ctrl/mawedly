@@ -48,13 +48,13 @@ export function NotificationItem({
           activate();
         }
       }}
-      className={`relative flex cursor-pointer items-start gap-3 border-b border-line px-3 py-3 text-start transition-colors last:border-0 ${
+      className={`relative flex cursor-pointer items-start gap-3 border-b border-line px-4 py-3 text-start transition-colors last:border-0 ${
         isUnread ? PRIORITY_TINT[notification.priority] : "hover:bg-canvas"
       }`}
     >
       {isUnread && (
         <span
-          className="absolute end-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-s-full bg-saffron"
+          className="absolute start-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-e-full bg-saffron"
           aria-hidden
         />
       )}

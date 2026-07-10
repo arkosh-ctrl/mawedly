@@ -33,7 +33,11 @@ export function NotificationDropdown({
 
   return (
     <div
-      className="absolute end-0 top-[calc(100%+8px)] z-40 w-[360px] max-w-[92vw] overflow-hidden rounded-2xl border border-line bg-paper shadow-2xl"
+      // Mobile: full-width fixed sheet under the top bar. Desktop (lg+): anchored
+      // to the bell, opening from its START edge so the panel grows toward the
+      // page content — in RTL the sidebar sits on the right, so `end-0` used to
+      // push the 360px panel off-screen and clip every notification.
+      className="fixed inset-x-3 top-20 z-50 overflow-hidden rounded-2xl border border-line bg-paper shadow-lg lg:absolute lg:inset-x-auto lg:start-0 lg:top-[calc(100%+8px)] lg:w-[360px]"
       role="dialog"
       aria-label={t("title")}
     >
