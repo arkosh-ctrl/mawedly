@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
 import { BookingPreview } from "@/components/marketing/booking-preview";
+import { HomePricing } from "@/components/marketing/home-pricing";
 import { Reveal, GlowCard } from "@/components/marketing/motion";
 
 export async function generateMetadata({
@@ -218,6 +219,11 @@ export default async function HomePage({
           </Reveal>
         </div>
       </section>
+
+      {/* Plans — compact pricing over the same PLANS config as /pricing. */}
+      <Reveal>
+        <HomePricing />
+      </Reveal>
 
       {/* Final CTA */}
       <section className="mx-auto max-w-5xl px-5 pb-24">
