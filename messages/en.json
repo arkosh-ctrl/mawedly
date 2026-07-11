@@ -138,7 +138,8 @@
       "bannerSlots": "🟡 Your slots are nearly full — add times or providers.",
       "bannerSlotsCta": "Settings"
     },
-    "socialNav": "Social media"
+    "socialNav": "Social media",
+    "billingNav": "Billing"
   },
   "Review": {
     "title": "Rate your visit",
@@ -860,6 +861,51 @@
   "Billing": {
     "upgradeCard": {
       "cta": "Upgrade plan"
+    },
+    "title": "Plan & Billing",
+    "subtitle": "Your subscription and monthly usage",
+    "noBusiness": "Create your business first from Settings.",
+    "manage": "Manage",
+    "manageSubscription": "Manage subscription (invoices & cancel)",
+    "choosePlan": "Choose your plan",
+    "changePlan": "Change plan",
+    "redirecting": "Redirecting…",
+    "renewsAt": "Next renewal: {date}",
+    "pastDueBanner": "Your renewal failed — update your payment method via “Manage subscription” within a few days to avoid dropping to the free plan.",
+    "cancelledBanner": "Your subscription is cancelled and stays active until {date}, then you return to the free plan.",
+    "securedByLemon": "Payments are secured by Lemon Squeezy — cancel or change plans anytime. Charges are made in USD equivalent to the shown price.",
+    "usage": {
+      "label": "Used {used} of {limit} appointments this month",
+      "unlimited": "Unlimited appointments — {used} this month",
+      "nearLimit": "You're close to your monthly limit!",
+      "blocked": "Limit reached — your link won't accept new bookings this month.",
+      "upgradeNow": "Upgrade now"
+    },
+    "errors": {
+      "checkoutFailed": "Couldn't open checkout, try again.",
+      "portalFailed": "Couldn't open the subscription portal, try again."
+    },
+    "plans": {
+      "free": {
+        "name": "Starter",
+        "price": "Free",
+        "summary": "15 appointments/mo · 1 provider"
+      },
+      "pro_49": {
+        "name": "Professional",
+        "price": "SAR 49/mo",
+        "summary": "60 appointments · video · social · emails"
+      },
+      "center_99": {
+        "name": "Center",
+        "price": "SAR 99/mo",
+        "summary": "120 appointments · 5 providers · analytics"
+      },
+      "enterprise_299": {
+        "name": "Enterprise",
+        "price": "SAR 299/mo",
+        "summary": "Unlimited · branding · priority support"
+      }
     }
   }
 }

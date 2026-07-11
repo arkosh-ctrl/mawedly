@@ -10,7 +10,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 
 type NavItem = {
   href: string;
-  labelKey: "overviewNav" | "appointmentsNav" | "servicesNav" | "providersNav" | "analyticsNav" | "reviewsNav" | "socialNav" | "settingsNav";
+  labelKey: "overviewNav" | "appointmentsNav" | "servicesNav" | "providersNav" | "analyticsNav" | "reviewsNav" | "socialNav" | "billingNav" | "settingsNav";
   icon: React.ReactNode;
   // Overview must match exactly, otherwise it stays lit on every subpage.
   exact?: boolean;
@@ -27,6 +27,7 @@ const SECONDARY_ITEMS: NavItem[] = [
   { href: "/dashboard/analytics", labelKey: "analyticsNav", icon: <ChartIcon /> },
   { href: "/dashboard/reviews", labelKey: "reviewsNav", icon: <StarIcon /> },
   { href: "/dashboard/social", labelKey: "socialNav", icon: <ShareNodesIcon /> },
+  { href: "/dashboard/billing", labelKey: "billingNav", icon: <CardIcon /> },
   { href: "/dashboard/settings", labelKey: "settingsNav", icon: <GearIcon /> },
 ];
 
@@ -172,6 +173,16 @@ function StarIcon() {
   return (
     <svg {...iconProps()}>
       <path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6L3.2 9.4l6.1-.8L12 3Z" />
+    </svg>
+  );
+}
+
+function CardIcon() {
+  return (
+    <svg {...iconProps()}>
+      <rect x="2" y="5" width="20" height="14" rx="2.5" />
+      <path d="M2 10h20" />
+      <path d="M6 15h4" />
     </svg>
   );
 }

@@ -3,6 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/navigation";
 import { ShareCard } from "@/components/dashboard/share-card";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { UsageCard } from "@/components/dashboard/usage-card";
+import { effectivePlan } from "@/lib/billing/plans";
+import { computeUsage, type UsageRow } from "@/lib/billing/usage";
 import { DashboardInsights } from "@/components/dashboard/dashboard-insights";
 import { getAnalytics } from "@/lib/analytics/get-analytics";
 import { gulfNow } from "@/lib/booking/availability";
@@ -61,7 +64,9 @@ export default async function DashboardPage({
 
   const { data: business } = await supabase
     .from("businesses")
-    .select("id, name, slug")
+    .select(
+      "id, name, slug, plan, subscription_status, monthly_appointments_count, usage_reset_at",
+    )
     .eq("user_id", userId ?? "")
     .maybeSingle();
 
@@ -124,6 +129,11 @@ export default async function DashboardPage({
 
       {business ? (
         <>
+          {/* Plan + monthly quota at a glance (80% warn / 100% block CTA). */}
+          <UsageCard
+            planId={effectivePlan(business.plan, business.subscription_status).id}
+            usage={computeUsage(business as UsageRow)}
+          />
           {insights && <DashboardInsights data={insights} />}
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
