@@ -6,6 +6,7 @@ import {
   getActiveServices,
   getActiveProviders,
   getActiveSocialLinks,
+  getBrandLogoUrl,
 } from "@/lib/booking/queries";
 import { PlatformIcon } from "@/components/social/platform-icon";
 import { hasFeature } from "@/lib/billing/plans";
@@ -43,10 +44,20 @@ export default async function BookingPage({
     business.subscription_status,
     "social",
   );
-  const [services, providers, socialLinks] = await Promise.all([
+  // Enterprise branding: logo + accent color on the public page.
+  const brandingEnabled = hasFeature(
+    business.plan,
+    business.subscription_status,
+    "branding",
+  );
+  const brandColor = brandingEnabled ? business.brand_color : null;
+  const [services, providers, socialLinks, brandLogoUrl] = await Promise.all([
     getActiveServices(business.id),
     getActiveProviders(business.id),
     socialEnabled ? getActiveSocialLinks(business.id) : Promise.resolve([]),
+    brandingEnabled && business.brand_logo_path
+      ? getBrandLogoUrl(business.brand_logo_path)
+      : Promise.resolve(null),
   ]);
 
   const t = await getTranslations("Booking");
@@ -68,7 +79,20 @@ export default async function BookingPage({
             inline-start — right in RTL — with no locale conditionals. */}
         <div className="animate-fade-rise grid overflow-hidden rounded-2xl border border-line bg-paper shadow-lg lg:grid-cols-[7fr_13fr]">
           <aside className="flex flex-col gap-5 border-e border-line bg-paper p-6 text-ink sm:p-8">
-            <span className="h-1 w-10 rounded-full bg-primary" aria-hidden />
+            <span
+              className="h-1 w-10 rounded-full bg-primary"
+              style={brandColor ? { backgroundColor: brandColor } : undefined}
+              aria-hidden
+            />
+
+            {brandLogoUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={brandLogoUrl}
+                alt={business.name}
+                className="h-14 w-auto max-w-[180px] self-start object-contain"
+              />
+            )}
 
             <div className="flex flex-col items-start gap-3">
               <h1 className="font-display text-3xl font-bold tracking-tight text-ink">

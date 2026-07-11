@@ -7,7 +7,9 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
-import { effectivePlan } from "./plans";
+// Explicit .ts extension so the pure logic stays runnable by node's native
+// --experimental-strip-types test runner (tests/billing-usage.test.ts).
+import { effectivePlan } from "./plans.ts";
 
 export type UsageRow = {
   id: string;

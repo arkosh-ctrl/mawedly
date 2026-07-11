@@ -945,6 +945,25 @@
         "price": "SAR 299/mo",
         "summary": "Unlimited · branding · priority support"
       }
+    },
+    "branding": {
+      "title": "Branding",
+      "hint": "Your logo and color appear on the public booking page — an Enterprise feature.",
+      "logoLabel": "Logo (PNG/JPG/WEBP/SVG up to 2MB)",
+      "logoSet": "a logo is uploaded",
+      "colorLabel": "Accent color",
+      "save": "Save branding",
+      "saving": "Saving…",
+      "messages": {
+        "brandingSaved": "Branding saved.",
+        "brandingNotInPlan": "Branding is an Enterprise feature.",
+        "invalidColor": "Invalid color.",
+        "invalidLogoType": "Unsupported logo file type.",
+        "logoTooLarge": "Logo is larger than 2MB.",
+        "saveFailed": "Couldn't save, try again.",
+        "unauthorized": "Session expired, sign in again.",
+        "noBusiness": "Create your business first from Settings."
+      }
     }
   }
 }

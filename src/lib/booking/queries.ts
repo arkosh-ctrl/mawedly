@@ -94,6 +94,16 @@ export async function getActiveProviders(
   return (data ?? []) as PublicProvider[];
 }
 
+// Signed URL for an enterprise brand logo (private bucket; short-lived —
+// regenerated on every public-page render).
+export async function getBrandLogoUrl(path: string): Promise<string | null> {
+  const supabase = createAdminClient();
+  const { data } = await supabase.storage
+    .from("brand-assets")
+    .createSignedUrl(path, 600);
+  return data?.signedUrl ?? null;
+}
+
 // The merchant's public social profiles — shown as icons on the booking page.
 export async function getActiveSocialLinks(
   businessId: string,

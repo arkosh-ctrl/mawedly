@@ -5,6 +5,7 @@ import { computeUsage, type UsageRow } from "@/lib/billing/usage";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { UsageCard } from "@/components/dashboard/usage-card";
 import { BillingActions } from "./billing-actions";
+import { BrandingForm } from "./branding-form";
 
 // /dashboard/billing — current plan, monthly usage, upgrade checkout buttons
 // and the Lemon Squeezy Customer Portal (cancel / payment method / invoices).
@@ -25,7 +26,7 @@ export default async function BillingPage({
   const { data: business } = await supabase
     .from("businesses")
     .select(
-      "id, plan, subscription_status, subscription_renews_at, lemon_subscription_id, monthly_appointments_count, usage_reset_at",
+      "id, plan, subscription_status, subscription_renews_at, lemon_subscription_id, monthly_appointments_count, usage_reset_at, brand_color, brand_logo_path",
     )
     .eq("user_id", userId ?? "")
     .maybeSingle();
@@ -76,6 +77,14 @@ export default async function BillingPage({
         upgradablePlans={PAID_PLAN_IDS.filter((p) => p !== plan.id)}
         hasSubscription={Boolean(business.lemon_subscription_id)}
       />
+
+      {/* Enterprise branding — logo + accent color on the public page. */}
+      {plan.features.branding && (
+        <BrandingForm
+          currentColor={business.brand_color}
+          hasLogo={Boolean(business.brand_logo_path)}
+        />
+      )}
 
       <p className="text-xs leading-relaxed text-muted">{t("securedByLemon")}</p>
     </main>
