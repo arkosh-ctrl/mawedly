@@ -299,7 +299,8 @@
       "saveFailed": "Couldn't save. Please try again.",
       "notFound": "Item not found or you don't have permission to edit it.",
       "noBusiness": "Create your business in Settings first.",
-      "unauthorized": "Your session expired. Please sign in again."
+      "unauthorized": "Your session expired. Please sign in again.",
+      "videoNotInPlan": "Video consultations are available on paid plans — upgrade your plan."
     },
     "sessionType": {
       "in_person": "In person",
@@ -342,7 +343,8 @@
       "saveFailed": "Couldn't save. Please try again.",
       "notFound": "Item not found or you don't have permission to edit it.",
       "noBusiness": "Create your business in Settings first.",
-      "unauthorized": "Your session expired. Please sign in again."
+      "unauthorized": "Your session expired. Please sign in again.",
+      "providerLimitReached": "You've reached your plan's provider limit — upgrade to add more."
     }
   },
   "Booking": {
@@ -392,7 +394,8 @@
       "notFound": "Business not found.",
       "slotTaken": "This time is no longer available. Please choose another.",
       "saveFailed": "Couldn't complete the booking. Please try again.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "monthlyLimitReached": "This month's booking calendar is full. Please contact the provider directly."
     },
     "receipt": {
       "title": "Upload transfer receipt",
@@ -818,7 +821,11 @@
     "day_3": "Tue",
     "day_4": "Wed",
     "day_5": "Thu",
-    "day_6": "Fri"
+    "day_6": "Fri",
+    "locked": {
+      "title": "Analytics is available on Center and above",
+      "body": "KPIs, booking trends and peak-hours heatmap — upgrade to unlock."
+    }
   },
   "Calendar": {
     "button": "Add to calendar",
@@ -844,6 +851,15 @@
       "saveFailed": "Couldn't save, try again.",
       "unauthorized": "Session expired, sign in again.",
       "noBusiness": "Create your business first from Settings."
+    },
+    "locked": {
+      "title": "Social media tools are available on paid plans",
+      "body": "Review share cards and profile links on your booking page — upgrade to unlock."
+    }
+  },
+  "Billing": {
+    "upgradeCard": {
+      "cta": "Upgrade plan"
     }
   }
 }

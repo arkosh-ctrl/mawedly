@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { hasFeature } from "@/lib/billing/plans";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { ShareReview } from "@/components/reviews/share-review";
 import { ReviewsTools, type ExportRow, type UnreviewedAppt } from "./reviews-tools";
@@ -48,9 +49,14 @@ export default async function ReviewsPage({
   // dashboard home / settings pages).
   const { data: business } = await supabase
     .from("businesses")
-    .select("id, slug")
+    .select("id, slug, plan, subscription_status")
     .eq("user_id", userId ?? "")
     .maybeSingle();
+
+  // Social share cards are a paid-plan feature.
+  const canShare = business
+    ? hasFeature(business.plan, business.subscription_status, "social")
+    : false;
 
   let reviews: ReviewRow[] = [];
   let unreviewed: UnreviewedAppt[] = [];
@@ -151,7 +157,7 @@ export default async function ReviewsPage({
                     </span>
                   )}
                   {/* Positive reviews (4–5★) can be shared to social media. */}
-                  {r.rating >= 4 && business && (
+                  {r.rating >= 4 && business && canShare && (
                     <span className="ms-auto">
                       <ShareReview
                         reviewId={r.id}

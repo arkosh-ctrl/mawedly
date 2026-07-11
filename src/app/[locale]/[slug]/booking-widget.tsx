@@ -18,6 +18,7 @@ type BookingResult = {
   deposit: number;
   whatsappPhone: string | null;
   transfer: TransferInfo;
+  features?: { calendar?: boolean };
 };
 
 const inputClass =
@@ -250,8 +251,11 @@ export function BookingWidget({
           </a>
         )}
 
-        {/* Add the appointment to the customer's calendar (ICS / Google). */}
-        <AddToCalendar appointmentId={result.appointmentId} />
+        {/* Add the appointment to the customer's calendar (ICS / Google) —
+            a paid-plan feature, flagged by the booking response. */}
+        {result.features?.calendar !== false && (
+          <AddToCalendar appointmentId={result.appointmentId} />
+        )}
       </div>
     );
   }

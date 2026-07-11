@@ -1,6 +1,8 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { hasFeature } from "@/lib/billing/plans";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { UpgradeCard } from "@/components/dashboard/upgrade-card";
 import { SocialLinksForm } from "./social-links-form";
 
 // /dashboard/social — the merchant's public social profiles. Saved links show
@@ -22,9 +24,25 @@ export default async function SocialPage({
 
   const { data: business } = await supabase
     .from("businesses")
-    .select("id")
+    .select("id, plan, subscription_status")
     .eq("user_id", userId ?? "")
     .maybeSingle();
+
+  // Plan gate: the whole social toolkit is a paid-plan feature.
+  if (
+    business &&
+    !hasFeature(business.plan, business.subscription_status, "social")
+  ) {
+    return (
+      <main className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+        <PageHeader eyebrow={t("subtitle")} title={t("title")} />
+        <UpgradeCard
+          featureTitle={t("locked.title")}
+          featureBody={t("locked.body")}
+        />
+      </main>
+    );
+  }
 
   let links: Record<string, string> = {};
   if (business) {

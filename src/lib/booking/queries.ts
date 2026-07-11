@@ -11,6 +11,11 @@ export type PublicBusiness = {
   type: string;
   work_start: string;
   work_end: string;
+  /** Plan id — drives public-page feature gating (social icons, branding). */
+  plan: string;
+  subscription_status: string;
+  brand_logo_path: string | null;
+  brand_color: string | null;
 };
 
 export type PublicService = {
@@ -43,7 +48,9 @@ export async function getBusinessForBooking(
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("businesses")
-    .select("id, name, type, work_start, work_end, is_active")
+    .select(
+      "id, name, type, work_start, work_end, is_active, plan, subscription_status, brand_logo_path, brand_color",
+    )
     .eq("slug", slug)
     .maybeSingle();
 
@@ -54,6 +61,10 @@ export async function getBusinessForBooking(
     type: data.type,
     work_start: data.work_start,
     work_end: data.work_end,
+    plan: data.plan,
+    subscription_status: data.subscription_status,
+    brand_logo_path: data.brand_logo_path,
+    brand_color: data.brand_color,
   };
 }
 

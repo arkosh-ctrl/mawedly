@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { canActivateProvider, getPlanState } from "@/lib/billing/gate";
 import { providerSchema } from "./schema";
 
 export type MutationResult = {
@@ -49,6 +50,13 @@ export async function saveProvider(formData: FormData): Promise<MutationResult> 
       return { status: "success", messageKey: "saved" };
     }
 
+    // Plan gate: adding a NEW provider must respect the plan ceiling
+    // (free/pro = 1, center = 5, enterprise = unlimited).
+    const state = await getPlanState(supabase, userId);
+    if (state && !(await canActivateProvider(supabase, state))) {
+      return { status: "error", messageKey: "providerLimitReached" };
+    }
+
     const { error } = await supabase.from("providers").insert({
       business_id: businessId,
       name: v.name,
@@ -82,6 +90,14 @@ export async function setProviderActive(
       .eq("user_id", userId)
       .maybeSingle();
     if (!business) return { status: "error", messageKey: "noBusiness" };
+
+    // Re-activating an archived provider also counts against the ceiling.
+    if (active) {
+      const state = await getPlanState(supabase, userId);
+      if (state && !(await canActivateProvider(supabase, state))) {
+        return { status: "error", messageKey: "providerLimitReached" };
+      }
+    }
 
     const { data: updated, error } = await supabase
       .from("providers")

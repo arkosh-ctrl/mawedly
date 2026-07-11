@@ -9,6 +9,12 @@ import {
 } from "@/lib/booking/queries";
 import { computeAvailableSlots, gulfNow } from "@/lib/booking/availability";
 import { INITIAL_APPOINTMENT_STATUS } from "@/lib/appointments/status";
+import {
+  computeUsage,
+  recordAppointmentUsage,
+  type UsageRow,
+} from "@/lib/billing/usage";
+import { hasFeature } from "@/lib/billing/plans";
 import { sendEmail } from "@/lib/email/resend";
 import { bookingMerchantEmail } from "@/lib/email/templates/booking-merchant";
 import { createNotification } from "@/lib/notifications/create";
@@ -75,6 +81,21 @@ export async function POST(request: NextRequest) {
   if (!business) {
     return NextResponse.json({ error: "notFound" }, { status: 404 });
   }
+
+  // 3b) Subscription quota (lazy monthly reset — src/lib/billing/usage.ts).
+  // The customer sees a calendar-is-full message; the upgrade pitch lives in
+  // the MERCHANT dashboard, not here.
+  const { data: usageRow } = await supabase
+    .from("businesses")
+    .select(
+      "id, plan, subscription_status, monthly_appointments_count, usage_reset_at",
+    )
+    .eq("id", business.id)
+    .maybeSingle();
+  if (usageRow && computeUsage(usageRow as UsageRow).atLimit) {
+    return NextResponse.json({ error: "monthlyLimitReached" }, { status: 403 });
+  }
+
   const service = await getActiveService(business.id, v.serviceId);
   if (!service) {
     return NextResponse.json({ error: "invalidInput" }, { status: 400 });
@@ -144,6 +165,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "saveFailed" }, { status: 500 });
   }
 
+  // 6b) Count the booking against the monthly quota (best-effort: a failed
+  // bump never undoes a real booking).
+  if (usageRow) {
+    await recordAppointmentUsage(supabase, usageRow as UsageRow);
+  }
+
   // 7) Transfer + contact details — fetched ONLY now that a real appointment
   // exists. phone is the merchant's WhatsApp number; the rest drive the
   // merchant notification email.
@@ -189,6 +216,14 @@ export async function POST(request: NextRequest) {
 
   after(async () => {
     try {
+      // Automated emails are a paid-plan feature (in-app notifications above
+      // fire for every plan).
+      if (
+        usageRow &&
+        !hasFeature(usageRow.plan, usageRow.subscription_status, "emails")
+      ) {
+        return;
+      }
       // Recipient: notification_email, else the confirmed login email.
       let to = biz?.notification_email || null;
       if (!to && biz?.user_id) {
@@ -249,6 +284,12 @@ export async function POST(request: NextRequest) {
       iban: biz?.bank_iban ?? null,
       accountName: biz?.bank_account_name ?? null,
       qrUrl,
+    },
+    // Plan-driven flags for the success screen (customer-facing extras).
+    features: {
+      calendar: usageRow
+        ? hasFeature(usageRow.plan, usageRow.subscription_status, "calendar")
+        : true,
     },
   });
 }

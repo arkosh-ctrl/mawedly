@@ -8,6 +8,7 @@ import {
   getActiveSocialLinks,
 } from "@/lib/booking/queries";
 import { PlatformIcon } from "@/components/social/platform-icon";
+import { hasFeature } from "@/lib/billing/plans";
 import { BookingWidget } from "./booking-widget";
 
 // Every business category with a label in Signup.types — the five consultation
@@ -36,10 +37,16 @@ export default async function BookingPage({
   const business = await getBusinessForBooking(slug);
   if (!business) notFound();
 
+  // Social icons are a paid-plan feature; skip the fetch entirely on free.
+  const socialEnabled = hasFeature(
+    business.plan,
+    business.subscription_status,
+    "social",
+  );
   const [services, providers, socialLinks] = await Promise.all([
     getActiveServices(business.id),
     getActiveProviders(business.id),
-    getActiveSocialLinks(business.id),
+    socialEnabled ? getActiveSocialLinks(business.id) : Promise.resolve([]),
   ]);
 
   const t = await getTranslations("Booking");

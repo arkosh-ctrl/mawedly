@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { createClient } from "@/lib/supabase/server";
+import { hasFeature } from "@/lib/billing/plans";
 
 // 1080×1080 share card for one review — Cal-Apple identity (white card on
 // neutral canvas, one blue, soft green stars badge). PRIVACY BY DESIGN: the
@@ -90,7 +91,7 @@ export async function GET(
     const [{ data: business }, { data: review }] = await Promise.all([
       supabase
         .from("businesses")
-        .select("id, name, slug")
+        .select("id, name, slug, plan, subscription_status")
         .eq("user_id", userId)
         .maybeSingle(),
       supabase
@@ -101,6 +102,10 @@ export async function GET(
     ]);
     if (!business || !review || review.business_id !== business.id) {
       return new Response("Not found", { status: 404 });
+    }
+    // Plan gate: share cards are a paid-plan (social) feature.
+    if (!hasFeature(business.plan, business.subscription_status, "social")) {
+      return new Response("Upgrade required", { status: 403 });
     }
 
     const fonts = await loadFonts();

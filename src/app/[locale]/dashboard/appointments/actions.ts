@@ -10,6 +10,7 @@ import {
 import { sendEmail } from "@/lib/email/resend";
 import { bookingCustomerConfirmedEmail } from "@/lib/email/templates/booking-customer-confirmed";
 import { reviewRequestEmail } from "@/lib/email/templates/review-request";
+import { hasFeature } from "@/lib/billing/plans";
 import { rescheduleCustomerEmail } from "@/lib/email/templates/reschedule-customer";
 import { rescheduleMerchantEmail } from "@/lib/email/templates/reschedule-merchant";
 import { getBookedRanges } from "@/lib/booking/queries";
@@ -49,9 +50,14 @@ async function notifyCustomerConfirmed(
 
     const { data: biz } = await supabase
       .from("businesses")
-      .select("name, phone, default_language")
+      .select("name, phone, default_language, plan, subscription_status")
       .eq("id", businessId)
       .maybeSingle();
+
+    // Automated emails are a paid-plan feature.
+    if (biz && !hasFeature(biz.plan, biz.subscription_status, "emails")) {
+      return;
+    }
 
     const lang = biz?.default_language === "en" ? "en" : "ar";
     const requestHeaders = await headers();
@@ -141,9 +147,14 @@ async function notifyReviewRequest(
 
     const { data: biz } = await supabase
       .from("businesses")
-      .select("name, default_language")
+      .select("name, default_language, plan, subscription_status")
       .eq("id", businessId)
       .maybeSingle();
+
+    // Automated emails are a paid-plan feature.
+    if (biz && !hasFeature(biz.plan, biz.subscription_status, "emails")) {
+      return;
+    }
 
     const lang = biz?.default_language === "en" ? "en" : "ar";
     const requestHeaders = await headers();
@@ -202,9 +213,14 @@ async function notifyCustomerRescheduled(
 
     const { data: biz } = await supabase
       .from("businesses")
-      .select("name, phone, default_language")
+      .select("name, phone, default_language, plan, subscription_status")
       .eq("id", businessId)
       .maybeSingle();
+
+    // Automated emails are a paid-plan feature.
+    if (biz && !hasFeature(biz.plan, biz.subscription_status, "emails")) {
+      return;
+    }
 
     const lang = biz?.default_language === "en" ? "en" : "ar";
     const { subject, html, text } = rescheduleCustomerEmail({

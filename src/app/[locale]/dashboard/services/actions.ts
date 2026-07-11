@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { getPlanState } from "@/lib/billing/gate";
 import { serviceSchema } from "./schema";
 
 export type MutationResult = {
@@ -38,6 +39,14 @@ export async function saveService(formData: FormData): Promise<MutationResult> {
       .maybeSingle();
     if (!business) return { status: "error", messageKey: "noBusiness" };
     const businessId = business.id;
+
+    // Plan gate: virtual (video) services are a paid-plan feature.
+    if (v.session_type === "virtual") {
+      const state = await getPlanState(supabase, userId);
+      if (state && !state.plan.features.video) {
+        return { status: "error", messageKey: "videoNotInPlan" };
+      }
+    }
 
     const id = formData.get("id");
     if (typeof id === "string" && id) {
