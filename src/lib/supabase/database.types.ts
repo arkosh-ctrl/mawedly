@@ -29,6 +29,14 @@ export type Database = {
           bank_qr_path: string | null;
           is_active: boolean | null;
           plan: string;
+          monthly_appointments_count: number;
+          usage_reset_at: string;
+          lemon_subscription_id: string | null;
+          lemon_customer_id: string | null;
+          subscription_status: string;
+          subscription_renews_at: string | null;
+          brand_logo_path: string | null;
+          brand_color: string | null;
           work_start: string;
           work_end: string;
           trial_ends_at: string | null;
@@ -49,6 +57,14 @@ export type Database = {
           bank_qr_path?: string | null;
           is_active?: boolean | null;
           plan?: string;
+          monthly_appointments_count?: number;
+          usage_reset_at?: string;
+          lemon_subscription_id?: string | null;
+          lemon_customer_id?: string | null;
+          subscription_status?: string;
+          subscription_renews_at?: string | null;
+          brand_logo_path?: string | null;
+          brand_color?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;
@@ -69,6 +85,14 @@ export type Database = {
           bank_qr_path?: string | null;
           is_active?: boolean | null;
           plan?: string;
+          monthly_appointments_count?: number;
+          usage_reset_at?: string;
+          lemon_subscription_id?: string | null;
+          lemon_customer_id?: string | null;
+          subscription_status?: string;
+          subscription_renews_at?: string | null;
+          brand_logo_path?: string | null;
+          brand_color?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;
@@ -361,6 +385,39 @@ export type Database = {
           business_id?: string;
           review_id?: string;
           platform?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      billing_webhook_events: {
+        Row: {
+          id: string;
+          lemon_event_id: string;
+          event_name: string;
+          business_id: string | null;
+          payload: unknown;
+          processed: boolean;
+          error: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          lemon_event_id: string;
+          event_name: string;
+          business_id?: string | null;
+          payload: unknown;
+          processed?: boolean;
+          error?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          lemon_event_id?: string;
+          event_name?: string;
+          business_id?: string | null;
+          payload?: unknown;
+          processed?: boolean;
+          error?: string | null;
           created_at?: string;
         };
         Relationships: [];
