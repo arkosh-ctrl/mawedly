@@ -259,6 +259,77 @@ export async function getSubscribers(): Promise<Subscriber[]> {
   }));
 }
 
+export type VerificationRequest = {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  licenseNumber: string | null;
+  licenseIssuer: string | null;
+  status: string;
+  createdAt: string | null;
+  verifiedAt: string | null;
+  /** Short-lived signed URL to the uploaded license document (null if none). */
+  documentUrl: string | null;
+};
+
+/**
+ * Businesses in the verification pipeline — regulated professions that are not
+ * yet 'verified' (pending review or previously rejected). Each carries a
+ * short-lived signed URL to its private license document for the reviewer.
+ */
+export async function getVerificationRequests(): Promise<VerificationRequest[]> {
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("businesses")
+    .select(
+      "id, name, slug, type, license_number, license_issuer, license_document_path, verification_status, created_at, license_verified_at",
+    )
+    .eq("requires_license", true)
+    .neq("verification_status", "verified")
+    .order("created_at", { ascending: false })
+    .returns<
+      {
+        id: string;
+        name: string;
+        slug: string;
+        type: string;
+        license_number: string | null;
+        license_issuer: string | null;
+        license_document_path: string | null;
+        verification_status: string;
+        created_at: string | null;
+        license_verified_at: string | null;
+      }[]
+    >();
+
+  const rows = data ?? [];
+
+  return Promise.all(
+    rows.map(async (b) => {
+      let documentUrl: string | null = null;
+      if (b.license_document_path) {
+        const { data: signed } = await supabase.storage
+          .from("licenses")
+          .createSignedUrl(b.license_document_path, 600);
+        documentUrl = signed?.signedUrl ?? null;
+      }
+      return {
+        id: b.id,
+        name: b.name,
+        slug: b.slug,
+        type: b.type,
+        licenseNumber: b.license_number,
+        licenseIssuer: b.license_issuer,
+        status: b.verification_status,
+        createdAt: b.created_at,
+        verifiedAt: b.license_verified_at,
+        documentUrl,
+      };
+    }),
+  );
+}
+
 export type AuditEntry = AdminActionRow & {
   admin_email: string | null;
   business_name: string | null;

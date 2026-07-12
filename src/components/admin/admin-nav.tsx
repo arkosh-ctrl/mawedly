@@ -5,6 +5,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 const ITEMS = [
   { href: "/admin", label: "نظرة عامة", exact: true },
   { href: "/admin/businesses", label: "الأنشطة" },
+  { href: "/admin/verifications", label: "التوثيق" },
   { href: "/admin/contacts", label: "المشتركون" },
   { href: "/admin/appointments", label: "المواعيد" },
   { href: "/admin/health", label: "صحة الأنظمة" },
