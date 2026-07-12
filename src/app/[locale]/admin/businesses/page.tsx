@@ -2,6 +2,8 @@ import { setRequestLocale } from "next-intl/server";
 import { requireAdmin } from "@/lib/admin/guard";
 import { getPlatformBusinesses } from "@/lib/admin/queries";
 import { BusinessToggle } from "@/components/admin/business-toggle";
+import { CompPlanToggle } from "@/components/admin/comp-plan-toggle";
+import { effectivePlan } from "@/lib/billing/plans";
 
 export const dynamic = "force-dynamic";
 
@@ -36,46 +38,66 @@ export default async function AdminBusinessesPage({
                 <th className="p-3 text-start">الخطة</th>
                 <th className="p-3 text-start">الحالة</th>
                 <th className="p-3 text-start">أُنشئ</th>
-                {canManage && <th className="p-3 text-start">إجراء</th>}
+                {canManage && <th className="p-3 text-start">التفعيل</th>}
+                {canManage && <th className="p-3 text-start">الباقة المجانية</th>}
               </tr>
             </thead>
             <tbody>
               {businesses.length === 0 ? (
                 <tr>
-                  <td colSpan={canManage ? 7 : 6} className="p-8 text-center text-muted">
+                  <td colSpan={canManage ? 8 : 6} className="p-8 text-center text-muted">
                     لا أنشطة بعد.
                   </td>
                 </tr>
               ) : (
-                businesses.map((b) => (
-                  <tr key={b.id} className="border-t border-line hover:bg-canvas/60">
-                    <td className="p-3 font-semibold text-ink">{b.name}</td>
-                    <td className="p-3 font-mono text-xs text-muted" dir="ltr">
-                      {b.slug}
-                    </td>
-                    <td className="p-3 text-muted">{b.type}</td>
-                    <td className="p-3 text-muted">{b.plan}</td>
-                    <td className="p-3">
-                      <span
-                        className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          b.is_active
-                            ? "bg-success-light text-success"
-                            : "bg-brick/10 text-brick"
-                        }`}
-                      >
-                        {b.is_active ? "نشط" : "معطّل"}
-                      </span>
-                    </td>
-                    <td className="p-3 font-mono text-xs text-muted" dir="ltr">
-                      {b.created_at?.slice(0, 10) ?? "—"}
-                    </td>
-                    {canManage && (
-                      <td className="p-3">
-                        <BusinessToggle id={b.id} isActive={b.is_active} />
+                businesses.map((b) => {
+                  const effective = effectivePlan(b.plan, b.subscription_status).id;
+                  const isComp = effective === "enterprise_299";
+                  return (
+                    <tr key={b.id} className="border-t border-line hover:bg-canvas/60">
+                      <td className="p-3 font-semibold text-ink">{b.name}</td>
+                      <td className="p-3 font-mono text-xs text-muted" dir="ltr">
+                        {b.slug}
                       </td>
-                    )}
-                  </tr>
-                ))
+                      <td className="p-3 text-muted">{b.type}</td>
+                      <td className="p-3">
+                        <span
+                          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            isComp
+                              ? "bg-primary-light text-primary"
+                              : "bg-canvas text-muted"
+                          }`}
+                        >
+                          {effective}
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        <span
+                          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            b.is_active
+                              ? "bg-success-light text-success"
+                              : "bg-brick/10 text-brick"
+                          }`}
+                        >
+                          {b.is_active ? "نشط" : "معطّل"}
+                        </span>
+                      </td>
+                      <td className="p-3 font-mono text-xs text-muted" dir="ltr">
+                        {b.created_at?.slice(0, 10) ?? "—"}
+                      </td>
+                      {canManage && (
+                        <td className="p-3">
+                          <BusinessToggle id={b.id} isActive={b.is_active} />
+                        </td>
+                      )}
+                      {canManage && (
+                        <td className="p-3">
+                          <CompPlanToggle id={b.id} isComp={isComp} />
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

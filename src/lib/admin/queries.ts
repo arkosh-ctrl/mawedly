@@ -89,6 +89,7 @@ export type BusinessRow = {
   slug: string;
   type: string;
   plan: string;
+  subscription_status: string;
   is_active: boolean;
   created_at: string | null;
 };
@@ -98,7 +99,7 @@ export async function getPlatformBusinesses(): Promise<BusinessRow[]> {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("businesses")
-    .select("id, name, slug, type, plan, is_active, created_at")
+    .select("id, name, slug, type, plan, subscription_status, is_active, created_at")
     .order("created_at", { ascending: false })
     .returns<BusinessRow[]>();
   return data ?? [];

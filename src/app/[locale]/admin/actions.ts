@@ -72,6 +72,70 @@ export async function setBusinessActive(
 }
 
 /**
+ * Grant or revoke a complimentary Enterprise plan (beta testers / trials).
+ * Full admins only. "grant" unlocks every feature (plan=enterprise_299,
+ * active); "revoke" drops back to the free plan. Audited + health-logged.
+ * No payment is involved — this is a manual comp, not a subscription.
+ */
+export async function setComplimentaryPlan(
+  businessId: string,
+  grant: boolean,
+): Promise<AdminActionResult> {
+  try {
+    const session = await getAdminSession();
+    if (!session) return { status: "error", messageKey: "forbidden" };
+    if (session.role !== "admin")
+      return { status: "error", messageKey: "forbidden" };
+
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("businesses")
+      .update({
+        plan: grant ? "enterprise_299" : "free",
+        subscription_status: "active",
+      })
+      .eq("id", businessId)
+      .select("id");
+
+    if (error) return { status: "error", messageKey: "saveFailed" };
+    if (!data || data.length === 0)
+      return { status: "error", messageKey: "notFound" };
+
+    try {
+      await withAdmin(admin)
+        .from("admin_actions")
+        .insert({
+          admin_user_id: session.userId,
+          action: grant ? "grant_comp_plan" : "revoke_comp_plan",
+          target_type: "business",
+          target_id: businessId,
+          meta: { plan: grant ? "enterprise_299" : "free" },
+        });
+    } catch {
+      // ignore — the primary state change already succeeded.
+    }
+
+    await logSystemEvent({
+      scope: "system",
+      event: grant ? "complimentary plan granted" : "complimentary plan revoked",
+      level: "info",
+      meta: { by: session.userId },
+      businessId,
+    });
+
+    try {
+      revalidatePath("/[locale]/admin/businesses", "page");
+    } catch {
+      // revalidation is a nicety; the client also calls router.refresh().
+    }
+
+    return { status: "success" };
+  } catch {
+    return { status: "error", messageKey: "saveFailed" };
+  }
+}
+
+/**
  * Approve or reject a practitioner's license verification. Full admins only.
  * "verified" stamps license_verified_at; "rejected" clears it. Audited +
  * mirrored to the health monitor, service-role after the role check.
