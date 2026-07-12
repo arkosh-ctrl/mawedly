@@ -36,7 +36,6 @@ export const PROFESSION_TYPES = [
   "education",
   "fitness",
   "salon",
-  "barber",
   "other",
   // Regulated — license review recommended before the verified badge shows.
   "mental_health",
@@ -54,7 +53,6 @@ export const PROFESSIONS: Record<ProfessionType, Profession> = {
   education: { requiresLicense: false },
   fitness: { requiresLicense: false },
   salon: { requiresLicense: false },
-  barber: { requiresLicense: false },
   other: { requiresLicense: false },
   mental_health: { requiresLicense: true, issuer: "scfhs" },
   nutrition: { requiresLicense: true, issuer: "scfhs" },
