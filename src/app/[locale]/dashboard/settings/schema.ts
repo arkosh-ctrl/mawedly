@@ -18,6 +18,14 @@ export const settingsSchema = z
       .trim()
       .min(2, "errors.nameRequired")
       .max(100, "errors.nameLong"),
+    // Free-text merchant intro shown under the business name on the public page
+    // (e.g. "استشاري تغذية علاجية"). Optional; empty string clears it.
+    tagline: z
+      .string()
+      .trim()
+      .max(80, "errors.taglineLong")
+      .optional()
+      .or(z.literal("")),
     slug: z
       .string()
       .trim()

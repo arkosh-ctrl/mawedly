@@ -205,6 +205,7 @@
     },
     "fields": {
       "name": "Business name",
+      "tagline": "Tagline",
       "slug": "Public link (slug)",
       "phone": "WhatsApp number",
       "notificationEmail": "Notification email",
@@ -216,7 +217,11 @@
       "bankAccountName": "Account holder name",
       "qr": "Bank transfer QR image"
     },
+    "placeholders": {
+      "tagline": "e.g. Clinical nutrition consultant"
+    },
     "hints": {
+      "tagline": "A short description shown under your business name on the booking page (optional).",
       "slug": "Lowercase letters, numbers, and hyphens only, e.g. noor-consulting",
       "phone": "Digits only in international format without +, e.g. 9665XXXXXXXX",
       "qr": "PNG, JPG, or WEBP, up to 5 MB."
@@ -239,6 +244,7 @@
       "iban": "Invalid IBAN format.",
       "workTime": "Invalid time format.",
       "workRange": "Closing time must be after opening time.",
+      "taglineLong": "The tagline is too long.",
       "tooLong": "Value is too long."
     },
     "messages": {

@@ -36,6 +36,7 @@ export async function saveSettings(
     // 1) Validate text fields.
     const parsed = settingsSchema.safeParse({
       name: formData.get("name"),
+      tagline: formData.get("tagline") ?? "",
       slug: formData.get("slug"),
       phone: formData.get("phone"),
       notification_email: formData.get("notification_email") ?? "",
@@ -79,6 +80,7 @@ export async function saveSettings(
         {
           user_id: userId,
           name: v.name,
+          tagline: v.tagline || null,
           slug: v.slug,
           phone,
           notification_email: v.notification_email || null,

@@ -38,6 +38,7 @@ export default async function SettingsPage({
   const fallbackLang: "ar" | "en" = locale === "en" ? "en" : "ar";
   const defaultValues: SettingsInput = {
     name: business?.name ?? "",
+    tagline: business?.tagline ?? "",
     slug: business?.slug ?? "",
     phone: business?.phone ?? "",
     notification_email: business?.notification_email ?? "",

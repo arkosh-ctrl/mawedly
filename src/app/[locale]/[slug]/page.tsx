@@ -63,9 +63,13 @@ export default async function BookingPage({
   const t = await getTranslations("Booking");
   const tSignup = await getTranslations("Signup");
 
-  const typeLabel = (KNOWN_TYPES as readonly string[]).includes(business.type)
-    ? tSignup(`types.${business.type}`)
-    : null;
+  // The merchant's own free-text intro takes priority. Only fall back to the
+  // fixed category label when no tagline is set — never show a misleading badge.
+  const tagline = business.tagline?.trim() || null;
+  const typeLabel =
+    !tagline && (KNOWN_TYPES as readonly string[]).includes(business.type)
+      ? tSignup(`types.${business.type}`)
+      : null;
   const hours =
     business.work_start && business.work_end
       ? `${business.work_start.slice(0, 5)}–${business.work_end.slice(0, 5)}`
@@ -98,10 +102,14 @@ export default async function BookingPage({
               <h1 className="font-display text-3xl font-bold tracking-tight text-ink">
                 {business.name}
               </h1>
-              {typeLabel && (
-                <span className="rounded-full bg-primary-light px-3 py-1 text-xs font-semibold text-primary">
-                  {typeLabel}
-                </span>
+              {tagline ? (
+                <p className="text-sm leading-snug text-muted">{tagline}</p>
+              ) : (
+                typeLabel && (
+                  <span className="rounded-full bg-primary-light px-3 py-1 text-xs font-semibold text-primary">
+                    {typeLabel}
+                  </span>
+                )
               )}
             </div>
 

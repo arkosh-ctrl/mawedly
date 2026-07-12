@@ -37,6 +37,7 @@ export type Database = {
           subscription_renews_at: string | null;
           brand_logo_path: string | null;
           brand_color: string | null;
+          tagline: string | null;
           work_start: string;
           work_end: string;
           trial_ends_at: string | null;
@@ -65,6 +66,7 @@ export type Database = {
           subscription_renews_at?: string | null;
           brand_logo_path?: string | null;
           brand_color?: string | null;
+          tagline?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;
@@ -93,6 +95,7 @@ export type Database = {
           subscription_renews_at?: string | null;
           brand_logo_path?: string | null;
           brand_color?: string | null;
+          tagline?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;

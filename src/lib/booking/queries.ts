@@ -9,6 +9,8 @@ export type PublicBusiness = {
   id: string;
   name: string;
   type: string;
+  /** Free-text merchant intro shown under the name (may be empty). */
+  tagline: string | null;
   work_start: string;
   work_end: string;
   /** Plan id — drives public-page feature gating (social icons, branding). */
@@ -49,7 +51,7 @@ export async function getBusinessForBooking(
   const { data } = await supabase
     .from("businesses")
     .select(
-      "id, name, type, work_start, work_end, is_active, plan, subscription_status, brand_logo_path, brand_color",
+      "id, name, type, tagline, work_start, work_end, is_active, plan, subscription_status, brand_logo_path, brand_color",
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -59,6 +61,7 @@ export async function getBusinessForBooking(
     id: data.id,
     name: data.name,
     type: data.type,
+    tagline: data.tagline ?? null,
     work_start: data.work_start,
     work_end: data.work_end,
     plan: data.plan,
