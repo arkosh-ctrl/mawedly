@@ -70,7 +70,9 @@ export async function HomePricing() {
                 <span className="font-display text-3xl font-extrabold text-ink" dir="ltr">
                   {isFree ? t("freePrice") : price}
                 </span>
-                <span className="pb-1 text-xs text-muted">{t("perMonth")}</span>
+                {!isFree && (
+                  <span className="pb-1 text-xs text-muted">{t("perMonth")}</span>
+                )}
               </div>
 
               <ul className="flex flex-col gap-2 border-t border-line pt-4">

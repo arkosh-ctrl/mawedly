@@ -617,7 +617,7 @@
     "title": "Start free, upgrade as you grow",
     "subtitle": "Every plan includes your booking link, deposit protection and direct WhatsApp — in Arabic and English.",
     "mostPopular": "Most popular",
-    "freePrice": "0",
+    "freePrice": "Free",
     "perMonth": "SAR/mo",
     "startFree": "Start free",
     "subscribe": "Subscribe",
@@ -697,8 +697,8 @@
     "subtitle": "Everything you might want to know before you start.",
     "q1": "Does the customer need to create an account?",
     "a1": "No. Customers book directly from your link — they just pick a time, enter their name and phone number, and upload their transfer receipt. There's no app to install and no sign-up.",
-    "q2": "How does payment work?",
-    "a2": "Mawedly uses manual bank transfer. The customer transfers the deposit to your bank account and uploads the receipt. You review it and confirm the booking. There's no payment gateway and no card processing — the money goes straight to you.",
+    "q2": "How does the customer pay the deposit?",
+    "a2": "The booking deposit is a manual bank transfer. The customer transfers the deposit straight to your bank account and uploads the receipt; you review it and confirm the booking. There's no payment gateway or card processing at the booking step — the deposit reaches you directly with no middleman.",
     "q3": "Is my data safe?",
     "a3": "Yes. Each business only sees its own data, protected by row-level security. Bank QR codes and uploaded receipts are stored privately and are only accessible through secure, time-limited links.",
     "q4": "Does it fully support Arabic?",
@@ -710,7 +710,9 @@
     "q7": "What kinds of businesses is it for?",
     "a7": "Any expert whose work runs on appointments: private tutors and coaches, business consultants, nutrition and mental-health specialists, lawyers, and consulting centres. If you book people into time slots, Mawedly fits.",
     "q8": "Do I need any technical skills to set it up?",
-    "a8": "Not at all. Sign up with your email, add your services and working hours, and share your booking link. Most experts are live the same day."
+    "a8": "Not at all. Sign up with your email, add your services and working hours, and share your booking link. Most experts are live the same day.",
+    "q9": "And how do I pay for the plan itself?",
+    "a9": "Your monthly plan subscription (beyond the free tier) is handled securely by card through Lemon Squeezy, and you can cancel anytime. Note the distinction: the plan subscription is between you, the merchant, and Mawedly — while your customers' booking deposits stay direct bank transfers to your own account. Mawedly never touches deposit funds."
   },
   "Contact": {
     "metaTitle": "Contact Mawedly",
