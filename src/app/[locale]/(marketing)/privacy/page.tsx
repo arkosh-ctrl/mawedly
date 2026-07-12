@@ -25,6 +25,7 @@ export default async function PrivacyPage({
     { h: t("useTitle"), b: t("useBody") },
     { h: t("thirdTitle"), b: t("thirdBody") },
     { h: t("securityTitle"), b: t("securityBody") },
+    { h: t("practitionerTitle"), b: t("practitionerBody") },
     { h: t("contactTitle"), b: t("contactBody") },
   ];
 

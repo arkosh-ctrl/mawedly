@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { isReservedSlug } from "@/lib/booking/reserved-slugs";
+import { PROFESSION_TYPES, LICENSE_ISSUERS } from "@/lib/verification/professions";
 
 // Authoritative server-side validation for merchant signup. Error messages are
 // translation keys under the "Signup.messages" namespace (resolved by the form
@@ -9,19 +10,11 @@ import { isReservedSlug } from "@/lib/booking/reserved-slugs";
 // passes the same constraints the settings screen later enforces.
 
 // The `businesses.type` column is free text with no DB enum/CHECK (see
-// supabase/migrations/0001_init_schema_v3_2.sql:23), so this list is the
-// source of truth for what NEW signups may choose: the five consultation
-// fields of the platform pivot, plus a catch-all. Legacy values written under
-// the old positioning ("salon", "consulting") remain valid in existing rows —
-// settings never edits type, and display code maps every known value.
-export const BUSINESS_TYPES = [
-  "education",
-  "business",
-  "nutrition",
-  "legal",
-  "mental_health",
-  "other",
-] as const;
+// supabase/migrations/0001_init_schema_v3_2.sql:23). The authoritative list of
+// what a NEW signup may choose — and which of those require a professional
+// license — lives in src/lib/verification/professions.ts (single source of
+// truth). Legacy values ("consulting") remain valid in existing rows.
+export { PROFESSION_TYPES as BUSINESS_TYPES };
 
 export const signupSchema = z.object({
   email: z.string().trim().toLowerCase().email("messages.invalidEmail"),
@@ -40,13 +33,28 @@ export const signupSchema = z.object({
     .max(40, "messages.slugLong")
     .regex(/^[a-z0-9-]+$/, "messages.slugFormat")
     .refine((s) => !isReservedSlug(s), "messages.slugReserved"),
-  type: z.enum(BUSINESS_TYPES),
+  type: z.enum(PROFESSION_TYPES),
   // Loose client check; normalized to digits and length-checked in the action,
   // exactly as dashboard/settings/schema.ts + actions.ts do.
   phone: z
     .string()
     .trim()
     .regex(/^[0-9+\s-]{8,20}$/, "messages.phone"),
+  // License fields — captured at signup for regulated professions. All optional
+  // (verification is recommended, not mandatory); the action decides the initial
+  // verification_status from the chosen type. The document image is uploaded
+  // separately from the settings screen (proven QR-upload path).
+  license_number: z
+    .string()
+    .trim()
+    .max(100, "messages.licenseLong")
+    .optional()
+    .or(z.literal("")),
+  license_issuer: z
+    .union([z.literal(""), z.enum(LICENSE_ISSUERS)])
+    .optional(),
+  // Checkbox comes through FormData as "on" when ticked, absent otherwise.
+  license_attestation: z.boolean().optional(),
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;

@@ -5,6 +5,10 @@ import { getLocale } from "next-intl/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/safe-redirect";
+import {
+  requiresLicense,
+  initialVerificationStatus,
+} from "@/lib/verification/professions";
 import { signupSchema } from "./schema";
 import type { SignupState } from "./types";
 
@@ -45,6 +49,9 @@ export async function signupAction(
       slug: formData.get("slug"),
       type: formData.get("type"),
       phone: formData.get("phone"),
+      license_number: formData.get("license_number") ?? "",
+      license_issuer: formData.get("license_issuer") ?? "",
+      license_attestation: formData.get("license_attestation") === "on",
     });
     if (!parsed.success) {
       const key = parsed.error.issues[0]?.message ?? "messages.signupFailed";
@@ -101,6 +108,11 @@ export async function signupAction(
     //    role + owner RLS). On any failure, compensate: sign out (clear the
     //    cookie just set) and delete the orphaned user — never a user without a
     //    business.
+    // Regulated professions start in "pending" review; everyone else is
+    // "not_required". A license number/issuer captured now is stored so the
+    // manual review has something to check; the document image is uploaded later
+    // from settings.
+    const needsLicense = requiresLicense(v.type);
     const { error: insertError } = await supabase.from("businesses").insert({
       user_id: userId,
       name: v.name,
@@ -108,6 +120,10 @@ export async function signupAction(
       type: v.type,
       phone,
       default_language: locale === "en" ? "en" : "ar",
+      requires_license: needsLicense,
+      verification_status: initialVerificationStatus(v.type),
+      license_number: needsLicense ? v.license_number || null : null,
+      license_issuer: needsLicense ? v.license_issuer || null : null,
     });
     if (insertError) {
       await supabase.auth.signOut();

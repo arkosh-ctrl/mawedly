@@ -35,6 +35,15 @@ export default async function SettingsPage({
     qrUrl = signed?.signedUrl ?? null;
   }
 
+  // License document is likewise private — signed URL only.
+  let licenseDocUrl: string | null = null;
+  if (business?.license_document_path) {
+    const { data: signed } = await supabase.storage
+      .from("licenses")
+      .createSignedUrl(business.license_document_path, 600);
+    licenseDocUrl = signed?.signedUrl ?? null;
+  }
+
   const fallbackLang: "ar" | "en" = locale === "en" ? "en" : "ar";
   const defaultValues: SettingsInput = {
     name: business?.name ?? "",
@@ -49,12 +58,21 @@ export default async function SettingsPage({
     bank_name: business?.bank_name ?? "",
     bank_iban: business?.bank_iban ?? "",
     bank_account_name: business?.bank_account_name ?? "",
+    license_number: business?.license_number ?? "",
+    license_issuer:
+      (business?.license_issuer as SettingsInput["license_issuer"]) ?? "",
   };
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <PageHeader eyebrow={t("subtitle")} title={t("title")} />
-      <SettingsForm defaultValues={defaultValues} qrUrl={qrUrl} />
+      <SettingsForm
+        defaultValues={defaultValues}
+        qrUrl={qrUrl}
+        showLicense={business?.requires_license ?? false}
+        verificationStatus={business?.verification_status ?? "not_required"}
+        licenseDocUrl={licenseDocUrl}
+      />
       {business && <NotificationSettings />}
     </main>
   );

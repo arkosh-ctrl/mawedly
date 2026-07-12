@@ -4,6 +4,11 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { signupAction } from "./actions";
 import { BUSINESS_TYPES } from "./schema";
+import {
+  requiresLicense,
+  defaultIssuer,
+  LICENSE_ISSUERS,
+} from "@/lib/verification/professions";
 import { initialSignupState } from "./types";
 
 type SlugStatus = "idle" | "checking" | "available" | "taken" | "reserved" | "invalid";
@@ -21,6 +26,10 @@ export function SignupForm({ next }: { next: string }) {
 
   const [slug, setSlug] = useState("");
   const [slugStatus, setSlugStatus] = useState<SlugStatus>("idle");
+  // Drives the conditional license section: shown only for regulated professions.
+  const [type, setType] = useState<string>(BUSINESS_TYPES[0]);
+  const showLicense = requiresLicense(type);
+  const suggestedIssuer = defaultIssuer(type);
 
   // Debounced live availability check. A monotonically increasing request id
   // (guarded by AbortController) ensures only the latest response is applied,
@@ -136,7 +145,12 @@ export function SignupForm({ next }: { next: string }) {
 
       <label className={labelClass}>
         <span>{t("typeLabel")}</span>
-        <select name="type" defaultValue={BUSINESS_TYPES[0]} className={inputClass}>
+        <select
+          name="type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          className={inputClass}
+        >
           {BUSINESS_TYPES.map((value) => (
             <option key={value} value={value}>
               {t(`types.${value}`)}
@@ -144,6 +158,51 @@ export function SignupForm({ next }: { next: string }) {
           ))}
         </select>
       </label>
+
+      {/* Regulated professions: capture license number + issuer + attestation.
+          Optional but recommended — verification is manual after signup. */}
+      {showLicense && (
+        <div className="flex flex-col gap-3 rounded-lg border border-saffron/40 bg-saffron/5 p-3.5">
+          <p className="text-xs leading-relaxed text-ink">{t("license.intro")}</p>
+
+          <label className={labelClass}>
+            <span>{t("license.numberLabel")}</span>
+            <input
+              name="license_number"
+              dir="ltr"
+              className={inputClass}
+              placeholder={t("license.numberPlaceholder")}
+            />
+          </label>
+
+          <label className={labelClass}>
+            <span>{t("license.issuerLabel")}</span>
+            <select
+              name="license_issuer"
+              defaultValue={suggestedIssuer ?? ""}
+              className={inputClass}
+            >
+              <option value="">{t("license.issuerNone")}</option>
+              {LICENSE_ISSUERS.map((iss) => (
+                <option key={iss} value={iss}>
+                  {t(`license.issuers.${iss}`)}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="flex items-start gap-2 text-xs leading-relaxed text-ink">
+            <input
+              type="checkbox"
+              name="license_attestation"
+              className="mt-0.5 accent-primary"
+            />
+            <span>{t("license.attestation")}</span>
+          </label>
+
+          <p className="text-xs text-muted">{t("license.uploadLater")}</p>
+        </div>
+      )}
 
       <label className={labelClass}>
         <span>{t("phoneLabel")}</span>

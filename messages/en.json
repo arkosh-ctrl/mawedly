@@ -42,14 +42,36 @@
     "slugHint": "Lowercase letters, numbers and hyphens only, e.g. noor-consulting",
     "typeLabel": "Your consultation field",
     "types": {
-      "education": "Education & training",
       "business": "Business consulting",
-      "nutrition": "Nutrition & health",
-      "legal": "Legal consulting",
+      "education": "Education & training",
+      "fitness": "Fitness & sports",
+      "salon": "Salon & beauty",
+      "barber": "Barber",
+      "other": "Other",
       "mental_health": "Mental health",
-      "salon": "Salon",
-      "consulting": "Consulting",
-      "other": "Other"
+      "nutrition": "Clinical nutrition",
+      "medical": "Medical & dental",
+      "health": "General health",
+      "legal": "Legal consulting",
+      "accounting": "Certified accounting",
+      "engineering": "Consulting engineering",
+      "consulting": "Consulting"
+    },
+    "license": {
+      "intro": "Your service requires a professional license. Entering your license details is optional but earns you a verified badge after review.",
+      "numberLabel": "Professional license number",
+      "numberPlaceholder": "e.g. 12345",
+      "issuerLabel": "Issuing authority",
+      "issuerNone": "Select an authority",
+      "issuers": {
+        "scfhs": "Saudi Commission for Health Specialties (SCFHS)",
+        "moj": "Ministry of Justice",
+        "socpa": "Saudi Org. for Chartered Accountants (SOCPA)",
+        "sce": "Saudi Council of Engineers (SCE)",
+        "other": "Other authority"
+      },
+      "attestation": "I confirm the license is valid and that I am responsible for the accuracy of the information provided.",
+      "uploadLater": "You can upload the license image later from Settings to complete verification."
     },
     "phoneLabel": "WhatsApp number",
     "phoneHint": "Digits only in international format without +, e.g. 9665XXXXXXXX",
@@ -75,6 +97,7 @@
       "slugReserved": "This link is reserved, choose another.",
       "slugTaken": "This link is taken, choose another.",
       "phone": "Invalid phone number.",
+      "licenseLong": "License number is too long.",
       "emailTaken": "An account already exists for this email. Try signing in instead.",
       "signupFailed": "Couldn't create your account. Please try again."
     }
@@ -201,7 +224,8 @@
     "subtitle": "Your business details, public link, and bank account for receiving deposits.",
     "sections": {
       "business": "Business details",
-      "bank": "Bank details"
+      "bank": "Bank details",
+      "license": "Professional verification"
     },
     "fields": {
       "name": "Business name",
@@ -219,6 +243,28 @@
     },
     "placeholders": {
       "tagline": "e.g. Clinical nutrition consultant"
+    },
+    "license": {
+      "intro": "Your service requires a professional license. Enter your license details and upload a scan to be reviewed and earn a “Verified” badge.",
+      "number": "Professional license number",
+      "issuer": "Issuing authority",
+      "issuerNone": "Select an authority",
+      "issuers": {
+        "scfhs": "Saudi Commission for Health Specialties (SCFHS)",
+        "moj": "Ministry of Justice",
+        "socpa": "Saudi Org. for Chartered Accountants (SOCPA)",
+        "sce": "Saudi Council of Engineers (SCE)",
+        "other": "Other authority"
+      },
+      "document": "License / certificate scan",
+      "documentHint": "PNG, JPG, WEBP, or PDF, up to 5 MB. Uploading a new file resets the status to under review.",
+      "viewCurrent": "View current file",
+      "status": {
+        "not_required": "No verification needed",
+        "pending": "Under review",
+        "verified": "Verified",
+        "rejected": "Rejected"
+      }
     },
     "hints": {
       "tagline": "A short description shown under your business name on the booking page (optional).",
@@ -357,6 +403,13 @@
   "Booking": {
     "subtitle": "Book your appointment in a few steps.",
     "hoursLabel": "Working hours",
+    "verify": {
+      "verified": "Verified",
+      "unverified": "License required — not yet verified",
+      "unverifiedHint": "This practitioner's credentials haven't been verified yet. You're advised to check the license number before booking.",
+      "notRequired": "Service requires no professional license",
+      "disclaimer": "Mawedly is a booking platform only. Verifying the validity of credentials is the customer's responsibility. Mawedly is not a party to the consulting relationship and does not guarantee the quality of the service provided."
+    },
     "steps": {
       "service": "Service",
       "providerDate": "Provider & date",
@@ -747,6 +800,8 @@
     "thirdBody": "We use Resend to deliver email notifications (such as booking confirmations) on our behalf. We use Supabase as our database and secure file storage provider. These providers process data only to deliver their service to us.",
     "securityTitle": "Storage & security",
     "securityBody": "Each business can access only its own data, enforced at the database level. Bank QR codes and uploaded receipts are kept in private storage and served only through secure, time-limited links.",
+    "practitionerTitle": "Practitioner license data",
+    "practitionerBody": "For regulated professions (such as mental health, nutrition, and law), a merchant may provide their professional license number, issuing authority, and a scan of the license for manual review and verification only. License scans are kept in private storage and never shown publicly; customers see only the status badge (verified/unverified) and the license number once verified. We do not verify the license's validity on the customer's behalf — that responsibility remains with the customer.",
     "contactTitle": "Contact",
     "contactBody": "For any privacy question or request, email us at hello@mawedly.com.",
     "updated": "Last updated: June 2026"
@@ -762,6 +817,8 @@
     "customerBody": "Customers are responsible for providing accurate booking details, transferring the correct deposit, and attending confirmed appointments or cancelling in good time. A deposit is paid directly to the merchant, not to Mawedly.",
     "cancellationTitle": "Cancellations",
     "cancellationBody": "Cancellation and refund terms are set by each merchant. Mawedly provides the booking tools but is not a party to the transaction between a merchant and their customer, and does not hold or process deposit funds.",
+    "practitionerTitle": "Practitioners & professional licenses",
+    "practitionerBody": "Regulated professions require a valid professional license. The merchant alone is responsible for the accuracy and validity of their license data, and a “Verified” badge means only that we reviewed the submitted document at face value — not that Mawedly guarantees the practitioner's competence or the quality of their consultation. Mawedly is a technical booking platform and not a party to the consulting relationship; verifying a practitioner's credentials before booking is the customer's responsibility.",
     "liabilityTitle": "Limitation of liability",
     "liabilityBody": "Mawedly is provided \"as is\". We are not liable for missed appointments, disputes between merchants and customers, deposit transfers, or losses arising from use of the service. Our role is limited to providing the booking platform.",
     "changesTitle": "Changes",

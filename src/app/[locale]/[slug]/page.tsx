@@ -12,20 +12,13 @@ import { PlatformIcon } from "@/components/social/platform-icon";
 import { hasFeature } from "@/lib/billing/plans";
 import { BookingWidget } from "./booking-widget";
 
-// Every business category with a label in Signup.types — the five consultation
-// fields plus the catch-all, and the legacy values written before the pivot
-// ("salon", "consulting") so existing businesses keep their badge. Anything
-// else simply shows no badge.
-const KNOWN_TYPES = [
-  "education",
-  "business",
-  "nutrition",
-  "legal",
-  "mental_health",
-  "other",
-  "salon",
-  "consulting",
-] as const;
+import { PROFESSION_TYPES } from "@/lib/verification/professions";
+
+// Types that have a label in Signup.types. The full profession list plus the
+// legacy values written before the pivot ("salon" is already in the list;
+// "consulting" is not) so existing businesses keep their badge. Anything else
+// simply shows no category label.
+const KNOWN_TYPES = [...PROFESSION_TYPES, "consulting"] as readonly string[];
 
 export default async function BookingPage({
   params,
@@ -67,8 +60,26 @@ export default async function BookingPage({
   // fixed category label when no tagline is set — never show a misleading badge.
   const tagline = business.tagline?.trim() || null;
   const typeLabel =
-    !tagline && (KNOWN_TYPES as readonly string[]).includes(business.type)
+    !tagline && KNOWN_TYPES.includes(business.type)
       ? tSignup(`types.${business.type}`)
+      : null;
+
+  // Verification trust badge — one of three states:
+  //   verified      → green, shows license number + issuer
+  //   unverified    → red warning (regulated profession, not yet verified)
+  //   not_required  → amber neutral (profession needs no license)
+  const verifyState: "verified" | "unverified" | "not_required" =
+    business.verification_status === "verified"
+      ? "verified"
+      : business.requires_license
+        ? "unverified"
+        : "not_required";
+  const issuerLabel =
+    business.license_issuer &&
+    (["scfhs", "moj", "socpa", "sce", "other"] as const).includes(
+      business.license_issuer as "scfhs",
+    )
+      ? tSignup(`license.issuers.${business.license_issuer}`)
       : null;
   const hours =
     business.work_start && business.work_end
@@ -110,6 +121,36 @@ export default async function BookingPage({
                     {typeLabel}
                   </span>
                 )
+              )}
+
+              {/* Practitioner verification trust badge. */}
+              {verifyState === "verified" ? (
+                <div className="flex flex-col gap-1 rounded-xl border border-pine/30 bg-pine/5 px-3 py-2">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-pine">
+                    <VerifiedIcon />
+                    {t("verify.verified")}
+                  </span>
+                  {business.license_number && (
+                    <span className="font-mono text-[11px] text-muted" dir="ltr">
+                      {business.license_number}
+                      {issuerLabel ? ` · ${issuerLabel}` : ""}
+                    </span>
+                  )}
+                </div>
+              ) : verifyState === "unverified" ? (
+                <div className="flex flex-col gap-1 rounded-xl border border-brick/30 bg-brick/5 px-3 py-2">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-brick">
+                    <WarnIcon />
+                    {t("verify.unverified")}
+                  </span>
+                  <span className="text-[11px] leading-snug text-muted">
+                    {t("verify.unverifiedHint")}
+                  </span>
+                </div>
+              ) : (
+                <span className="rounded-full bg-saffron/15 px-3 py-1 text-[11px] font-medium text-ink/70">
+                  {t("verify.notRequired")}
+                </span>
               )}
             </div>
 
@@ -161,8 +202,52 @@ export default async function BookingPage({
             )}
           </section>
         </div>
+
+        {/* Platform disclaimer — Mawedly is a booking tool, not a party to the
+            consultation, and does not guarantee practitioner qualifications. */}
+        <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-relaxed text-muted">
+          {t("verify.disclaimer")}
+        </p>
       </div>
     </main>
+  );
+}
+
+function VerifiedIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M9 12l2 2 4-4" />
+      <circle cx="12" cy="12" r="9" />
+    </svg>
+  );
+}
+
+function WarnIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+      <path d="M12 9v4M12 17h.01" />
+    </svg>
   );
 }
 

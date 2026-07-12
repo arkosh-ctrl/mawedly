@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { isReservedSlug } from "@/lib/booking/reserved-slugs";
+import { LICENSE_ISSUERS } from "@/lib/verification/professions";
 
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 
@@ -59,6 +60,17 @@ export const settingsSchema = z
       .max(100, "errors.tooLong")
       .optional()
       .or(z.literal("")),
+    // Practitioner license (regulated professions only). Both optional; the
+    // document image is handled as a file upload in the action, like the QR.
+    license_number: z
+      .string()
+      .trim()
+      .max(100, "errors.tooLong")
+      .optional()
+      .or(z.literal("")),
+    license_issuer: z
+      .union([z.literal(""), z.enum(LICENSE_ISSUERS)])
+      .optional(),
   })
   .refine((d) => toMinutes(d.work_start) < toMinutes(d.work_end), {
     path: ["work_end"],

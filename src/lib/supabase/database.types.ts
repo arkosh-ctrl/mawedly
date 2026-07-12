@@ -38,6 +38,12 @@ export type Database = {
           brand_logo_path: string | null;
           brand_color: string | null;
           tagline: string | null;
+          requires_license: boolean;
+          license_number: string | null;
+          license_issuer: string | null;
+          license_document_path: string | null;
+          verification_status: string;
+          license_verified_at: string | null;
           work_start: string;
           work_end: string;
           trial_ends_at: string | null;
@@ -67,6 +73,12 @@ export type Database = {
           brand_logo_path?: string | null;
           brand_color?: string | null;
           tagline?: string | null;
+          requires_license?: boolean;
+          license_number?: string | null;
+          license_issuer?: string | null;
+          license_document_path?: string | null;
+          verification_status?: string;
+          license_verified_at?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;
@@ -96,6 +108,12 @@ export type Database = {
           brand_logo_path?: string | null;
           brand_color?: string | null;
           tagline?: string | null;
+          requires_license?: boolean;
+          license_number?: string | null;
+          license_issuer?: string | null;
+          license_document_path?: string | null;
+          verification_status?: string;
+          license_verified_at?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;

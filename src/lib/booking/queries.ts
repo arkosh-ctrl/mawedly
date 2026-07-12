@@ -11,6 +11,11 @@ export type PublicBusiness = {
   type: string;
   /** Free-text merchant intro shown under the name (may be empty). */
   tagline: string | null;
+  /** Practitioner verification — drives the public trust badge. */
+  requires_license: boolean;
+  verification_status: string;
+  license_number: string | null;
+  license_issuer: string | null;
   work_start: string;
   work_end: string;
   /** Plan id — drives public-page feature gating (social icons, branding). */
@@ -51,7 +56,7 @@ export async function getBusinessForBooking(
   const { data } = await supabase
     .from("businesses")
     .select(
-      "id, name, type, tagline, work_start, work_end, is_active, plan, subscription_status, brand_logo_path, brand_color",
+      "id, name, type, tagline, requires_license, verification_status, license_number, license_issuer, work_start, work_end, is_active, plan, subscription_status, brand_logo_path, brand_color",
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -62,6 +67,10 @@ export async function getBusinessForBooking(
     name: data.name,
     type: data.type,
     tagline: data.tagline ?? null,
+    requires_license: data.requires_license ?? false,
+    verification_status: data.verification_status ?? "not_required",
+    license_number: data.license_number ?? null,
+    license_issuer: data.license_issuer ?? null,
     work_start: data.work_start,
     work_end: data.work_end,
     plan: data.plan,

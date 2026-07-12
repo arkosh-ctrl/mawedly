@@ -8,18 +8,30 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { settingsSchema, type SettingsInput } from "./schema";
 import { saveSettings } from "./actions";
+import { LICENSE_ISSUERS } from "@/lib/verification/professions";
 
 type Props = {
   defaultValues: SettingsInput;
   qrUrl: string | null;
+  /** Regulated profession → show the license management section. */
+  showLicense: boolean;
+  verificationStatus: string;
+  licenseDocUrl: string | null;
 };
 
-export function SettingsForm({ defaultValues, qrUrl }: Props) {
+export function SettingsForm({
+  defaultValues,
+  qrUrl,
+  showLicense,
+  verificationStatus,
+  licenseDocUrl,
+}: Props) {
   const t = useTranslations("Settings");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(qrUrl);
+  const [licenseFile, setLicenseFile] = useState<File | null>(null);
 
   const {
     register,
@@ -41,12 +53,14 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
       fd.set(key, value == null ? "" : String(value));
     });
     if (file) fd.set("qr", file);
+    if (licenseFile) fd.set("license_doc", licenseFile);
 
     startTransition(async () => {
       const result = await saveSettings(fd);
       if (result.status === "success") {
         toast.success(t(`messages.${result.messageKey}`));
         setFile(null);
+        setLicenseFile(null);
         router.refresh();
       } else {
         toast.error(t(`messages.${result.messageKey}`));
@@ -189,6 +203,60 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
         </div>
       </section>
 
+      {/* Practitioner license — regulated professions only. */}
+      {showLicense && (
+        <section className="flex flex-col gap-4 rounded-2xl border border-line bg-paper p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="eyebrow">{t("sections.license")}</h2>
+            <VerificationPill status={verificationStatus} t={t} />
+          </div>
+          <p className="text-xs leading-relaxed text-muted">
+            {t("license.intro")}
+          </p>
+
+          <label className={labelClass}>
+            <span>{t("license.number")}</span>
+            <input className={inputClass} dir="ltr" {...register("license_number")} />
+            {errors.license_number && (
+              <span className={errorClass}>{err(errors.license_number.message)}</span>
+            )}
+          </label>
+
+          <label className={labelClass}>
+            <span>{t("license.issuer")}</span>
+            <select className={inputClass} {...register("license_issuer")}>
+              <option value="">{t("license.issuerNone")}</option>
+              {LICENSE_ISSUERS.map((iss) => (
+                <option key={iss} value={iss}>
+                  {t(`license.issuers.${iss}`)}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div className={labelClass}>
+            <span>{t("license.document")}</span>
+            {licenseDocUrl && (
+              <a
+                href={licenseDocUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-xs font-medium text-primary hover:text-primary-hover"
+              >
+                {t("license.viewCurrent")}
+              </a>
+            )}
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,application/pdf"
+              onChange={(e) => setLicenseFile(e.target.files?.[0] ?? null)}
+              className="text-sm"
+            />
+            <span className="text-xs text-muted">{t("license.documentHint")}</span>
+          </div>
+        </section>
+      )}
+
       <div>
         <button
           type="submit"
@@ -199,5 +267,26 @@ export function SettingsForm({ defaultValues, qrUrl }: Props) {
         </button>
       </div>
     </form>
+  );
+}
+
+function VerificationPill({
+  status,
+  t,
+}: {
+  status: string;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  const map: Record<string, string> = {
+    verified: "bg-pine/10 text-pine",
+    pending: "bg-saffron/15 text-ink",
+    rejected: "bg-brick/10 text-brick",
+    not_required: "bg-canvas text-muted",
+  };
+  const cls = map[status] ?? map.not_required;
+  return (
+    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${cls}`}>
+      {t(`license.status.${status}`)}
+    </span>
   );
 }

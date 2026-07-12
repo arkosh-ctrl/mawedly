@@ -24,6 +24,7 @@ export default async function TermsPage({
     { h: t("merchantTitle"), b: t("merchantBody") },
     { h: t("customerTitle"), b: t("customerBody") },
     { h: t("cancellationTitle"), b: t("cancellationBody") },
+    { h: t("practitionerTitle"), b: t("practitionerBody") },
     { h: t("liabilityTitle"), b: t("liabilityBody") },
     { h: t("changesTitle"), b: t("changesBody") },
     { h: t("contactTitle"), b: t("contactBody") },
