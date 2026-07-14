@@ -24,7 +24,11 @@ export default async function PrivacyPage({
     { h: t("collectTitle"), b: t("collectBody") },
     { h: t("useTitle"), b: t("useBody") },
     { h: t("thirdTitle"), b: t("thirdBody") },
+    { h: t("storageTitle"), b: t("storageBody") },
     { h: t("securityTitle"), b: t("securityBody") },
+    { h: t("rightsTitle"), b: t("rightsBody") },
+    { h: t("retentionTitle"), b: t("retentionBody") },
+    { h: t("cookiesTitle"), b: t("cookiesBody") },
     { h: t("practitionerTitle"), b: t("practitionerBody") },
     { h: t("contactTitle"), b: t("contactBody") },
   ];

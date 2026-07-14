@@ -20,7 +20,7 @@ export default async function FaqPage({
   setRequestLocale(locale);
   const t = await getTranslations("Faq");
 
-  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => ({
+  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((n) => ({
     q: t(`q${n}`),
     a: t(`a${n}`),
   }));

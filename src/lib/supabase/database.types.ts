@@ -44,6 +44,8 @@ export type Database = {
           license_document_path: string | null;
           verification_status: string;
           license_verified_at: string | null;
+          terms_accepted_at: string | null;
+          marketing_consent: boolean;
           work_start: string;
           work_end: string;
           trial_ends_at: string | null;
@@ -79,6 +81,8 @@ export type Database = {
           license_document_path?: string | null;
           verification_status?: string;
           license_verified_at?: string | null;
+          terms_accepted_at?: string | null;
+          marketing_consent?: boolean;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;
@@ -114,6 +118,8 @@ export type Database = {
           license_document_path?: string | null;
           verification_status?: string;
           license_verified_at?: string | null;
+          terms_accepted_at?: string | null;
+          marketing_consent?: boolean;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;

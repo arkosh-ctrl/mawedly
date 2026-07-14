@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { SettingsForm } from "./settings-form";
 import { NotificationSettings } from "@/components/dashboard/notification-settings";
+import { DeleteAccount } from "@/components/dashboard/delete-account";
 import type { SettingsInput } from "./schema";
 
 export default async function SettingsPage({
@@ -74,6 +75,7 @@ export default async function SettingsPage({
         licenseDocUrl={licenseDocUrl}
       />
       {business && <NotificationSettings />}
+      {business && <DeleteAccount />}
     </main>
   );
 }

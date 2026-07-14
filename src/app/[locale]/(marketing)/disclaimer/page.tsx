@@ -7,32 +7,27 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Terms" });
+  const t = await getTranslations({ locale, namespace: "Disclaimer" });
   return { title: t("metaTitle"), description: t("metaDescription") };
 }
 
-export default async function TermsPage({
+export default async function DisclaimerPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("Terms");
+  const t = await getTranslations("Disclaimer");
 
   const sections = [
     { h: t("natureTitle"), b: t("natureBody") },
-    { h: t("definitionsTitle"), b: t("definitionsBody") },
-    { h: t("merchantTitle"), b: t("merchantBody") },
-    { h: t("customerTitle"), b: t("customerBody") },
+    { h: t("relationshipTitle"), b: t("relationshipBody") },
     { h: t("paymentTitle"), b: t("paymentBody") },
-    { h: t("cancellationTitle"), b: t("cancellationBody") },
-    { h: t("practitionerTitle"), b: t("practitionerBody") },
-    { h: t("liabilityTitle"), b: t("liabilityBody") },
-    { h: t("ipTitle"), b: t("ipBody") },
-    { h: t("terminationTitle"), b: t("terminationBody") },
-    { h: t("changesTitle"), b: t("changesBody") },
-    { h: t("governingLawTitle"), b: t("governingLawBody") },
+    { h: t("licenseTitle"), b: t("licenseBody") },
+    { h: t("qualityTitle"), b: t("qualityBody") },
+    { h: t("damagesTitle"), b: t("damagesBody") },
+    { h: t("ownRiskTitle"), b: t("ownRiskBody") },
     { h: t("contactTitle"), b: t("contactBody") },
   ];
 

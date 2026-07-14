@@ -55,6 +55,12 @@ export const signupSchema = z.object({
     .optional(),
   // Checkbox comes through FormData as "on" when ticked, absent otherwise.
   license_attestation: z.boolean().optional(),
+  // Explicit, mandatory consent to Terms + Privacy + Disclaimer.
+  terms_consent: z.literal(true, {
+    errorMap: () => ({ message: "messages.consentRequired" }),
+  }),
+  // Optional consent to booking notifications/reminders.
+  marketing_consent: z.boolean().optional(),
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;

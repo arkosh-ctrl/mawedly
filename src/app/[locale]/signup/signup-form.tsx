@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { signupAction } from "./actions";
 import { BUSINESS_TYPES } from "./schema";
 import {
@@ -30,6 +31,8 @@ export function SignupForm({ next }: { next: string }) {
   const [type, setType] = useState<string>(BUSINESS_TYPES[0]);
   const showLicense = requiresLicense(type);
   const suggestedIssuer = defaultIssuer(type);
+  // Explicit consent — mandatory to enable submit.
+  const [termsConsent, setTermsConsent] = useState(false);
 
   // Debounced live availability check. A monotonically increasing request id
   // (guarded by AbortController) ensures only the latest response is applied,
@@ -217,9 +220,45 @@ export function SignupForm({ next }: { next: string }) {
         <span className="text-xs text-muted">{t("phoneHint")}</span>
       </label>
 
+      {/* Mandatory legal consent. */}
+      <label className="flex items-start gap-2.5 text-sm text-ink">
+        <input
+          type="checkbox"
+          name="terms_consent"
+          checked={termsConsent}
+          onChange={(e) => setTermsConsent(e.target.checked)}
+          className="mt-0.5 size-4 accent-primary"
+        />
+        <span className="leading-relaxed">
+          {t.rich("consent.legal", {
+            terms: (c) => (
+              <Link href="/terms" target="_blank" className="text-primary underline">{c}</Link>
+            ),
+            privacy: (c) => (
+              <Link href="/privacy" target="_blank" className="text-primary underline">{c}</Link>
+            ),
+            disclaimer: (c) => (
+              <Link href="/disclaimer" target="_blank" className="text-primary underline">{c}</Link>
+            ),
+          })}
+        </span>
+      </label>
+
+      {/* Optional marketing/notifications consent. */}
+      <label className="flex items-start gap-2.5 text-sm text-muted">
+        <input
+          type="checkbox"
+          name="marketing_consent"
+          className="mt-0.5 size-4 accent-primary"
+        />
+        <span className="leading-relaxed">{t("consent.marketing")}</span>
+      </label>
+
+      <p className="text-xs leading-relaxed text-muted">{t("consent.storageNote")}</p>
+
       <button
         type="submit"
-        disabled={pending || slugUnavailable || slugStatus === "checking"}
+        disabled={pending || slugUnavailable || slugStatus === "checking" || !termsConsent}
         className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
         {pending ? t("creating") : t("submit")}

@@ -53,14 +53,15 @@ export default async function HomePage({
     { num: "3", title: t("step3Title"), body: t("step3Body") },
   ];
 
-  // The five consultation fields of the platform, labelled via Signup.types so
-  // the landing page and the signup form always agree.
+  // Broad, non-sensitive audience buckets — Mawedly is a general scheduling
+  // tool, not a regulated-professions marketplace. Labels come from
+  // Home.categoryDesc (title from Home.categoryTitle).
   const categories = [
     { key: "education", icon: <CapIcon /> },
     { key: "business", icon: <BriefcaseIcon /> },
-    { key: "nutrition", icon: <LeafIcon /> },
-    { key: "legal", icon: <ScaleIcon /> },
-    { key: "mental_health", icon: <MindIcon /> },
+    { key: "health", icon: <LeafIcon /> },
+    { key: "beauty", icon: <SparkleIcon /> },
+    { key: "professional", icon: <ScaleIcon /> },
   ] as const;
 
   return (
@@ -141,7 +142,7 @@ export default async function HomePage({
                   {c.icon}
                 </span>
                 <h3 className="font-display text-lg font-bold text-ink">
-                  {tSignup(`types.${c.key}`)}
+                  {t(`categoryTitle.${c.key}`)}
                 </h3>
                 <p className="text-sm leading-relaxed text-muted">
                   {t(`categoryDesc.${c.key}`)}
@@ -172,6 +173,35 @@ export default async function HomePage({
             </Reveal>
           ))}
         </div>
+      </section>
+
+      {/* How payment works — Mawedly is a scheduling tool, not a payment
+          processor. Sets expectations clearly + the merchant-responsibility note. */}
+      <section className="mx-auto max-w-5xl px-5 pt-24">
+        <Reveal>
+          <div className="rounded-2xl border border-line bg-section p-8 sm:p-10">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              {t("paymentTitle")}
+            </h2>
+            <p className="mt-3 leading-[1.6] text-muted">{t("paymentBody")}</p>
+            <ul className="mt-6 flex flex-col gap-3">
+              {(["paymentPoint1", "paymentPoint2", "paymentPoint3", "paymentPoint4"] as const).map(
+                (k) => (
+                  <li key={k} className="flex items-start gap-2.5 text-sm text-ink">
+                    <span
+                      className="mt-2 size-1.5 shrink-0 rounded-full bg-primary"
+                      aria-hidden
+                    />
+                    <span className="leading-relaxed">{t(k)}</span>
+                  </li>
+                ),
+              )}
+            </ul>
+            <p className="mt-6 rounded-xl border border-saffron/40 bg-saffron/10 px-4 py-3 text-sm leading-relaxed text-ink">
+              {t("paymentNote")}
+            </p>
+          </div>
+        </Reveal>
       </section>
 
       {/* Problem / Solution — the solution deliberately gets the wider page. */}
@@ -328,12 +358,11 @@ function ScaleIcon() {
   );
 }
 
-function MindIcon() {
+function SparkleIcon() {
   return (
     <svg {...iconProps()}>
-      <path d="M9.5 3A5.5 5.5 0 0 0 4 8.5c0 1.2.4 2.3 1 3.2L4 15l3 .5V19a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2v-1.5A6.5 6.5 0 0 0 20 12 9 9 0 0 0 9.5 3Z" />
-      <path d="M9 9.5h.01M13 9.5h.01" />
-      <path d="M9.5 13c.8.7 2.2.7 3 0" />
+      <path d="M12 3l1.8 4.9L19 9.5l-4.5 2.2L12 17l-2.5-5.3L5 9.5l5.2-1.6L12 3Z" />
+      <path d="M19 15l.7 1.8L21.5 17.5l-1.8.7L19 20l-.7-1.8L16.5 17.5l1.8-.7L19 15Z" />
     </svg>
   );
 }

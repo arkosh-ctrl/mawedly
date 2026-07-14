@@ -14,6 +14,8 @@ export type SignupState = {
     | "slugReserved"
     | "slugTaken"
     | "phone"
+    | "licenseLong"
+    | "consentRequired"
     | "emailTaken"
     | "signupFailed";
 };
