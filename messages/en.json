@@ -70,12 +70,13 @@
         "other": "Other authority"
       },
       "attestation": "I confirm the license is valid and that I am responsible for the accuracy of the information provided.",
-      "uploadLater": "You can upload the license image later from Settings to complete verification."
+      "uploadLater": "You can upload the license image later from Settings to complete verification.",
+      "schedulingOnly": "Mawedly is for scheduling appointments only — do not enter medical records, patient data, or any sensitive data inside the tool."
     },
     "phoneLabel": "WhatsApp number",
     "phoneHint": "Digits only in international format without +, e.g. 9665XXXXXXXX",
     "consent": {
-      "legal": "I agree to the <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy>, and <disclaimer>Disclaimer</disclaimer>.",
+      "legal": "I agree to the <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy>, and <disclaimer>Disclaimer</disclaimer>, and confirm I am at least 18 years old.",
       "marketing": "I agree to receive booking notifications and reminders by email/WhatsApp (optional).",
       "storageNote": "Your data is stored on secure Supabase Cloud servers and may be transferred across borders for operational purposes with appropriate safeguards."
     },
@@ -839,7 +840,7 @@
     "useTitle": "How we use your data",
     "useBody": "We use your data solely to operate the scheduling service: creating and managing appointments, preventing conflicts, and sending booking notifications and reminders by email or WhatsApp. Analytics data (peak hours, appointment counts) is private to your account and is never shared with any third party. We do not handle your money — payment happens directly between you and the customer. We do not sell your data or use it for advertising.",
     "thirdTitle": "Third-party providers",
-    "thirdBody": "We use Supabase for our database and secure cloud storage, Resend to deliver email notifications, and WhatsApp (WhatsApp/Meta) to send booking notifications and reminders on our behalf. We do not use any payment gateway — payment happens directly between you and the customer. These providers process data only to deliver their service to us.",
+    "thirdBody": "We use Supabase for our database and secure cloud storage, Resend to deliver email notifications, WhatsApp (WhatsApp/Meta) to send booking notifications and reminders, and Lemon Squeezy to process your paid plan subscription (if you subscribe). Your customers' booking payments happen directly between you and the customer with no payment gateway. These providers process data only to deliver their service to us.",
     "storageTitle": "Storage location & cross-border transfer",
     "storageBody": "Data is stored on Supabase Cloud servers and may be transferred across borders for operational purposes. We apply appropriate safeguards (encryption in transit and data-processing agreements with our providers) to keep your data secure.",
     "securityTitle": "Security",
@@ -866,7 +867,7 @@
     "ageTitle": "Age of use",
     "ageBody": "Using Mawedly is prohibited for anyone under 18. By creating an account, you confirm you are at least 18 years old. If we discover an account belonging to someone under 18, we will delete it immediately along with all its data.",
     "acceptableTitle": "Acceptable use",
-    "acceptableBody": "Mawedly may not be used to: collect or process protected clinical health data (such as medical records, diagnoses, or patient data); collect or process confidential or sensitive legal data (such as court evidence or privileged advice); or for any unlawful use or one that violates others' rights. Mawedly is a general scheduling tool, not designed for regulated sectors (health, law, finance), and use is entirely at your own responsibility. See the Acceptable Use Policy for details.",
+    "acceptableBody": "Mawedly is available to any profession — including regulated ones — but **for scheduling appointments only**. You may not enter, store, or process sensitive data inside the tool, including: medical records, diagnoses, and patient data; court evidence or confidential legal advice; and sensitive financial data (such as card numbers). Any unlawful use, or one that violates others' rights, is also prohibited. Use is entirely at your own responsibility — see the Acceptable Use Policy for details.",
     "definitionsTitle": "Definitions",
     "definitionsBody": "\"Platform\" or \"Mawedly\": the online scheduling tool. \"Service provider\": anyone who creates a booking link and offers a service. \"Customer\": anyone who books an appointment via a provider's link. \"Booking hold amount\": an optional amount a customer pays to hold the appointment, set by the provider.",
     "merchantTitle": "Service provider responsibilities",
@@ -888,7 +889,7 @@
     "changesTitle": "Changes",
     "changesBody": "We may update these terms as the service evolves. Continued use after a change means you accept the updated terms.",
     "governingLawTitle": "Governing law & dispute resolution",
-    "governingLawBody": "These terms are governed by the laws of Saudi Arabia as a baseline, taking into account the applicable local laws of each party's country of residence. When a dispute arises: direct amicable resolution is preferred first; if that fails, the dispute is referred to online arbitration or the competent authorities in the service provider's country of residence. Mawedly is a general technical tool used across multiple countries.",
+    "governingLawBody": "These terms are governed by the laws of Saudi Arabia, with primary jurisdiction resting with its competent authorities in Riyadh. Because Mawedly is a technical tool used across multiple countries, the mandatory laws in force in the user's country of residence are respected where the law so requires. When a dispute arises, direct amicable resolution is preferred first; if that fails, it is referred to the competent authorities or online arbitration.",
     "contactTitle": "Contact",
     "contactBody": "Questions about these terms? Email hello@mawedly.com.",
     "updated": "Last updated: June 2026"
@@ -930,7 +931,7 @@
     "contentTitle": "Inappropriate content",
     "contentBody": "You may not post unlawful, fraudulent, or misleading content; racist, inciting, or abusive content; pornographic content (any child exploitation will be reported to the authorities immediately); or harassment or threats of violence.",
     "sensitiveTitle": "Sensitive data",
-    "sensitiveBody": "You may not collect or process clinical health data (such as medical records or diagnoses), confidential legal data (such as court evidence), or sensitive financial data (such as credit card numbers) via the platform.",
+    "sensitiveBody": "Regulated professionals (such as doctors and lawyers) are welcome to schedule their appointments, but you may not enter or store the sensitive data itself inside the tool: clinical health data (such as medical records or diagnoses), confidential legal data (such as court evidence), or sensitive financial data (such as credit card numbers). Use Mawedly for appointments only, and keep sensitive records in a specialized system.",
     "spamTitle": "Unsolicited communications",
     "spamBody": "You may not send spam or unsolicited promotional messages, or use customer data for marketing outside the platform without their permission.",
     "commercialTitle": "Unauthorized commercial use",
@@ -965,7 +966,9 @@
       "resend": "Email notifications",
       "resendLoc": "United States",
       "whatsapp": "WhatsApp notifications",
-      "whatsappLoc": "United States"
+      "whatsappLoc": "United States",
+      "lemon": "Paid plan subscription processing",
+      "lemonLoc": "United States"
     },
     "transferTitle": "Cross-border data transfer",
     "transferBody": "Data is stored on Supabase Cloud servers and may be transferred across borders for operational purposes, with appropriate safeguards (encryption and data-processing agreements).",

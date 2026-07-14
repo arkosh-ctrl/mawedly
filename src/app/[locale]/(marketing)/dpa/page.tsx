@@ -15,6 +15,7 @@ const SUBPROCESSORS = [
   { name: "Supabase", purpose: "sub.supabase", location: "sub.supabaseLoc" },
   { name: "Resend", purpose: "sub.resend", location: "sub.resendLoc" },
   { name: "WhatsApp / Meta", purpose: "sub.whatsapp", location: "sub.whatsappLoc" },
+  { name: "Lemon Squeezy", purpose: "sub.lemon", location: "sub.lemonLoc" },
 ] as const;
 
 export default async function DpaPage({

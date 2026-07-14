@@ -204,6 +204,9 @@ export function SignupForm({ next }: { next: string }) {
           </label>
 
           <p className="text-xs text-muted">{t("license.uploadLater")}</p>
+          <p className="rounded-lg bg-brick/5 px-3 py-2 text-xs leading-relaxed text-brick">
+            {t("license.schedulingOnly")}
+          </p>
         </div>
       )}
 
