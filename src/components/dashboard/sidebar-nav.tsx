@@ -10,7 +10,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 
 type NavItem = {
   href: string;
-  labelKey: "overviewNav" | "appointmentsNav" | "servicesNav" | "providersNav" | "analyticsNav" | "reviewsNav" | "socialNav" | "billingNav" | "settingsNav";
+  labelKey: "overviewNav" | "appointmentsNav" | "servicesNav" | "providersNav" | "contactsNav" | "analyticsNav" | "reviewsNav" | "socialNav" | "billingNav" | "settingsNav";
   icon: React.ReactNode;
   // Overview must match exactly, otherwise it stays lit on every subpage.
   exact?: boolean;
@@ -19,6 +19,7 @@ type NavItem = {
 const PRIMARY_ITEMS: NavItem[] = [
   { href: "/dashboard", labelKey: "overviewNav", icon: <GridIcon />, exact: true },
   { href: "/dashboard/appointments", labelKey: "appointmentsNav", icon: <CalendarIcon /> },
+  { href: "/dashboard/contacts", labelKey: "contactsNav", icon: <ContactIcon /> },
   { href: "/dashboard/services", labelKey: "servicesNav", icon: <TagIcon /> },
   { href: "/dashboard/providers", labelKey: "providersNav", icon: <UsersIcon /> },
 ];
@@ -145,6 +146,17 @@ function CalendarIcon() {
       <rect x="3" y="4" width="18" height="17" rx="2" />
       <path d="M3 9h18" />
       <path d="M8 2v4M16 2v4" />
+    </svg>
+  );
+}
+
+function ContactIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path d="M4 4h16v16H4z" />
+      <circle cx="12" cy="10" r="2.5" />
+      <path d="M8 16a4 4 0 0 1 8 0" />
+      <path d="M4 8h2M4 12h2M4 16h2" />
     </svg>
   );
 }

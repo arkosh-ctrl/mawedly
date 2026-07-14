@@ -58,6 +58,34 @@ function logFailure(event: string, args: SendArgs, errorMessage: string) {
   });
 }
 
+// Direct merchant → contact email. Unlike sendEmail (fire-and-forget), this
+// returns a result so the API route can log success/failure and surface it to
+// the merchant. Reply-To is the merchant so the contact replies to them, not us.
+export async function sendDirectEmail(args: {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  replyTo?: string;
+}): Promise<{ ok: boolean; id?: string; error?: string }> {
+  try {
+    const resend = getClient();
+    if (!resend) return { ok: false, error: "email_not_configured" };
+    const { data, error } = await resend.emails.send({
+      from: FROM,
+      to: args.to,
+      subject: args.subject,
+      html: args.html,
+      ...(args.text ? { text: args.text } : {}),
+      ...(args.replyTo ? { replyTo: args.replyTo } : {}),
+    });
+    if (error) return { ok: false, error: error.message ?? String(error) };
+    return { ok: true, id: data?.id };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
 // Best-effort email send. NEVER throws — a failed email must not break the
 // booking/confirmation flow. Failures are logged with structured context.
 export async function sendEmail(args: SendArgs): Promise<void> {
