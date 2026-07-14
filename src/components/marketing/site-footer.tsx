@@ -51,6 +51,8 @@ export function SiteFooter() {
           <FooterLink href="/privacy">{tFooter("privacy")}</FooterLink>
           <FooterLink href="/terms">{tFooter("terms")}</FooterLink>
           <FooterLink href="/disclaimer">{tFooter("disclaimer")}</FooterLink>
+          <FooterLink href="/acceptable-use">{tFooter("acceptableUse")}</FooterLink>
+          <FooterLink href="/dpa">{tFooter("dpa")}</FooterLink>
         </FooterCol>
       </div>
 
@@ -90,7 +92,9 @@ function FooterLink({
     | "/contact"
     | "/privacy"
     | "/terms"
-    | "/disclaimer";
+    | "/disclaimer"
+    | "/acceptable-use"
+    | "/dpa";
   children: React.ReactNode;
 }) {
   return (

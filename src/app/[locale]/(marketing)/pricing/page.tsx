@@ -214,9 +214,11 @@ export default async function PricingPage({
             </tbody>
           </table>
         </div>
-        <p className="mt-6 text-center text-xs leading-relaxed text-muted">
-          {t("paymentNote")}
-        </p>
+        <div className="mt-6 flex flex-col gap-1.5 text-center text-xs leading-relaxed text-muted">
+          <p>{t("reviewsNote")}</p>
+          <p>{t("analyticsNote")}</p>
+          <p>{t("paymentNote")}</p>
+        </div>
       </div>
     </div>
   );
