@@ -290,6 +290,75 @@ export type Database = {
         };
         Relationships: [];
       };
+      contact_lists: {
+        Row: {
+          id: string;
+          business_id: string;
+          name: string;
+          color: string | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          business_id: string;
+          name: string;
+          color?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          business_id?: string;
+          name?: string;
+          color?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
+      contact_list_members: {
+        Row: {
+          contact_id: string;
+          list_id: string;
+          added_at: string | null;
+        };
+        Insert: {
+          contact_id: string;
+          list_id: string;
+          added_at?: string | null;
+        };
+        Update: {
+          contact_id?: string;
+          list_id?: string;
+          added_at?: string | null;
+        };
+        Relationships: [];
+      };
+      custom_field_definitions: {
+        Row: {
+          id: string;
+          business_id: string;
+          name: string;
+          key: string;
+          type: string;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          business_id: string;
+          name: string;
+          key: string;
+          type?: string;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          business_id?: string;
+          name?: string;
+          key?: string;
+          type?: string;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
       appointments: {
         Row: {
           id: string;

@@ -21,6 +21,11 @@ export const contactSchema = z.object({
   city: z.string().trim().max(60, "errors.tooLong").optional().or(z.literal("")),
   notes: z.string().trim().max(2000, "errors.tooLong").optional().or(z.literal("")),
   is_favorite: z.boolean().optional(),
+  // Flat key→value custom fields (values stored as strings). Max 20 keys.
+  custom_fields: z
+    .record(z.string().max(500, "errors.tooLong"))
+    .refine((o) => Object.keys(o).length <= 20, "errors.tooLong")
+    .optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

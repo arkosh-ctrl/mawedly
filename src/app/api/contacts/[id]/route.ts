@@ -48,6 +48,7 @@ export async function PATCH(
       city: v.city || null,
       notes: v.notes || null,
       is_favorite: v.is_favorite ?? false,
+      custom_fields: v.custom_fields ?? {},
     })
     .eq("id", id)
     .eq("business_id", businessId)

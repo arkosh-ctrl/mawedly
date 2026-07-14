@@ -14,7 +14,8 @@ export async function GET(req: NextRequest) {
   }
   const search = req.nextUrl.searchParams.get("search") ?? undefined;
   const favorite = req.nextUrl.searchParams.get("favorite") === "true";
-  const contacts = await listContacts(supabase, businessId, { search, favorite });
+  const listId = req.nextUrl.searchParams.get("list_id") ?? undefined;
+  const contacts = await listContacts(supabase, businessId, { search, favorite, listId });
   return NextResponse.json({ contacts });
 }
 
@@ -59,6 +60,7 @@ export async function POST(req: NextRequest) {
       city: v.city || null,
       notes: v.notes || null,
       is_favorite: v.is_favorite ?? false,
+      custom_fields: v.custom_fields ?? {},
       source: "manual",
     })
     .select("id")

@@ -2,7 +2,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Link } from "@/i18n/navigation";
-import { resolveBusinessId, listContacts } from "@/lib/contacts/queries";
+import {
+  resolveBusinessId,
+  listContacts,
+  getLists,
+  getCustomFields,
+} from "@/lib/contacts/queries";
 import { ContactsClient } from "@/components/dashboard/contacts/contacts-client";
 
 export const dynamic = "force-dynamic";
@@ -36,16 +41,21 @@ export default async function ContactsPage({
     );
   }
 
-  const [{ data: business }, initialContacts] = await Promise.all([
-    supabase.from("businesses").select("name, slug, phone").eq("id", businessId).maybeSingle(),
-    listContacts(supabase, businessId),
-  ]);
+  const [{ data: business }, initialContacts, initialLists, customFields] =
+    await Promise.all([
+      supabase.from("businesses").select("name, slug, phone").eq("id", businessId).maybeSingle(),
+      listContacts(supabase, businessId),
+      getLists(supabase, businessId),
+      getCustomFields(supabase, businessId),
+    ]);
 
   return (
     <main className="flex flex-col gap-6">
       <PageHeader eyebrow={t("eyebrow")} title={t("title")} subline={t("subtitle")} />
       <ContactsClient
         initialContacts={initialContacts}
+        initialLists={initialLists}
+        customFields={customFields}
         businessName={business?.name ?? ""}
       />
     </main>
