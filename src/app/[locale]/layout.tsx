@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
+import { PWARegister } from "@/components/pwa-register";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import {
@@ -49,6 +50,11 @@ export const metadata: Metadata = {
   title: "Mawedly",
   description:
     "Bilingual deposit-based appointment booking for consultants, educators, and health & legal experts.",
+  appleWebApp: { capable: true, title: "موعدلي", statusBarStyle: "default" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a7cff",
 };
 
 // Pre-render a route for every supported locale at build time.
@@ -84,6 +90,7 @@ export default async function LocaleLayout({
       <body className="antialiased">
         {/* Messages and locale are inherited from the request config. */}
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <PWARegister />
       </body>
     </html>
   );
