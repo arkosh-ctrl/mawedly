@@ -332,6 +332,33 @@ export type Database = {
         };
         Relationships: [];
       };
+      email_templates: {
+        Row: {
+          id: string;
+          business_id: string;
+          name: string;
+          subject: string;
+          body: string;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          business_id: string;
+          name: string;
+          subject: string;
+          body: string;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          business_id?: string;
+          name?: string;
+          subject?: string;
+          body?: string;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
       custom_field_definitions: {
         Row: {
           id: string;

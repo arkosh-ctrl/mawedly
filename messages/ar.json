@@ -484,6 +484,11 @@
     "emailSubject": "الموضوع",
     "emailBody": "الرسالة",
     "emailSent": "تم إرسال الإيميل.",
+    "chooseTemplate": "اختر قالباً…",
+    "saveTemplate": "حفظ كقالب",
+    "templateName": "اسم القالب",
+    "templateSaved": "تم حفظ القالب.",
+    "templateHint": "استخدم '{name}' في القالب ليُستبدل باسم العميل تلقائياً.",
     "col": {
       "name": "الاسم",
       "email": "الإيميل",

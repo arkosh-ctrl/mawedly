@@ -484,6 +484,11 @@
     "emailSubject": "Subject",
     "emailBody": "Message",
     "emailSent": "Email sent.",
+    "chooseTemplate": "Choose a template…",
+    "saveTemplate": "Save as template",
+    "templateName": "Template name",
+    "templateSaved": "Template saved.",
+    "templateHint": "Use '{name}' in a template to auto-fill the contact's name.",
     "col": {
       "name": "Name",
       "email": "Email",

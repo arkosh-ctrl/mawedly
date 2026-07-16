@@ -870,6 +870,8 @@ function ContactDetail({
 
 /* --------------------------------------------------------------- Email ---- */
 
+type EmailTemplate = { id: string; name: string; subject: string; body: string };
+
 function EmailModal({
   t,
   contact,
@@ -881,7 +883,47 @@ function EmailModal({
 }) {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [templates, setTemplates] = useState<EmailTemplate[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [tplName, setTplName] = useState("");
   const [pending, start] = useTransition();
+
+  useEffect(() => {
+    fetch("/api/contacts/templates")
+      .then((r) => r.json())
+      .then((j) => setTemplates(j.templates ?? []))
+      .catch(() => setTemplates([]));
+  }, []);
+
+  // Fill from a template, substituting {name} with the contact's name.
+  function applyTemplate(id: string) {
+    const tpl = templates.find((x) => x.id === id);
+    if (!tpl) return;
+    const sub = (s: string) => s.replaceAll("{name}", contact.name);
+    setSubject(sub(tpl.subject));
+    setBody(sub(tpl.body));
+  }
+
+  function saveTemplate() {
+    if (!tplName.trim() || !subject.trim() || !body.trim()) {
+      toast.error(t("errors.validationFailed"));
+      return;
+    }
+    start(async () => {
+      const res = await fetch("/api/contacts/templates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: tplName.trim(), subject, body }),
+      });
+      if (res.ok) {
+        toast.success(t("templateSaved"));
+        setTplName("");
+        setSaving(false);
+        const j = await (await fetch("/api/contacts/templates")).json();
+        setTemplates(j.templates ?? []);
+      } else toast.error(t("errors.saveFailed"));
+    });
+  }
 
   function send() {
     if (!subject.trim() || !body.trim()) {
@@ -909,9 +951,37 @@ function EmailModal({
     <Overlay onClose={onClose}>
       <h2 className="font-display text-lg font-bold text-ink">{t("emailTo", { name: contact.name })}</h2>
       <p className="mt-1 font-mono text-xs text-muted" dir="ltr">{contact.email}</p>
-      <div className="mt-4 flex flex-col gap-3">
+
+      {/* Template picker + save */}
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {templates.length > 0 && (
+          <select
+            className={`${input} text-xs`}
+            defaultValue=""
+            onChange={(e) => e.target.value && applyTemplate(e.target.value)}
+          >
+            <option value="">{t("chooseTemplate")}</option>
+            {templates.map((tpl) => (
+              <option key={tpl.id} value={tpl.id}>{tpl.name}</option>
+            ))}
+          </select>
+        )}
+        {!saving ? (
+          <button type="button" onClick={() => setSaving(true)} className="rounded-full border border-line px-3 py-1 text-xs text-ink hover:border-muted">
+            {t("saveTemplate")}
+          </button>
+        ) : (
+          <div className="flex items-center gap-1">
+            <input className={`${input} text-xs`} placeholder={t("templateName")} value={tplName} onChange={(e) => setTplName(e.target.value)} />
+            <button type="button" onClick={saveTemplate} disabled={pending} className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-paper">{t("save")}</button>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-3 flex flex-col gap-3">
         <input className={input} placeholder={t("emailSubject")} maxLength={200} value={subject} onChange={(e) => setSubject(e.target.value)} />
         <textarea className={input} rows={8} placeholder={t("emailBody")} maxLength={5000} value={body} onChange={(e) => setBody(e.target.value)} />
+        <p className="text-xs text-muted">{t("templateHint")}</p>
       </div>
       <div className="mt-5 flex justify-end gap-2">
         <button type="button" onClick={onClose} disabled={pending} className="rounded-full border border-line px-4 py-2 text-sm text-ink hover:border-muted disabled:opacity-60">{t("cancel")}</button>
