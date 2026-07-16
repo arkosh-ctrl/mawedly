@@ -1,0 +1,11 @@
+-- Drop the vestigial `businesses_public` view (created in 0004). It is a
+-- SECURITY DEFINER view — flagged CRITICAL by the Supabase security advisor
+-- because it bypasses the querying user's RLS — and it is no longer referenced
+-- anywhere in the app: all public reads go through the service-role admin
+-- client (src/lib/supabase/admin.ts), not this view. Dropping it removes the
+-- advisor warning and the anon SELECT grant on business data.
+--
+-- If a public view is ever needed again, recreate it with security_invoker so
+-- it respects the caller's RLS:
+--   create view public.businesses_public with (security_invoker = on) as ...;
+drop view if exists public.businesses_public;
