@@ -74,7 +74,7 @@ export default async function HomePage({
       {/* Hero — headline as thesis, beside a working miniature of the real
           booking page (the same split card shipped at /[slug]). */}
       <section className="border-b border-line bg-paper">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:py-28 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mx-auto grid max-w-6xl items-start gap-12 px-5 py-20 sm:py-28 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col items-start">
             <span className="animate-fade-rise eyebrow">{t("heroBadge")}</span>
             <h1 className="mt-5 font-display text-4xl font-bold leading-[1.25] tracking-tight text-ink sm:text-5xl md:text-6xl">
