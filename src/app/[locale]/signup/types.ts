@@ -6,6 +6,7 @@ export type SignupState = {
   messageKey?:
     | "invalidEmail"
     | "passwordShort"
+    | "passwordWeak"
     | "nameRequired"
     | "nameLong"
     | "slugShort"

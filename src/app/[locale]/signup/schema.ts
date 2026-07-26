@@ -20,7 +20,12 @@ export const signupSchema = z.object({
   email: z.string().trim().toLowerCase().email("messages.invalidEmail"),
   // 8-char minimum agreed for this project (matches login/schema.ts). Supabase
   // enforces its own minimum server-side as defense in depth.
-  password: z.string().min(8, "messages.passwordShort"),
+  // At least 8 chars, and must include a letter (any case) AND a digit.
+  password: z
+    .string()
+    .min(8, "messages.passwordShort")
+    .regex(/[A-Za-z]/, "messages.passwordWeak")
+    .regex(/[0-9]/, "messages.passwordWeak"),
   name: z
     .string()
     .trim()

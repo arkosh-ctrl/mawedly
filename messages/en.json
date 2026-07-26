@@ -36,7 +36,7 @@
     "subtitle": "Join as an expert — set up your appointments page in one step.",
     "emailLabel": "Email",
     "passwordLabel": "Password",
-    "passwordHint": "At least 8 characters.",
+    "passwordHint": "At least 8 characters, including a letter and a number.",
     "businessNameLabel": "Business name",
     "slugLabel": "Public link (slug)",
     "slugHint": "Lowercase letters, numbers and hyphens only, e.g. noor-consulting",
@@ -94,6 +94,7 @@
     "messages": {
       "invalidEmail": "Please enter a valid email address.",
       "passwordShort": "Password must be at least 8 characters.",
+      "passwordWeak": "Password must include at least one letter and one number.",
       "nameRequired": "Business name is required.",
       "nameLong": "Business name is too long.",
       "slugShort": "The link is too short.",
