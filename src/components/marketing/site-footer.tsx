@@ -12,6 +12,7 @@ const PRODUCT_LINKS = [
 
 const COMPANY_LINKS = [
   { href: "/about", key: "about" },
+  { href: "/blog", key: "blog" },
   { href: "/contact", key: "contact" },
 ] as const;
 
@@ -89,6 +90,7 @@ function FooterLink({
     | "/pricing"
     | "/faq"
     | "/about"
+    | "/blog"
     | "/contact"
     | "/privacy"
     | "/terms"

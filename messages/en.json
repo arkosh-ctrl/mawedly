@@ -742,7 +742,8 @@
     "login": "Log in",
     "cta": "Start free",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "blog": "Blog"
   },
   "Footer": {
     "tagline": "A smart scheduling tool for anyone — teachers, coaches, freelancers, and any expert who wants to organize their time.",
@@ -1316,5 +1317,23 @@
         "noBusiness": "Create your business first from Settings."
       }
     }
+  },
+  "Blog": {
+    "metaTitle": "Mawedly Blog — deposits, bookings and no-shows",
+    "metaDescription": "Practical writing on cutting no-shows, organising appointments and collecting deposits for salons, clinics and consultants in the Gulf.",
+    "eyebrow": "Blog",
+    "title": "Writing on appointments and deposits",
+    "subtitle": "What we have learned about scheduling and no-shows — no filler, and no statistic we have not verified.",
+    "empty": "No published articles yet.",
+    "errorTitle": "Could not load the articles.",
+    "errorBody": "Something went wrong reading the blog. This is not an empty list — please try again shortly.",
+    "readingTime": "{minutes} min read",
+    "backToIndex": "← All articles",
+    "availableIn": "Available in: {locales}",
+    "localeAr": "العربية",
+    "localeEn": "English",
+    "ctaTitle": "Lock in the appointment with a deposit",
+    "ctaBody": "Mawedly lets you take bookings and collect a deposit by bank transfer, confirmed by you — no payment gateway.",
+    "ctaButton": "Start free"
   }
 }
