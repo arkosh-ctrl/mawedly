@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:billing": "node --experimental-strip-types --test tests/billing-usage.test.mts"
+    "test:billing": "node --experimental-strip-types --test tests/billing-usage.test.mts",
+    "test:blog": "node --experimental-strip-types --test tests/blog-markdown.test.mts tests/blog-validate.test.mts tests/blog-auth.test.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.0",

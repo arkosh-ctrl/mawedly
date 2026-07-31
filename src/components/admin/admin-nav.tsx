@@ -8,6 +8,7 @@ const ITEMS = [
   { href: "/admin/verifications", label: "التوثيق" },
   { href: "/admin/contacts", label: "المشتركون" },
   { href: "/admin/appointments", label: "المواعيد" },
+  { href: "/admin/blog", label: "المدونة" },
   { href: "/admin/health", label: "صحة الأنظمة" },
   { href: "/admin/audit", label: "سجل التدقيق" },
 ];
