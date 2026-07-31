@@ -109,7 +109,7 @@ node scripts/blog-publish.mjs update /tmp/post.json   # يتطلب "target_slug"
 node scripts/blog-publish.mjs list
 ```
 
-السكربت يستهدف `https://mawedly.com` صراحةً ويقرأ `BLOG_API_KEY`. لا تشتق
+السكربت يستهدف `https://www.mawedly.com` صراحةً ويقرأ `BLOG_API_KEY`. لا تشتق
 العنوان من `NEXT_PUBLIC_APP_URL`: في التطوير يشير إلى localhost، والكتابة إلى
 قاعدة محلية تبدو تماماً كنجاح.
 
@@ -121,7 +121,7 @@ node scripts/blog-publish.mjs list
 
 - انقل الموضوع في `content/blog-topics.md` من "قيد الانتظار" إلى "منشور" مع
   الـ slug والتاريخ.
-- أعطِ الرابطين: `https://mawedly.com/ar/blog/<slug>` و `/en/blog/<slug>`.
+- أعطِ الرابطين: `https://www.mawedly.com/ar/blog/<slug>` و `/en/blog/<slug>`.
 - ذكّر بأن المقال المجدول يظهر خلال ٥ دقائق من `published_at` تلقائياً.
 
 ## الصوت

@@ -18,7 +18,9 @@
 import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 
-const DEFAULT_BASE = "https://mawedly.com";
+// www, NOT the apex: mawedly.com answers 308 -> www.mawedly.com, and a
+// redirected POST arrives without its body. Verified 2026-08-01.
+const DEFAULT_BASE = "https://www.mawedly.com";
 
 async function loadKey() {
   if (process.env.BLOG_API_KEY) return process.env.BLOG_API_KEY;
