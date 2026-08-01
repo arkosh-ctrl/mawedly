@@ -86,9 +86,23 @@ export default async function BlogIndexPage({
           {result.data.map((post) => (
             <li
               key={post.slug}
-              className="rounded-2xl border border-line bg-paper p-6 transition-colors hover:border-primary/40"
+              className="overflow-hidden rounded-2xl border border-line bg-paper transition-colors hover:border-primary/40"
             >
               <Link href={blogUrl(post.slug)} className="block">
+                {post.cover_image ? (
+                  // Decorative: the cover carries no information the heading
+                  // does not, so an empty alt keeps it out of the reading order.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={post.cover_image}
+                    alt=""
+                    width={1200}
+                    height={630}
+                    loading="lazy"
+                    className="aspect-[1200/630] w-full border-b border-line object-cover"
+                  />
+                ) : null}
+                <div className="p-6">
                 <h2 className="font-display text-xl font-bold text-ink">
                   {post.title}
                 </h2>
@@ -102,6 +116,7 @@ export default async function BlogIndexPage({
                   <span aria-hidden>·</span>
                   <span>{t("readingTime", { minutes: post.readingMinutes })}</span>
                 </p>
+                </div>
               </Link>
             </li>
           ))}

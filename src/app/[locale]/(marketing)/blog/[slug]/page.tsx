@@ -169,6 +169,19 @@ export default async function BlogArticlePage({
         <span>{t("readingTime", { minutes: readingMinutes })}</span>
       </p>
 
+      {post.cover_image ? (
+        // Decorative: the cover repeats the headline's idea visually and adds
+        // no information of its own, so an empty alt is correct here.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={post.cover_image}
+          alt=""
+          width={1200}
+          height={630}
+          className="mt-8 aspect-[1200/630] w-full rounded-2xl border border-line object-cover"
+        />
+      ) : null}
+
       {translation.excerpt ? (
         <p className="mt-6 border-s-2 border-primary ps-4 text-lg leading-relaxed text-ink">
           {translation.excerpt}

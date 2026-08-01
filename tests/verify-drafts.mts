@@ -1,7 +1,7 @@
 // One-off gate for the drafted articles: every folder in content/drafts must
 // pass the SAME validator the API uses, and its Markdown must render to the
 // allowed tag set with no unsupported constructs left as literal text.
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { validateBlogPost } from "../src/lib/blog/validate.ts";
 import { renderMarkdown } from "../src/lib/blog/markdown.ts";
@@ -39,6 +39,18 @@ for (const entry of (await readdir(DIR, { withFileTypes: true })).filter(e => e.
   // 3. folder name must equal slug (the push script relies on meta, but a
   //    mismatch makes the repo confusing to navigate)
   if (entry.name !== meta.slug) problems.push(`folder/slug mismatch: ${entry.name} vs ${meta.slug}`);
+
+  // 4. the cover must exist on disk. The validator only checks the SHAPE of the
+  //    path, so a typo would sail through and surface as a 404 on the live page
+  //    and — worse — as a blank card when the article is shared.
+  if (!payload.cover_image) problems.push("no cover_image");
+  else if (payload.cover_image.startsWith("/")) {
+    try {
+      await stat(path.join("public", payload.cover_image));
+    } catch {
+      problems.push(`cover missing on disk: public${payload.cover_image}`);
+    }
+  }
 
   for (const t of payload.translations) {
     const html = renderMarkdown(t.content);
