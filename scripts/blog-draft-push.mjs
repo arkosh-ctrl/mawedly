@@ -86,19 +86,44 @@ async function main() {
       continue;
     }
 
-    const response = await fetch(`${base}/api/blog/publish`, {
+    const headers = {
+      authorization: `Bearer ${key}`,
+      "content-type": "application/json",
+    };
+    const url = `${base}/api/blog/publish`;
+
+    let response = await fetch(url, {
       method: "POST",
-      headers: {
-        authorization: `Bearer ${key}`,
-        "content-type": "application/json",
-      },
+      headers,
       body: JSON.stringify(payload),
       redirect: "error",
     });
+    let verb = "created";
+
+    // Already pushed once? Update it instead of failing, so re-running after a
+    // copy or cover change is safe.
+    //
+    // The update deliberately omits status AND published_at. Those live in the
+    // admin editor once a post is scheduled, and re-sending the draft file's
+    // "draft / null" would knock a live article back to a draft — and because
+    // the public policy tests published_at, it would vanish from the site
+    // without any error. The API keeps both fields when the keys are absent.
+    if (response.status === 409) {
+      const { status, published_at, ...rest } = payload;
+      void status;
+      void published_at;
+      response = await fetch(url, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ target_slug: payload.slug, ...rest }),
+        redirect: "error",
+      });
+      verb = "updated";
+    }
 
     const text = await response.text();
     console.log(
-      `${response.ok ? "ok " : "ERR"} ${payload.slug} — ${response.status} ${text}`,
+      `${response.ok ? "ok " : "ERR"} ${payload.slug} — ${verb} — ${response.status} ${text}`,
     );
     if (!response.ok) failures += 1;
   }
