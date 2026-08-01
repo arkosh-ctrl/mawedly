@@ -135,6 +135,15 @@ export function validateBlogPost(
     if ((t.seo_description ?? "").length > MAX_SEO_DESCRIPTION_LENGTH) {
       return "seo_description_too_long";
     }
+
+    // The per-language cover follows the same rule as the post-level one.
+    if (
+      t.cover_image != null &&
+      t.cover_image !== "" &&
+      !isValidImagePath(t.cover_image)
+    ) {
+      return "cover_image_invalid";
+    }
   }
 
   // A live post ships in both languages, or hreflang would point at a page that

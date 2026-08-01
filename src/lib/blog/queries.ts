@@ -58,7 +58,7 @@ export async function getPublishedPosts(
 
   const { data: translations, error: trError } = await db
     .from("blog_post_translations")
-    .select("post_id, locale, title, excerpt, content, seo_title, seo_description")
+    .select("post_id, locale, title, excerpt, content, seo_title, seo_description, cover_image")
     .in(
       "post_id",
       posts.map((p) => p.id),
@@ -81,7 +81,8 @@ export async function getPublishedPosts(
       slug: post.slug,
       title: match.title,
       excerpt: match.excerpt,
-      cover_image: post.cover_image,
+      // Translation cover first: it may carry the title in this language.
+      cover_image: match.cover_image ?? post.cover_image,
       published_at: post.published_at as string,
       readingMinutes: readingMinutes(match.content),
       locales: all.map((t) => t.locale),
@@ -118,7 +119,7 @@ export async function getPublishedPost(
 
   const { data: translations, error: trError } = await db
     .from("blog_post_translations")
-    .select("post_id, locale, title, excerpt, content, seo_title, seo_description")
+    .select("post_id, locale, title, excerpt, content, seo_title, seo_description, cover_image")
     .eq("post_id", post.id);
 
   if (trError) return { ok: false, error: trError.message };
@@ -132,7 +133,7 @@ export async function getPublishedPost(
     data: {
       post: {
         slug: post.slug,
-        cover_image: post.cover_image,
+        cover_image: match.cover_image ?? post.cover_image,
         published_at: post.published_at,
         updated_at: post.updated_at,
       },
@@ -143,6 +144,7 @@ export async function getPublishedPost(
         content: match.content,
         seo_title: match.seo_title,
         seo_description: match.seo_description,
+        cover_image: match.cover_image,
       },
       locales: rows.map((t) => t.locale),
       readingMinutes: readingMinutes(match.content),

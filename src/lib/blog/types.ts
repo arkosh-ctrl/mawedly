@@ -14,6 +14,12 @@ export type BlogTranslation = {
   excerpt: string;
   /** Markdown in the restricted subset — never HTML. */
   content: string;
+  /**
+   * Optional cover for THIS language. A cover whose artwork carries the title
+   * can only be right in one language, so it belongs on the translation.
+   * Falls back to the post-level cover when absent.
+   */
+  cover_image?: string | null;
   seo_title: string;
   seo_description: string;
 };

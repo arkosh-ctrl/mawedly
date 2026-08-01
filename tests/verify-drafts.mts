@@ -40,16 +40,34 @@ for (const entry of (await readdir(DIR, { withFileTypes: true })).filter(e => e.
   //    mismatch makes the repo confusing to navigate)
   if (entry.name !== meta.slug) problems.push(`folder/slug mismatch: ${entry.name} vs ${meta.slug}`);
 
-  // 4. the cover must exist on disk. The validator only checks the SHAPE of the
-  //    path, so a typo would sail through and surface as a 404 on the live page
-  //    and — worse — as a blank card when the article is shared.
-  if (!payload.cover_image) problems.push("no cover_image");
-  else if (payload.cover_image.startsWith("/")) {
-    try {
-      await stat(path.join("public", payload.cover_image));
-    } catch {
-      problems.push(`cover missing on disk: public${payload.cover_image}`);
+  // 4. every cover must exist on disk — the shared one AND the per-language
+  //    ones. The validator only checks the SHAPE of the path, so a typo would
+  //    sail through and surface as a 404 on the page and, worse, as a blank
+  //    card when the article is shared.
+  const covers: [string, string | null | undefined][] = [
+    ["post", payload.cover_image],
+    ...payload.translations.map(
+      (t) => [t.locale, t.cover_image] as [string, string | null | undefined],
+    ),
+  ];
+  for (const [where, cover] of covers) {
+    if (!cover) {
+      problems.push(`${where}: no cover_image`);
+      continue;
     }
+    if (!cover.startsWith("/")) continue; // remote https cover, nothing to check
+    try {
+      await stat(path.join("public", cover));
+    } catch {
+      problems.push(`${where}: cover missing on disk — public${cover}`);
+    }
+  }
+
+  // 5. a per-language cover that is shared between locales defeats the point:
+  //    its artwork carries the title, so it can only be right in one language.
+  const [arCover, enCover] = payload.translations.map((t) => t.cover_image);
+  if (arCover && enCover && arCover === enCover) {
+    problems.push("ar and en share one cover — the baked-in title cannot suit both");
   }
 
   for (const t of payload.translations) {

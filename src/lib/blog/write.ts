@@ -32,6 +32,7 @@ function normaliseTranslation(t: BlogTranslation): BlogTranslation {
     content: t.content.trim(),
     seo_title: (t.seo_title ?? "").trim(),
     seo_description: (t.seo_description ?? "").trim(),
+    cover_image: t.cover_image?.trim() || null,
   };
 }
 
@@ -113,7 +114,7 @@ export async function updateBlogPost(
 
   const { data: currentTranslations, error: trReadError } = await db
     .from("blog_post_translations")
-    .select("locale, title, excerpt, content, seo_title, seo_description")
+    .select("locale, title, excerpt, content, seo_title, seo_description, cover_image")
     .eq("post_id", existing.id);
   if (trReadError) {
     return { ok: false, error: "db_error", detail: trReadError.message };
@@ -185,7 +186,7 @@ export async function getBlogPostById(
 
   const { data: translations, error: trError } = await db
     .from("blog_post_translations")
-    .select("locale, title, excerpt, content, seo_title, seo_description")
+    .select("locale, title, excerpt, content, seo_title, seo_description, cover_image")
     .eq("post_id", post.id);
 
   if (trError) return { ok: false, error: trError.message };
@@ -201,6 +202,7 @@ export async function getBlogPostById(
         content: t.content,
         seo_title: t.seo_title,
         seo_description: t.seo_description,
+        cover_image: t.cover_image,
       })),
     },
   };
@@ -227,7 +229,7 @@ export async function listAllBlogPosts(): Promise<
 
   const { data: translations, error: trError } = await db
     .from("blog_post_translations")
-    .select("post_id, locale, title, excerpt, content, seo_title, seo_description")
+    .select("post_id, locale, title, excerpt, content, seo_title, seo_description, cover_image")
     .in("post_id", ids);
 
   if (trError) return { ok: false, error: trError.message };
@@ -242,6 +244,7 @@ export async function listAllBlogPosts(): Promise<
       content: t.content,
       seo_title: t.seo_title,
       seo_description: t.seo_description,
+      cover_image: t.cover_image,
     });
     byPost.set(t.post_id, list);
   }

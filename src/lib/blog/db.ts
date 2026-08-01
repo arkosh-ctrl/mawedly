@@ -24,6 +24,7 @@ type BlogTranslationRow = {
   content: string;
   seo_title: string;
   seo_description: string;
+  cover_image: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -36,6 +37,7 @@ type BlogTranslationInsert = {
   content: string;
   seo_title?: string;
   seo_description?: string;
+  cover_image?: string | null;
 };
 
 export type BlogDatabase = {

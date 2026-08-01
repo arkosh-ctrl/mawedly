@@ -62,6 +62,7 @@ function emptyTranslation(locale: BlogLocale): BlogTranslation {
     content: "",
     seo_title: "",
     seo_description: "",
+    cover_image: null,
   };
 }
 
@@ -248,6 +249,33 @@ export function BlogEditor({ postId, initial }: BlogEditorProps) {
                 onChange={(e) => patchTranslation(tab, { title: e.target.value })}
                 className="rounded-xl border border-line bg-canvas px-3 py-2 outline-none focus:border-primary"
               />
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">
+                غلاف هذه اللغة (اختياري)
+              </span>
+              <input
+                value={active.cover_image ?? ""}
+                onChange={(e) =>
+                  patchTranslation(tab, { cover_image: e.target.value })
+                }
+                dir="ltr"
+                placeholder="/covers/slug-ar.png"
+                className="rounded-xl border border-line bg-canvas px-3 py-2 font-mono text-sm outline-none focus:border-primary"
+              />
+              <span className="text-xs text-muted">
+                اتركه فارغاً ليُستخدم غلاف المقال المشترك. الغلاف الذي يحمل
+                العنوان مكتوباً يجب أن يكون خاصاً بلغته.
+              </span>
+              {active.cover_image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={active.cover_image}
+                  alt=""
+                  className="mt-1 aspect-[1200/630] w-full rounded-xl border border-line object-cover"
+                />
+              ) : null}
             </label>
 
             <label className="flex flex-col gap-1.5">

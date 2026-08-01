@@ -1,230 +1,239 @@
 #!/usr/bin/env python3
-"""Generate the blog cover images.
+"""Generate one cover image per article, per language.
 
     python3 scripts/generate-blog-covers.py
 
-Writes 1200x630 PNGs into public/covers/, one per article.
+Reads every folder in content/drafts/, takes each language's title from
+meta.json, and writes public/covers/<slug>-<locale>.png at 1200x630.
 
-Why PNG and not SVG: the cover doubles as the Open Graph image, and WhatsApp,
-LinkedIn and X do not render SVG previews. A cover that looks fine on the page
-but shows nothing when shared is worse than no cover.
+Why one cover PER LANGUAGE: the title is drawn into the artwork, and a title
+can only be correct in one language. Migration 0029 put cover_image on
+blog_post_translations for exactly this reason — the Arabic card shows Arabic
+and the English card shows English, on the page and in the share preview.
 
-Why no text in the artwork: cover_image lives on blog_posts, not on a
-translation, so ONE image serves both the Arabic and the English article. Any
-wording baked into the picture would be wrong in one of the two languages.
+Why PNG: the cover doubles as the Open Graph image and WhatsApp, LinkedIn and X
+do not render SVG. A cover that looks fine on the page and shows nothing when
+shared is worse than no cover.
 
-Why a generator instead of committed art: a binary asset with no source is a
-dead end. Re-run this after a palette change and every cover updates.
+Why a generator instead of committed art: re-run after a copy or palette change
+and every cover updates. Binary assets with no source are a dead end.
 
-Each cover states the article's problem geometrically: solid blue marks time
-that was actually used, a hollow amber outline marks time that was reserved and
-then wasted. That single visual grammar is shared across all seven.
+Arabic shaping: Pillow is built with Raqm here, so passing direction="rtl"
+gives correctly joined, right-to-left text. Without Raqm the letters would come
+out disconnected and reversed — check `PIL.features.check("raqm")` before
+debugging anything else.
 """
 
-from PIL import Image, ImageDraw
+import json
+import os
+import sys
+from PIL import Image, ImageDraw, ImageFont, features
 
 W, H = 1200, 630
-S = 2  # supersampling factor — PIL does not antialias shapes, so draw big and shrink
+DRAFTS = "content/drafts"
+OUT = "public/covers"
 
-CANVAS = (249, 250, 251)
+CANVAS = (255, 255, 255)
 INK = (17, 24, 39)
+MUTED = (107, 114, 128)
 PRIMARY = (0, 107, 255)
 PRIMARY_SOFT = (230, 240, 255)
 LINE = (229, 231, 235)
 AMBER = (245, 158, 11)
 AMBER_SOFT = (255, 251, 235)
-MUTED = (156, 163, 175)
 
-OUT = "public/covers"
+# A brand Arabic face is preferred; DejaVu is the always-present fallback. Drop
+# Tajawal-Bold.ttf into assets/fonts/ and every Arabic cover upgrades on the
+# next run, with no code change.
+AR_FONTS = [
+    "assets/fonts/Tajawal-Bold.ttf",
+    "assets/fonts/IBMPlexSansArabic-Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+]
+EN_FONTS = [
+    "assets/fonts/Poppins-Bold.ttf",
+    "/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+]
+SMALL_EN_FONTS = [
+    "/usr/share/fonts/truetype/google-fonts/Poppins-Medium.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+]
+# The Arabic wordmark needs an Arabic face — Poppins would draw empty boxes.
+SMALL_AR_FONTS = [
+    "assets/fonts/Tajawal-Bold.ttf",
+    "assets/fonts/IBMPlexSansArabic-Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+]
 
 
-def canvas():
-    img = Image.new("RGB", (W * S, H * S), CANVAS)
-    return img, ImageDraw.Draw(img)
+def pick(paths):
+    for p in paths:
+        if os.path.isfile(p):
+            return p
+    raise SystemExit(f"no usable font among: {paths}")
 
 
-def rr(d, box, radius, fill=None, outline=None, width=3, dash=False):
-    """Rounded rectangle in supersampled space. `dash` fakes a dashed outline."""
-    x0, y0, x1, y1 = [v * S for v in box]
-    r = radius * S
-    if not dash:
-        d.rounded_rectangle([x0, y0, x1, y1], r, fill=fill, outline=outline, width=width * S)
-        return
-    d.rounded_rectangle([x0, y0, x1, y1], r, fill=fill)
-    step, on = 14 * S, 8 * S
-    x = x0
-    while x < x1:
-        d.line([x, y0, min(x + on, x1), y0], fill=outline, width=width * S)
-        d.line([x, y1, min(x + on, x1), y1], fill=outline, width=width * S)
+def font(paths, size):
+    return ImageFont.truetype(pick(paths), size)
+
+
+def wrap(draw, text, fnt, max_width, direction):
+    """Greedy word wrap measured with the real font and text direction."""
+    words = text.split()
+    lines, current = [], ""
+    for word in words:
+        trial = f"{current} {word}".strip()
+        w = draw.textlength(trial, font=fnt, direction=direction)
+        if w <= max_width or not current:
+            current = trial
+        else:
+            lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines
+
+
+LEADING = 1.34
+
+
+def fit(draw, text, paths, max_width, max_height, direction, max_lines=4,
+        start=70, floor=38):
+    """Largest size where the title fits the box in BOTH axes.
+
+    Height matters as much as line count: four lines at 70px overflow the band
+    and collide with the strip, which is how a cover ends up looking broken
+    only for the one article with a long title.
+    """
+    size = start
+    while size >= floor:
+        fnt = font(paths, size)
+        lines = wrap(draw, text, fnt, max_width, direction)
+        if len(lines) <= max_lines and len(lines) * size * LEADING <= max_height:
+            return fnt, lines, size
+        size -= 3
+    fnt = font(paths, floor)
+    return fnt, wrap(draw, text, fnt, max_width, direction), floor
+
+
+# ---------------------------------------------------------------------------
+# The strip along the bottom is the same idea in every cover: solid blue is
+# time that got used, the dashed amber block is time that was reserved and then
+# wasted. Each article varies the pattern so the seven are distinguishable.
+# ---------------------------------------------------------------------------
+PATTERNS = {
+    "clinic-no-show-appointments": [1, 1, 0, 2, 1, 1, 0, 1],
+    "salon-last-minute-cancellations": [1, 1, 2, 2, 2, 0, 1, 1],
+    "free-consultation-no-shows": [2, 1, 2, 0, 1, 2, 1, 0],
+    "private-tutor-rescheduling": [1, 2, 1, 1, 0, 1, 2, 1],
+    "physio-treatment-plan-attendance": [1, 1, 2, 1, 2, 0, 1, 1],
+    "photographer-date-holds": [0, 1, 2, 0, 1, 1, 2, 1],
+    "counselling-cancellation-policy": [1, 1, 1, 2, 1, 1, 0, 1],
+}
+DEFAULT_PATTERN = [1, 1, 2, 1, 0, 1, 1, 2]
+
+
+def strip(d, slug, y, rtl):
+    """1 = used (solid), 2 = wasted (dashed amber), 0 = free (outline)."""
+    cells = PATTERNS.get(slug, DEFAULT_PATTERN)
+    if rtl:
+        cells = list(reversed(cells))
+    x, w, h, gap = 80, 120, 56, 18
+    for kind in cells:
+        box = [x, y, x + w, y + h]
+        if kind == 1:
+            d.rounded_rectangle(box, 12, fill=PRIMARY)
+        elif kind == 2:
+            d.rounded_rectangle(box, 12, fill=AMBER_SOFT)
+            dash(d, box, AMBER, 12)
+        else:
+            d.rounded_rectangle(box, 12, fill=CANVAS, outline=LINE, width=3)
+        x += w + gap
+
+
+def dash(d, box, colour, radius, width=4):
+    x0, y0, x1, y1 = box
+    step, on = 22, 12
+    x = x0 + radius
+    while x < x1 - radius:
+        d.line([x, y0, min(x + on, x1 - radius), y0], fill=colour, width=width)
+        d.line([x, y1, min(x + on, x1 - radius), y1], fill=colour, width=width)
         x += step
-    y = y0
-    while y < y1:
-        d.line([x0, y, x0, min(y + on, y1)], fill=outline, width=width * S)
-        d.line([x1, y, x1, min(y + on, y1)], fill=outline, width=width * S)
+    y = y0 + radius
+    while y < y1 - radius:
+        d.line([x0, y, x0, min(y + on, y1 - radius)], fill=colour, width=width)
+        d.line([x1, y, x1, min(y + on, y1 - radius)], fill=colour, width=width)
         y += step
 
 
-def circle(d, cx, cy, r, fill=None, outline=None, width=3):
-    box = [(cx - r) * S, (cy - r) * S, (cx + r) * S, (cy + r) * S]
-    d.ellipse(box, fill=fill, outline=outline, width=width * S)
+def cover(slug, title, locale):
+    rtl = locale == "ar"
+    direction = "rtl" if rtl else "ltr"
+    anchor_x = W - 80 if rtl else 80
+    align = "right" if rtl else "left"
+
+    img = Image.new("RGB", (W, H), CANVAS)
+    d = ImageDraw.Draw(img)
+
+    # A soft field behind the type keeps large covers from feeling empty. It
+    # mirrors with the text so the composition reads the same in both scripts.
+    if rtl:
+        d.rounded_rectangle([W - 520, -220, W + 160, 300], 220, fill=PRIMARY_SOFT)
+    else:
+        d.rounded_rectangle([-160, -220, 520, 300], 220, fill=PRIMARY_SOFT)
+
+    small = font(SMALL_AR_FONTS if rtl else SMALL_EN_FONTS, 26)
+    label = "موعدلي" if rtl else "mawedly.com"
+    d.ellipse([anchor_x - (18 if rtl else 0), 74, anchor_x + (0 if rtl else 18), 92], fill=PRIMARY)
+    d.text(
+        (anchor_x - 30 if rtl else anchor_x + 30, 68),
+        label,
+        font=small,
+        fill=PRIMARY,
+        direction=direction,
+        anchor="ra" if rtl else "la",
+    )
+
+    # Amber rule as an eyebrow above the type: fixed position, so it can never
+    # collide with a title that turned out longer than expected.
+    if rtl:
+        d.rounded_rectangle([W - 80 - 96, 138, W - 80, 146], 4, fill=AMBER)
+    else:
+        d.rounded_rectangle([80, 138, 80 + 96, 146], 4, fill=AMBER)
+
+    BAND_TOP, BAND_BOTTOM = 186, 462
+    fnt, lines, size = fit(
+        d, title, AR_FONTS if rtl else EN_FONTS,
+        max_width=W - 160, max_height=BAND_BOTTOM - BAND_TOP, direction=direction,
+    )
+
+    leading = int(size * LEADING)
+    block = leading * len(lines)
+    y = BAND_TOP + max(0, ((BAND_BOTTOM - BAND_TOP) - block) // 2)
+    for ln in lines:
+        d.text((anchor_x, y), ln, font=fnt, fill=INK, direction=direction,
+               anchor="ra" if rtl else "la", align=align)
+        y += leading
+
+    strip(d, slug, 500, rtl)
+
+    img.save(f"{OUT}/{slug}-{locale}.png", optimize=True)
+    print(f"wrote {OUT}/{slug}-{locale}.png  ({size}px, {len(lines)} lines)")
 
 
-def line(d, x0, y0, x1, y1, fill, width=3):
-    d.line([x0 * S, y0 * S, x1 * S, y1 * S], fill=fill, width=width * S)
-
-
-def brandmark(d):
-    """Small consistent signature bottom-left: a filled dot and a short rule."""
-    circle(d, 72, H - 66, 9, fill=PRIMARY)
-    rr(d, (96, H - 70, 168, H - 62), 4, fill=INK)
-
-
-def save(img, name):
-    img.resize((W, H), Image.LANCZOS).save(f"{OUT}/{name}.png", optimize=True)
-    print(f"wrote {OUT}/{name}.png")
-
-
-# ---------------------------------------------------------------------------
-# 1. Clinic — a week of booked slots with one hollow gap: the empty chair.
-# ---------------------------------------------------------------------------
-def clinic():
-    img, d = canvas()
-    cols, rows = 6, 4
-    x0, y0, cw, ch, gap = 150, 120, 140, 78, 20
-    hole = (3, 1)
-    for r in range(rows):
-        for c in range(cols):
-            x = x0 + c * (cw + gap)
-            y = y0 + r * (ch + gap)
-            if (c, r) == hole:
-                rr(d, (x, y, x + cw, y + ch), 12, fill=AMBER_SOFT, outline=AMBER, width=4, dash=True)
-            else:
-                shade = PRIMARY if (r + c) % 3 else PRIMARY_SOFT
-                rr(d, (x, y, x + cw, y + ch), 12, fill=shade)
-    brandmark(d)
-    save(img, "clinic-no-show-appointments")
-
-
-# ---------------------------------------------------------------------------
-# 2. Salon — short bars refill easily; the one long bar cannot. It is hollow.
-# ---------------------------------------------------------------------------
-def salon():
-    img, d = canvas()
-    y = 130
-    widths = [220, 300, 260]
-    for w in widths:
-        rr(d, (150, y, 150 + w, y + 62), 12, fill=PRIMARY)
-        y += 86
-    rr(d, (150, y, 1050, y + 62), 12, fill=AMBER_SOFT, outline=AMBER, width=4, dash=True)
-    y += 86
-    for w in [240, 200]:
-        rr(d, (150, y, 150 + w, y + 62), 12, fill=PRIMARY_SOFT)
-        y += 86
-    brandmark(d)
-    save(img, "salon-last-minute-cancellations")
-
-
-# ---------------------------------------------------------------------------
-# 3. Consulting — three booked calls, one attended. Two are hollow outlines.
-# ---------------------------------------------------------------------------
-def consulting():
-    img, d = canvas()
-    for i, cx in enumerate([340, 600, 860]):
-        if i == 1:
-            circle(d, cx, 300, 108, fill=PRIMARY)
-            circle(d, cx, 300, 42, fill=CANVAS)
-        else:
-            circle(d, cx, 300, 108, fill=AMBER_SOFT, outline=AMBER, width=5)
-    rr(d, (340, 470, 860, 480), 5, fill=LINE)
-    rr(d, (492, 470, 708, 480), 5, fill=PRIMARY)
-    brandmark(d)
-    save(img, "free-consultation-no-shows")
-
-
-# ---------------------------------------------------------------------------
-# 4. Tutoring — one moved lesson pushes the rest of the week sideways.
-# ---------------------------------------------------------------------------
-def tutoring():
-    img, d = canvas()
-    top, bottom = 170, 400
-    for i in range(5):
-        x = 170 + i * 175
-        rr(d, (x, top, x + 130, top + 74), 12, fill=PRIMARY_SOFT)
-    for i in range(5):
-        x = 170 + i * 175 + (0 if i == 0 else 60)
-        fill = AMBER_SOFT if i == 1 else PRIMARY
-        outline = AMBER if i == 1 else None
-        rr(d, (x, bottom, x + 130, bottom + 74), 12, fill=fill, outline=outline,
-           width=4, dash=(i == 1))
-    for i in range(1, 5):
-        x = 170 + i * 175 + 130
-        line(d, x + 6, top + 118, x + 52, top + 118, MUTED, 4)
-        line(d, x + 40, top + 106, x + 54, top + 118, MUTED, 4)
-        line(d, x + 40, top + 130, x + 54, top + 118, MUTED, 4)
-    brandmark(d)
-    save(img, "private-tutor-rescheduling")
-
-
-# ---------------------------------------------------------------------------
-# 5. Physio — a plan is a chain. Missed sessions break the line.
-# ---------------------------------------------------------------------------
-def physio():
-    img, d = canvas()
-    y = 315
-    xs = [150 + i * 100 for i in range(10)]
-    missed = {4, 5, 8}
-    for i in range(9):
-        colour = LINE if (i in missed or i + 1 in missed) else PRIMARY
-        line(d, xs[i], y, xs[i + 1], y, colour, 8)
-    for i, x in enumerate(xs):
-        if i in missed:
-            circle(d, x, y, 30, fill=AMBER_SOFT, outline=AMBER, width=5)
-        else:
-            circle(d, x, y, 30, fill=PRIMARY)
-    brandmark(d)
-    save(img, "physio-treatment-plan-attendance")
-
-
-# ---------------------------------------------------------------------------
-# 6. Photography — a month of dates; a few held but never confirmed.
-# ---------------------------------------------------------------------------
-def photography():
-    img, d = canvas()
-    cols, rows = 7, 4
-    x0, y0, c, gap = 195, 130, 100, 18
-    held = {(5, 0), (2, 2), (6, 3)}
-    booked = {(5, 1), (1, 1), (5, 2)}
-    for r in range(rows):
-        for col in range(cols):
-            x = x0 + col * (c + gap)
-            y = y0 + r * (c + gap)
-            if (col, r) in held:
-                rr(d, (x, y, x + c, y + c), 14, fill=AMBER_SOFT, outline=AMBER, width=4, dash=True)
-            elif (col, r) in booked:
-                rr(d, (x, y, x + c, y + c), 14, fill=PRIMARY)
-            else:
-                rr(d, (x, y, x + c, y + c), 14, fill=CANVAS, outline=LINE, width=3)
-    brandmark(d)
-    save(img, "photographer-date-holds")
-
-
-# ---------------------------------------------------------------------------
-# 7. Counselling — a steady frame around a repeating, equal session.
-# ---------------------------------------------------------------------------
-def counselling():
-    img, d = canvas()
-    rr(d, (150, 110, 1050, 520), 28, fill=None, outline=PRIMARY, width=6)
-    rr(d, (196, 156, 1004, 474), 20, fill=PRIMARY_SOFT)
-    y = 210
-    for i in range(4):
-        fill = AMBER_SOFT if i == 2 else PRIMARY
-        outline = AMBER if i == 2 else None
-        rr(d, (250, y, 950, y + 46), 10, fill=fill, outline=outline, width=4, dash=(i == 2))
-        y += 66
-    brandmark(d)
-    save(img, "counselling-cancellation-policy")
+def main():
+    if not features.check("raqm"):
+        sys.exit("Pillow has no Raqm support — Arabic would render unshaped. Aborting.")
+    os.makedirs(OUT, exist_ok=True)
+    for slug in sorted(os.listdir(DRAFTS)):
+        meta_path = os.path.join(DRAFTS, slug, "meta.json")
+        if not os.path.isfile(meta_path):
+            continue
+        meta = json.load(open(meta_path, encoding="utf-8"))
+        for locale in ("ar", "en"):
+            cover(meta["slug"], meta[locale]["title"], locale)
 
 
 if __name__ == "__main__":
-    for fn in (clinic, salon, consulting, tutoring, physio, photography, counselling):
-        fn()
+    main()
