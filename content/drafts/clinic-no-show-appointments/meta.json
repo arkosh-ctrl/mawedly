@@ -1,0 +1,18 @@
+{
+  "slug": "clinic-no-show-appointments",
+  "cover_image": null,
+  "status": "draft",
+  "published_at": null,
+  "ar": {
+    "title": "الكرسي الفارغ: لماذا تخسر العيادة أكثر من قيمة الموعد الواحد",
+    "excerpt": "المريض الذي لم يحضر لم يكلّفك سعر الجلسة فقط، بل كلّفك المريض الذي رُفض لأن الوقت كان محجوزاً. طريقة عملية لحساب الخسارة الحقيقية وتقليلها.",
+    "seo_title": "تقليل عدم حضور المرضى في العيادات — دليل عملي",
+    "seo_description": "لماذا يغيب المرضى عن مواعيدهم في العيادات غير التأمينية، كيف تحسب تكلفة الكرسي الفارغ على عيادتك، وأربع خطوات عملية لتقليل الغياب دون إحراج المريض."
+  },
+  "en": {
+    "title": "The Empty Chair: What a Clinic No-Show Really Costs",
+    "excerpt": "A patient who does not show up costs you more than the session fee — it costs you the patient you turned away because the slot was taken. Here is how to price that and reduce it.",
+    "seo_title": "Reducing Clinic No-Shows: A Practical Guide",
+    "seo_description": "Why patients miss appointments at private clinics, how to price what an empty chair really costs, and four steps that cut no-shows without embarrassing anyone."
+  }
+}
