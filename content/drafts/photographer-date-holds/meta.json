@@ -1,6 +1,6 @@
 {
   "slug": "photographer-date-holds",
-  "cover_image": "/covers/photographer-date-holds-ar.png",
+  "cover_image": "https://images.pexels.com/photos/23384885/pexels-photo-23384885/free-photo-of-camera-on-tripod.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
   "status": "draft",
   "published_at": null,
   "ar": {
@@ -8,13 +8,15 @@
     "excerpt": "التاريخ المحجوز بلا عربون ليس حجزاً، بل وعد يمنعك من قبول عمل حقيقي. كيف تحمي تواريخك دون أن تبدو متشدداً.",
     "seo_title": "حجز تاريخ المناسبة بلا عربون — كيف يخسّرك عملاء",
     "seo_description": "لماذا يطلب العملاء تثبيت تاريخ المناسبة ثم يختفون، كيف تحسب كلفة التاريخ المحجوز الفارغ، وكيف تطلب عربوناً بصياغة تحفظ العلاقة.",
-    "cover_image": "/covers/photographer-date-holds-ar.png"
+    "cover_image": null
   },
   "en": {
     "title": "\"Hold the Date, I'll Confirm Later\": The Riskiest Sentence in Event Work",
     "excerpt": "A date held without a deposit is not a booking. It is a promise that stops you accepting real work. Here is how to protect your calendar without sounding rigid.",
     "seo_title": "Holding Event Dates Without a Deposit — The Real Cost",
     "seo_description": "Why clients ask photographers to hold a date and then disappear, how to price an empty reserved Saturday, and how to ask for a deposit in wording that keeps the relationship warm.",
-    "cover_image": "/covers/photographer-date-holds-en.png"
-  }
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/wedding%20photographer%20camera/",
+  "cover_note": "كاميرا على حامل"
 }

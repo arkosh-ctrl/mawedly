@@ -1,6 +1,6 @@
 {
   "slug": "free-consultation-no-shows",
-  "cover_image": "/covers/free-consultation-no-shows-ar.png",
+  "cover_image": "https://images.pexels.com/photos/5506057/pexels-photo-5506057.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
   "status": "draft",
   "published_at": null,
   "ar": {
@@ -8,13 +8,15 @@
     "excerpt": "المستشار الذي يمنح مكالمة تعارف مجانية يواجه أسوأ نسبة حضور في السوق. السبب ليس في العميل، بل في أن المجاني لا يُحجز له مكان في الذهن.",
     "seo_title": "لماذا لا يحضر العملاء الاستشارة المجانية — وما البديل",
     "seo_description": "المكالمة التعريفية المجانية تجذب فضوليين لا عملاء. كيف تعيد تصميمها لتجذب الجادّين، ومتى يكون المبلغ الرمزي أفضل أداة تصفية لديك.",
-    "cover_image": "/covers/free-consultation-no-shows-ar.png"
+    "cover_image": null
   },
   "en": {
     "title": "The Free Consultation Nobody Shows Up To",
     "excerpt": "Consultants who offer a free intro call face the worst attendance rate in professional services. The cause is not the client — it is that free things do not occupy space in anyone's calendar.",
     "seo_title": "Why Clients Skip Free Consultations — And What Works",
     "seo_description": "A free discovery call attracts the curious, not the committed. How to redesign it so serious prospects show up, and when a small fee is the best filter you have.",
-    "cover_image": "/covers/free-consultation-no-shows-en.png"
-  }
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/photo/empty-desk-at-office-5506057/",
+  "cover_note": "مكتب فارغ — لا أحد حضر"
 }
