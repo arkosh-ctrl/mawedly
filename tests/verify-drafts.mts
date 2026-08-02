@@ -8,6 +8,9 @@ import { renderMarkdown } from "../src/lib/blog/markdown.ts";
 import type { BlogPostInput } from "../src/lib/blog/types.ts";
 
 const DIR = "content/drafts";
+// Hosted covers are only reachable with a network. Skip the check with
+// SKIP_REMOTE_COVERS=1 so the gate still runs offline.
+const CHECK_REMOTE = process.env.SKIP_REMOTE_COVERS !== "1";
 const ALLOWED = new Set(["h2","h3","h4","p","ul","ol","li","blockquote","pre","code","strong","em","a","img","figure","hr","br"]);
 
 let bad = 0;
@@ -51,23 +54,46 @@ for (const entry of (await readdir(DIR, { withFileTypes: true })).filter(e => e.
     ),
   ];
   for (const [where, cover] of covers) {
+    // Per-language covers are optional: a PHOTOGRAPH carries no text, so one
+    // shared image is correct in both languages. Only the post-level cover is
+    // mandatory.
     if (!cover) {
-      problems.push(`${where}: no cover_image`);
+      if (where === "post") problems.push("post: no cover_image");
       continue;
     }
-    if (!cover.startsWith("/")) continue; // remote https cover, nothing to check
-    try {
-      await stat(path.join("public", cover));
-    } catch {
-      problems.push(`${where}: cover missing on disk — public${cover}`);
+    if (cover.startsWith("/")) {
+      try {
+        await stat(path.join("public", cover));
+      } catch {
+        problems.push(`${where}: cover missing on disk — public${cover}`);
+      }
+    } else if (CHECK_REMOTE) {
+      // A hosted cover that 404s renders as a broken box on the card and a
+      // blank share preview — neither failure announces itself, so check.
+      try {
+        const res = await fetch(cover, {
+          method: "GET",
+          headers: { range: "bytes=0-0" },
+        });
+        const type = res.headers.get("content-type") ?? "";
+        if (!res.ok && res.status !== 206) {
+          problems.push(`${where}: cover URL returned ${res.status}`);
+        } else if (!type.startsWith("image/")) {
+          problems.push(`${where}: cover URL is ${type || "unknown"}, not an image`);
+        }
+      } catch (e) {
+        problems.push(
+          `${where}: cover URL unreachable — ${e instanceof Error ? e.message : e}`,
+        );
+      }
     }
   }
 
-  // 5. a per-language cover that is shared between locales defeats the point:
-  //    its artwork carries the title, so it can only be right in one language.
+  // 5. two locales may share a PHOTO, but never a generated cover: that one has
+  //    the title drawn into it, so it can only be right in one language.
   const [arCover, enCover] = payload.translations.map((t) => t.cover_image);
-  if (arCover && enCover && arCover === enCover) {
-    problems.push("ar and en share one cover — the baked-in title cannot suit both");
+  if (arCover && enCover && arCover === enCover && arCover.startsWith("/covers/")) {
+    problems.push("ar and en share a generated cover — the baked-in title cannot suit both");
   }
 
   for (const t of payload.translations) {
