@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getPublishedPost, getPublishedSlugs } from "@/lib/blog/queries";
+import {
+  getPublishedPost,
+  getPublishedSlugs,
+  getRelatedPosts,
+} from "@/lib/blog/queries";
 import { renderMarkdown } from "@/lib/blog/markdown";
 import {
   SITE_URL,
@@ -11,6 +15,13 @@ import {
   formatBlogDate,
 } from "@/lib/blog/urls";
 import { isBlogLocale } from "@/lib/blog/validate";
+import {
+  AUTHOR,
+  breadcrumbSchema,
+  jsonLdGraph,
+  organizationSchema,
+  personSchema,
+} from "@/lib/seo/site";
 import type { BlogLocale } from "@/lib/blog/types";
 
 // dynamicParams = true so a post published AFTER the last build still resolves
@@ -114,52 +125,82 @@ export default async function BlogArticlePage({
   const { post, translation, locales, readingMinutes } = result.data;
   const html = renderMarkdown(translation.content);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: translation.title,
-    description: translation.seo_description || translation.excerpt,
-    inLanguage: locale,
-    datePublished: post.published_at,
-    dateModified: post.updated_at,
-    image: ogImage(post.cover_image),
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": absoluteBlogUrl(locale, post.slug),
-    },
-    author: {
-      "@type": "Organization",
-      name: locale === "ar" ? "موعدلي" : "Mawedly",
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: locale === "ar" ? "موعدلي" : "Mawedly",
-      url: SITE_URL,
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/icon-512.png`,
+  const related = await getRelatedPosts(post.slug, locale);
+
+  const crumbs = [
+    { name: t("breadcrumbHome"), url: `${SITE_URL}/${locale}` },
+    { name: t("breadcrumbBlog"), url: `${SITE_URL}/${locale}/blog` },
+    { name: translation.title, url: absoluteBlogUrl(locale, post.slug) },
+  ];
+
+  // One @graph rather than three separate scripts, so the article, its author,
+  // the publisher and the breadcrumb trail are linked by @id instead of being
+  // four unrelated fragments a parser has to guess about.
+  const jsonLd = jsonLdGraph(
+    {
+      "@type": "BlogPosting",
+      "@id": `${absoluteBlogUrl(locale, post.slug)}#article`,
+      headline: translation.title,
+      description: translation.seo_description || translation.excerpt,
+      inLanguage: locale,
+      datePublished: post.published_at,
+      dateModified: post.updated_at,
+      image: ogImage(post.cover_image),
+      wordCount: translation.content.trim().split(/\s+/).length,
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": absoluteBlogUrl(locale, post.slug),
+      },
+      author: { "@id": `${SITE_URL}/#author` },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      isPartOf: {
+        "@type": "Blog",
+        "@id": `${SITE_URL}/${locale}/blog#blog`,
+        name: t("title"),
       },
     },
-  };
+    personSchema(locale),
+    organizationSchema(locale),
+    breadcrumbSchema(crumbs),
+  );
 
   return (
     <article className="mx-auto max-w-3xl px-5 py-20">
       <script
         type="application/ld+json"
         // Structured data, not user content: serialised from values we control.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
 
-      <Link href={blogUrl()} className="text-sm text-primary hover:underline">
-        {t("backToIndex")}
-      </Link>
+      {/* Visible breadcrumb mirroring the schema. Search results can show the
+          path, and a reader landing from search gets a way up and out. */}
+      <nav aria-label={t("breadcrumbBlog")} className="text-sm text-muted">
+        <ol className="flex flex-wrap items-center gap-2">
+          <li>
+            <Link href="/" className="hover:text-ink">
+              {t("breadcrumbHome")}
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li>
+            <Link href={blogUrl()} className="text-primary hover:underline">
+              {t("breadcrumbBlog")}
+            </Link>
+          </li>
+        </ol>
+      </nav>
 
       <h1 className="mt-6 font-display text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">
         {translation.title}
       </h1>
 
-      <p className="mt-4 flex items-center gap-2 text-sm text-sage">
+      <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-sage">
+        <span className="text-muted">
+          {t("writtenBy", {
+            name: locale === "ar" ? AUTHOR.nameAr : AUTHOR.nameEn,
+          })}
+        </span>
+        <span aria-hidden>·</span>
         {post.published_at ? (
           <time dateTime={post.published_at}>
             {formatBlogDate(post.published_at, locale)}
@@ -205,6 +246,31 @@ export default async function BlogArticlePage({
           {t("ctaButton")}
         </Link>
       </div>
+
+      {/* Related reading. Without it every article is reachable only from the
+          index — an orphan page gets crawled less and read less. */}
+      {related.ok && related.data.length > 0 ? (
+        <section className="mt-16 border-t border-line pt-10">
+          <h2 className="font-display text-xl font-bold text-ink">
+            {t("relatedTitle")}
+          </h2>
+          <ul className="mt-6 flex flex-col gap-4">
+            {related.data.map((item) => (
+              <li key={item.slug}>
+                <Link
+                  href={blogUrl(item.slug)}
+                  className="block rounded-xl border border-line bg-paper p-4 transition-colors hover:border-primary/40"
+                >
+                  <p className="font-semibold text-ink">{item.title}</p>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted">
+                    {item.excerpt}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {locales.length > 1 ? (
         <p className="mt-8 text-sm text-muted">

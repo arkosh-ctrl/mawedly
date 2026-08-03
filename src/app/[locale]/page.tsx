@@ -6,6 +6,13 @@ import { MarketingShell } from "@/components/marketing/marketing-shell";
 import { BookingPreview } from "@/components/marketing/booking-preview";
 import { HomePricing } from "@/components/marketing/home-pricing";
 import { Reveal, GlowCard } from "@/components/marketing/motion";
+import {
+  SITE_URL,
+  jsonLdGraph,
+  organizationSchema,
+  personSchema,
+  type SeoLocale,
+} from "@/lib/seo/site";
 
 export async function generateMetadata({
   params,
@@ -24,6 +31,9 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  // The route only ever serves the configured locales; narrowing here keeps the
+  // schema helpers honestly typed instead of accepting any string.
+  const seoLocale: SeoLocale = locale === "en" ? "en" : "ar";
   const t = await getTranslations("Home");
   const tBooking = await getTranslations("Booking");
   const tSignup = await getTranslations("Signup");
@@ -31,13 +41,12 @@ export default async function HomePage({
   // Organization structured data for the home page.
   const orgJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Mawedly",
-    alternateName: "موعدلي",
-    url: "https://mawedly.com",
-    description: t("metaDescription"),
-    email: "hello@mawedly.com",
-    areaServed: "GCC",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    url: `${SITE_URL}/${locale}`,
+    name: locale === "ar" ? "موعدلي" : "Mawedly",
+    inLanguage: locale,
+    publisher: { "@id": `${SITE_URL}/#organization` },
   };
 
   const features = [
@@ -68,7 +77,13 @@ export default async function HomePage({
     <MarketingShell>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: jsonLdGraph(
+            organizationSchema(seoLocale, t("metaDescription")),
+            orgJsonLd,
+            personSchema(seoLocale),
+          ),
+        }}
       />
 
       {/* Hero — headline as thesis, beside a working miniature of the real

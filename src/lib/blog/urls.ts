@@ -1,13 +1,10 @@
 import type { BlogLocale } from "./types";
 
-/**
- * Canonical origin for every absolute blog URL (canonical, hreflang, JSON-LD,
- * sitemap). mawedly.com is the canonical domain; NEXT_PUBLIC_APP_URL is allowed
- * to override it so preview deployments describe themselves correctly.
- */
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_APP_URL ?? "https://mawedly.com"
-).replace(/\/+$/, "");
+// Re-exported so blog code keeps importing the origin from one place, while the
+// value itself lives with the other site-wide entity constants.
+export { SITE_URL } from "@/lib/seo/site";
+
+import { SITE_URL } from "@/lib/seo/site";
 
 /** Locale-relative path — next-intl's <Link> adds the /<locale> prefix. */
 export function blogUrl(slug?: string): string {

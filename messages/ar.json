@@ -1334,6 +1334,10 @@
     "localeEn": "English",
     "ctaTitle": "ثبّت موعدك بعربون",
     "ctaBody": "موعدلي يتيح لك استقبال الحجوزات وتحصيل عربون عبر تحويل بنكي، مع تأكيدك أنت — بلا بوابة دفع.",
-    "ctaButton": "ابدأ مجاناً"
+    "ctaButton": "ابدأ مجاناً",
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbBlog": "المدونة",
+    "writtenBy": "بقلم {name}",
+    "relatedTitle": "اقرأ أيضاً"
   }
 }

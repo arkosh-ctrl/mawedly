@@ -152,6 +152,28 @@ export async function getPublishedPost(
   };
 }
 
+/**
+ * Other live articles in the same language, newest first, excluding the one
+ * being read.
+ *
+ * Without this every article is an orphan: a page reachable only from the index
+ * gets crawled less and read less. Relevance is deliberately "most recent"
+ * rather than tag-based — tags are not worth building at this post count, and a
+ * wrong "related" link is worse than a chronological one.
+ */
+export async function getRelatedPosts(
+  currentSlug: string,
+  locale: BlogLocale,
+  limit = 3,
+): Promise<BlogQueryResult<BlogListItem[]>> {
+  const all = await getPublishedPosts(locale);
+  if (!all.ok) return all;
+  return {
+    ok: true,
+    data: all.data.filter((p) => p.slug !== currentSlug).slice(0, limit),
+  };
+}
+
 export type BlogSlugEntry = {
   slug: string;
   published_at: string;
