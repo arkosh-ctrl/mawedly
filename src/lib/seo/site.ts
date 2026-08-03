@@ -40,7 +40,7 @@ const ORG_PROFILES: string[] = [
 
 /** Verified profiles for the AUTHOR (the founder who writes the blog). */
 const AUTHOR_PROFILES: string[] = [
-  // "https://www.linkedin.com/in/…",
+  "https://www.linkedin.com/in/abdullah-fadul-3660ba221/",
 ];
 
 export const AUTHOR = {
