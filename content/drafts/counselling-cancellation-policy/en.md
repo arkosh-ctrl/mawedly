@@ -12,6 +12,8 @@ A session that starts on time and ends on time, under terms both people knew in 
 - **Consistency.** A rule applied to everyone in the same way generates no comparisons and no sense of arbitrary treatment.
 - **Continuity.** Regular attendance is what allows sessions to accumulate instead of restarting each time.
 
+Continuity is not a marginal concern. A [meta-analysis](https://clinica.ispa.pt/sites/default/files/16._dropout_meta_analysis.pdf) across 669 studies and more than 83,000 clients found that roughly one in five (19.7%) leave therapy before completing it. Dropping out is the common pattern, not the rare exception — and an agreed, explicit frame is among the cheapest tools available against it.
+
 Undeclared leniency produces the opposite of what we assume. Every cancellation becomes a fresh negotiation, and every negotiation loads the relationship with something that does not belong to it.
 
 ## What happens to the practitioner without a policy

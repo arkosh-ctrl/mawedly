@@ -10,6 +10,8 @@ A free appointment never enters the day's arithmetic. When a client meeting and 
 
 That is not disrespect. It is ordinary prioritisation. People rank commitments by cost, and a cost of zero produces a priority of zero.
 
+This is not just an impression. In a 2007 *Marketing Science* paper, [Shampanier, Mazar and Ariely](https://people.duke.edu/~dandan/webfiles/PapersPI/Zero%20as%20a%20Special%20Price.pdf) showed that zero is not simply a very low price but a category the mind treats differently: people systematically overvalue free options when choosing between them. The flip side of that bias is what you see in your calendar — a decision made without any real trade-off, and therefore just as easy to reverse.
+
 The consequence is that free calls attract two types of people:
 
 - **The curious.** They want to see how you think, or get a quick answer they can act on themselves. They will not buy, and they never intended to.

@@ -2,6 +2,8 @@ You built a ten-session plan across five weeks. They came twice in week one, onc
 
 Every physiotherapist and every dietitian knows this conversation. It stings twice over: you lost the income, then you lost the result that would have built your reputation, and finally you absorbed the blame from someone who never completed what you agreed.
 
+The numbers say this is not personal. A [2025 cross-sectional study](https://onlinelibrary.wiley.com/doi/10.1002/hsr2.70783) in the adult rehabilitation department at King Abdulaziz Medical City in Riyadh found that 21% of appointments went unattended. The reasons matter more than the rate: being unwell on the day (24%), living outside Riyadh or having no transport (17%), and an inconvenient time or date (15%). Most absence is an obstacle, not indifference — which is good news, because obstacles can be designed around and indifference cannot. (The study ran in a government hospital where care is free; paying changes the incentive in private practice, but the logistical barriers stay the same.)
+
 ## Your profession is not a one-appointment profession
 
 In many businesses an appointment is a self-contained unit. The client arrives, the service is delivered, the transaction closes.

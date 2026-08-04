@@ -16,6 +16,8 @@ A three-hour colour cancelled an hour ahead? You need someone who is free right 
 
 Which means a salon losing two long appointments a week is bleeding more than one losing six short ones — even though the second looks worse in a percentage.
 
+It is also worth knowing where the problem actually sits. The [Zenoti 2025 Benchmark Report](https://www.zenoti.com/thecheckin/beauty-wellness-industry-statistics-2025) — drawn from North American businesses, not Gulf ones — puts the salon cancellation rate at 8% against a no-show rate of just 3%; nail salons run at 16% cancellations against 1% no-shows. The pattern matters more than the figures: clients book with real intent and then fail to follow through. Your problem is mostly cancellation, not evasion — which is why the things that buy you notice, an early warning and a deposit, work better than a penalty applied after the fact.
+
 ## Run the number on your own salon
 
 You do not need accounting software. You need one sheet of paper.
