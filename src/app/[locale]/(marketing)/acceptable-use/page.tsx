@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { seoLocale } from "@/lib/seo/site";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
@@ -8,7 +10,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "AcceptableUse" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return pageMetadata({
+    locale: seoLocale(locale),
+    path: "/acceptable-use",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  });
 }
 
 export default async function AcceptableUsePage({

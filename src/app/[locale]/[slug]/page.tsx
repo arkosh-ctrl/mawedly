@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { dynamicPageMetadata } from "@/lib/seo/metadata";
+import { seoLocale } from "@/lib/seo/site";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import {
   getBusinessForBooking,
@@ -19,6 +22,48 @@ import { PROFESSION_TYPES } from "@/lib/verification/professions";
 // "consulting" is not) so existing businesses keep their badge. Anything else
 // simply shows no category label.
 const KNOWN_TYPES = [...PROFESSION_TYPES, "consulting"] as readonly string[];
+
+/**
+ * Per-business title and description.
+ *
+ * Without this, every merchant's booking page inherited the root layout's
+ * title, so all of them shared one. The merchant's own name is the only honest
+ * title here, and their tagline — free text they wrote themselves — is a better
+ * description than anything generic.
+ *
+ * Deliberately NOT setting `robots`: crawl and index behaviour for these pages
+ * is unchanged. Whether they belong in the index is a separate decision that
+ * depends on how many real businesses exist, and it is not made here. They are
+ * also still absent from the sitemap.
+ *
+ * getBusinessForBooking is cache()-wrapped, so this shares its query with the
+ * page body below rather than doubling it.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const business = await getBusinessForBooking(slug);
+  // Unknown or inactive slug → 404s below. Emitting nothing lets the notFound
+  // page supply its own metadata instead of describing a business that is gone.
+  if (!business) return {};
+
+  const t = await getTranslations({ locale, namespace: "Booking" });
+
+  return dynamicPageMetadata({
+    locale: seoLocale(locale),
+    path: `/${slug}`,
+    // A booking page renders in whichever locale it is requested, so both
+    // alternates genuinely resolve — unlike a blog post, where the translation
+    // may simply not exist.
+    availableLocales: ["ar", "en"],
+    title: t("metaTitle", { name: business.name }),
+    description:
+      business.tagline?.trim() || t("metaDescription", { name: business.name }),
+  });
+}
 
 export default async function BookingPage({
   params,

@@ -10,7 +10,7 @@
     "test:billing": "node --experimental-strip-types --test tests/billing-usage.test.mts",
     "test:blog": "node --experimental-strip-types --test tests/blog-markdown.test.mts tests/blog-validate.test.mts tests/blog-auth.test.mts",
     "verify:drafts": "node --experimental-strip-types tests/verify-drafts.mts",
-    "test:seo": "node --experimental-strip-types --test tests/seo-schema.test.mts"
+    "test:seo": "node --experimental-strip-types --test tests/seo-schema.test.mts tests/seo-metadata.test.mts tests/seo-schemas.test.mts tests/ai-referrers.test.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.0",
@@ -38,5 +38,12 @@
     "tailwindcss": "^4.1.0",
     "typescript": "^5.8.0"
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@9.15.0",
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 16.4",
+    "ios_saf >= 16.4"
+  ]
 }

@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 import { getPublishedPosts } from "@/lib/blog/queries";
-import { formatBlogDate, blogUrl, SITE_URL } from "@/lib/blog/urls";
+import { formatBlogDate, blogUrl } from "@/lib/blog/urls";
 import { isBlogLocale } from "@/lib/blog/validate";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { seoLocale } from "@/lib/seo/site";
 
 // Server Component. The locale comes from the ROUTE, never from a client
 // context: a language chosen client-side would leave the server rendering one
@@ -25,23 +26,15 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Blog" });
 
-  return {
+  // The blog index is structurally bilingual (the listing always renders, even
+  // when empty), so it uses the static path helper. Individual POSTS are
+  // data-driven and use dynamicPageMetadata instead.
+  return pageMetadata({
+    locale: seoLocale(locale),
+    path: "/blog",
     title: t("metaTitle"),
     description: t("metaDescription"),
-    alternates: {
-      canonical: `${SITE_URL}/${locale}/blog`,
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, `${SITE_URL}/${l}/blog`]),
-      ),
-    },
-    openGraph: {
-      type: "website",
-      title: t("metaTitle"),
-      description: t("metaDescription"),
-      url: `${SITE_URL}/${locale}/blog`,
-      locale,
-    },
-  };
+  });
 }
 
 export default async function BlogIndexPage({

@@ -17,6 +17,10 @@
 # misc
 .DS_Store
 *.pem
+# FUSE leaves these behind when a file is edited in place while something still
+# holds an open handle to it — they are stale copies of the original source and
+# have no business in the repo.
+.fuse_hidden*
 
 # debug
 npm-debug.log*

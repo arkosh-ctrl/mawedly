@@ -18,11 +18,11 @@ import { isBlogLocale } from "@/lib/blog/validate";
 import {
   AUTHOR,
   breadcrumbSchema,
-  jsonLdGraph,
   organizationSchema,
   personSchema,
 } from "@/lib/seo/site";
-import type { BlogLocale } from "@/lib/blog/types";
+import { dynamicPageMetadata } from "@/lib/seo/metadata";
+import { JsonLd } from "@/components/json-ld";
 
 // dynamicParams = true so a post published AFTER the last build still resolves
 // instead of 404ing until the next deploy — which is the whole point of
@@ -56,39 +56,24 @@ export async function generateMetadata({
 
   const { post, translation, locales } = result.data;
 
-  // hreflang is claimed ONLY for locales that actually have a translation:
-  // an alternate pointing at a 404 is worse than no alternate at all.
-  const languages = Object.fromEntries(
-    locales.map((l) => [l, absoluteBlogUrl(l, post.slug)]),
-  ) as Record<BlogLocale, string>;
-
   const title = translation.seo_title || translation.title;
   const description = translation.seo_description || translation.excerpt;
 
-  return {
+  // hreflang is claimed ONLY for locales that actually have a translation:
+  // an alternate pointing at a 404 is worse than no alternate at all. That is
+  // why this uses dynamicPageMetadata — availability here is a data fact, not
+  // a structural one, so it cannot come from LOCALIZED_PATHS.
+  return dynamicPageMetadata({
+    locale,
+    path: blogUrl(post.slug),
+    availableLocales: locales,
     title,
     description,
-    alternates: {
-      canonical: absoluteBlogUrl(locale, post.slug),
-      languages,
-    },
-    openGraph: {
-      type: "article",
-      title,
-      description,
-      url: absoluteBlogUrl(locale, post.slug),
-      locale,
-      publishedTime: post.published_at ?? undefined,
-      modifiedTime: post.updated_at,
-      images: [ogImage(post.cover_image)],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage(post.cover_image)],
-    },
-  };
+    ogType: "article",
+    image: ogImage(post.cover_image),
+    publishedTime: post.published_at ?? undefined,
+    modifiedTime: post.updated_at,
+  });
 }
 
 export default async function BlogArticlePage({
@@ -136,7 +121,7 @@ export default async function BlogArticlePage({
   // One @graph rather than three separate scripts, so the article, its author,
   // the publisher and the breadcrumb trail are linked by @id instead of being
   // four unrelated fragments a parser has to guess about.
-  const jsonLd = jsonLdGraph(
+  const jsonLdNodes = [
     {
       "@type": "BlogPosting",
       "@id": `${absoluteBlogUrl(locale, post.slug)}#article`,
@@ -162,15 +147,11 @@ export default async function BlogArticlePage({
     personSchema(locale),
     organizationSchema(locale),
     breadcrumbSchema(crumbs),
-  );
+  ];
 
   return (
     <article className="mx-auto max-w-3xl px-5 py-20">
-      <script
-        type="application/ld+json"
-        // Structured data, not user content: serialised from values we control.
-        dangerouslySetInnerHTML={{ __html: jsonLd }}
-      />
+      <JsonLd nodes={jsonLdNodes} />
 
       {/* Visible breadcrumb mirroring the schema. Search results can show the
           path, and a reader landing from search gets a way up and out. */}

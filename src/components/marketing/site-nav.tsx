@@ -62,8 +62,11 @@ export function SiteNav() {
           >
             {t("login")}
           </Link>
+          {/* Nav.cta reads "ابدأ مجاناً" / "Start free" — it must land on the
+              signup form, not the sign-in one. The hero button with the same
+              label already points at /signup; this one did not. */}
           <Link
-            href="/login"
+            href="/signup"
             className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-primary-hover"
           >
             {t("cta")}
@@ -100,7 +103,7 @@ export function SiteNav() {
             <div className="flex items-center justify-between">
               <LocaleSwitcher />
               <Link
-                href="/login"
+                href="/signup"
                 onClick={() => setOpen(false)}
                 className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-paper"
               >

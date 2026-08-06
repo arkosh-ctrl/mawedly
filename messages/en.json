@@ -550,6 +550,8 @@
     }
   },
   "Booking": {
+    "metaTitle": "{name} — book an appointment",
+    "metaDescription": "Book with {name} through a direct link: choose your service and a genuinely open time, in Arabic or English.",
     "subtitle": "Book your appointment in a few steps.",
     "hoursLabel": "Working hours",
     "verify": {
@@ -743,7 +745,8 @@
     "cta": "Start free",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "blog": "Blog"
+    "blog": "Blog",
+    "demo": "Live demo"
   },
   "Footer": {
     "tagline": "A smart scheduling tool for anyone — teachers, coaches, freelancers, and any expert who wants to organize their time.",
@@ -755,7 +758,10 @@
     "disclaimer": "Disclaimer",
     "acceptableUse": "Acceptable Use Policy",
     "dpa": "Data Processing Addendum",
-    "rights": "© 2026 Mawedly. All rights reserved."
+    "rights": "© 2026 Mawedly. All rights reserved.",
+    "industries": "Industries",
+    "compareCalendly": "Mawedly vs Calendly",
+    "noShowTool": "No-show cost calculator"
   },
   "Home": {
     "metaTitle": "Mawedly — The smart scheduling tool to organize your appointments",
@@ -817,7 +823,8 @@
       "sampleServiceMeta": "60 min · 300 SAR"
     },
     "demoConfirmed": "Confirmed",
-    "demoDepositPaid": "Booking confirmed"
+    "demoDepositPaid": "Booking confirmed",
+    "entityStatement": "Mawedly is a bilingual Arabic/English appointment-scheduling tool for appointment-based businesses in Saudi Arabia, the UAE, Bahrain, Qatar, Kuwait and Oman — salons, tutors, consultants, coaches and professional firms. You share one booking link, your customer picks a genuinely open slot, and you are notified instantly. Mawedly does not process payments and never holds customer money; payment happens directly between you and your customer."
   },
   "HowItWorks": {
     "metaTitle": "How Mawedly works",
@@ -1339,5 +1346,402 @@
     "breadcrumbBlog": "Blog",
     "writtenBy": "By {name}",
     "relatedTitle": "Read next"
+  },
+  "UseCases": {
+    "eyebrow": "Use cases",
+    "backToAll": "All industries",
+    "problemTitle": "Where the time goes today",
+    "solutionTitle": "What changes with Mawedly",
+    "faqTitle": "Common questions",
+    "ctaTitle": "Try it on your own bookings",
+    "ctaBody": "Create your page, add your services, share the link. You'll be running in minutes — no card, and nothing for your customer to install.",
+    "ctaButton": "Start free",
+    "verticals": {
+      "salons": {
+        "metaTitle": "Booking system for salons and beauty studios — Mawedly",
+        "metaDescription": "A salon booking link that shows only genuinely open chair time and blocks double bookings. Arabic and English, no app, and you set your own payment terms.",
+        "h1": "Booking software for salons and beauty studios",
+        "lead": "A salon sells time that cannot be stored. A chair that sat empty from two until four is not sold later — those two hours are simply gone. Mawedly gives you one booking link that shows what is actually free, so the customer books herself and you get notified straight away.",
+        "answer": "Mawedly is a booking link for salons: it shows open chair time in real time, prevents double bookings automatically, and works in Arabic and English. It does not touch your money — you publish your own payment instructions and the customer pays you directly.",
+        "problems": [
+          {
+            "t": "A long service in the wrong slot",
+            "b": "A colour treatment needing three hours booked two hours before closing. You find the clash standing in front of the client, not before she arrives."
+          },
+          {
+            "t": "Two chairs, one booking",
+            "b": "Two staff answering WhatsApp at once produce two identical appointments. Apologising to one of them costs more than the booking was worth."
+          },
+          {
+            "t": "A negotiation for every slot",
+            "b": "\"When are you free?\" \"Tuesday?\" \"No, Wednesday\" — ten messages to place thirty minutes, multiplied by every client you have."
+          }
+        ],
+        "solutions": [
+          {
+            "t": "Duration belongs to the service",
+            "b": "Each service carries its real length, so a slot too short to hold it never appears. The colour treatment only shows where it finishes before closing."
+          },
+          {
+            "t": "Booked time disappears",
+            "b": "The moment a slot is taken it vanishes for everyone. Nothing depends on two staff members remembering to tell each other."
+          },
+          {
+            "t": "A QR code on the front desk",
+            "b": "The client on her way out books her next visit before she leaves — the highest-intent moment of her whole day."
+          }
+        ],
+        "faq": [
+          {
+            "q": "Does the customer need to install anything?",
+            "a": "No. The link opens straight in a browser. That is deliberate: any required download loses you a share of bookings at the install step."
+          },
+          {
+            "q": "Can I ask for a deposit on long services?",
+            "a": "You can ask, but the transfer happens directly between you and the client. You publish your payment details and she uploads the receipt — Mawedly never handles the money."
+          },
+          {
+            "q": "I have several stylists. How does that work?",
+            "a": "Each one is added as a provider with her own hours, and the client picks who she wants. The free Starter plan covers one provider; Center covers up to five."
+          }
+        ],
+        "navLabel": "Salons"
+      },
+      "tutors": {
+        "metaTitle": "Booking link for tutors and private teachers — Mawedly",
+        "metaDescription": "A booking link for private lessons that shows real availability and stops clashes. Arabic and English, with built-in video calls on paid plans.",
+        "h1": "A booking link for tutors and private teachers",
+        "lead": "Teaching by the hour ties your income to a calendar. The lesson cancelled last night will not sell this morning, and the lesson postponed three times ends the study plan before it starts. Mawedly turns your schedule into a single link.",
+        "answer": "Mawedly is a booking link for private tutors and trainers: the student or parent picks a genuinely open slot and the lesson arrives confirmed, in Arabic or English, with no messages exchanged.",
+        "problems": [
+          {
+            "t": "The postponement that never ends",
+            "b": "\"Let's push it to next week\" repeats until the syllabus is behind and the income stops being predictable."
+          },
+          {
+            "t": "A schedule spread across apps",
+            "b": "One student on WhatsApp, another on Instagram, a third agreed verbally. The real timetable exists only in your head."
+          },
+          {
+            "t": "Parents in another timezone",
+            "b": "A student in Riyadh and a parent in London agree on \"seven\" and mean two different hours."
+          }
+        ],
+        "solutions": [
+          {
+            "t": "A confirmed lesson, not a verbal promise",
+            "b": "Booking holds the slot in your calendar immediately — commitment starts at the booking, not at the lesson."
+          },
+          {
+            "t": "One link instead of three apps",
+            "b": "Put it in your Instagram bio or a single WhatsApp message, and every student books from the same place."
+          },
+          {
+            "t": "The video call comes with the slot",
+            "b": "Virtual lessons get a call link attached to the booking, with no third tool to explain to a parent (Professional plan and above)."
+          }
+        ],
+        "faq": [
+          {
+            "q": "Does it work for group classes?",
+            "a": "Booking in Mawedly is one-to-one: each slot belongs to a single student. A fixed group is closer to a recurring timetable than to a booking link."
+          },
+          {
+            "q": "How do I block school hours?",
+            "a": "You set your working hours once in settings and nothing outside them is ever offered. What is not shown cannot be booked."
+          },
+          {
+            "q": "Does it remind students before a lesson?",
+            "a": "Yes — automated email reminders are available from the Professional plan. The free plan shows bookings in your dashboard without sending anything automatically."
+          }
+        ],
+        "navLabel": "Tutors"
+      },
+      "consultants": {
+        "metaTitle": "Booking page for consultants and freelancers — Mawedly",
+        "metaDescription": "A professional booking page for independent consultants: the client picks a genuinely open slot and the session arrives confirmed. Arabic and English, no app.",
+        "h1": "A booking page for consultants and freelancers",
+        "lead": "An independent consultant sells time and reputation together. A calendar run over chat reads as less professional than the work deserves — and the free discovery call is the single most forgotten appointment in the business.",
+        "answer": "Mawedly is a booking page for consultants and freelancers: one link showing your sessions, their prices and your open times, with an instant notification for every booking — in Arabic and English.",
+        "problems": [
+          {
+            "t": "The free call nobody attends",
+            "b": "What costs nothing gets treated as costing nothing. The discovery call carries the highest no-show rate in consulting work."
+          },
+          {
+            "t": "A first impression made over chat",
+            "b": "A corporate client asks for a meeting and receives \"send me your availability\". Professionalism is judged at the first interaction."
+          },
+          {
+            "t": "Re-explaining your pricing",
+            "b": "You restate the length and price of every session in every conversation, instead of the client reading it and deciding."
+          }
+        ],
+        "solutions": [
+          {
+            "t": "Service, price and duration on the page",
+            "b": "The client sees what they get, how long it takes and what it costs before booking — the negotiation over basics disappears."
+          },
+          {
+            "t": "Payment terms before you confirm",
+            "b": "Ask for a holding amount and review the receipt before confirming. Payment happens directly between you and the client; Mawedly is a scheduling tool only."
+          },
+          {
+            "t": "A page you can share as-is",
+            "b": "One link in your LinkedIn profile or email signature replaces the back-and-forth entirely — in whichever language your client reads."
+          }
+        ],
+        "faq": [
+          {
+            "q": "Can I hide prices on the booking page?",
+            "a": "Prices show with the service, because transparency filters out unserious bookings. For scope-priced work, define a short fixed-price discovery session instead."
+          },
+          {
+            "q": "Does it sync with Google Calendar?",
+            "a": "Mawedly provides an add-to-calendar button and .ics attachments in emails from the Professional plan. There is no two-way sync with your calendar."
+          },
+          {
+            "q": "I work with international clients — does it fit?",
+            "a": "The page is bilingual, but WhatsApp numbers are supported for the six Gulf countries only. A client outside them books and receives email normally."
+          }
+        ],
+        "navLabel": "Consultants"
+      },
+      "coaches": {
+        "metaTitle": "Booking system for fitness coaches and nutritionists — Mawedly",
+        "metaDescription": "A booking link for training and nutrition sessions: real availability, instant confirmation, Arabic and English. A scheduling tool only — it never handles your money.",
+        "h1": "Booking software for coaches and nutritionists",
+        "lead": "Coaching runs on continuity. A session that falls out of the week is not made up by two sessions the following week — what breaks is the plan itself, not just the appointment.",
+        "answer": "Mawedly is a booking link for fitness coaches, life coaches and non-clinical nutritionists: the client books a genuinely open slot and you are notified instantly, in Arabic or English.",
+        "problems": [
+          {
+            "t": "Dropping out mid-plan",
+            "b": "A client commits for three weeks and vanishes in the fourth. The gap costs them the result and costs you the renewal."
+          },
+          {
+            "t": "Everyone wants the same hour",
+            "b": "Six in the evening is the only slot anyone asks for. With no visible calendar, time goes to whoever asked first rather than to what is open."
+          },
+          {
+            "t": "In-person and online mixed together",
+            "b": "One client at the gym and another on video at the same hour, with nothing anywhere marking the difference."
+          }
+        ],
+        "solutions": [
+          {
+            "t": "The next session is booked now",
+            "b": "After each session, one link locks in the next — continuity is built by booking, not by reminding."
+          },
+          {
+            "t": "Peak hours made visible",
+            "b": "The analytics dashboard maps which hours actually fill, so you extend the ones in demand rather than guessing (Center plan)."
+          },
+          {
+            "t": "In-person and virtual kept apart",
+            "b": "You set the type per session, and virtual ones get a call link automatically from the Professional plan."
+          }
+        ],
+        "faq": [
+          {
+            "q": "Is Mawedly suitable for medical clinics?",
+            "a": "No. Mawedly is a general scheduling tool and is not built to handle clinical health data. It fits coaching, fitness and general non-clinical nutrition."
+          },
+          {
+            "q": "How do monthly packages work?",
+            "a": "Mawedly schedules appointments; it does not manage subscriptions. You agree the package with your client outside the platform, and they book their sessions through your link."
+          },
+          {
+            "q": "Is there a limit on sessions?",
+            "a": "Each plan has a monthly ceiling — 15 on free, 60 on Professional, 120 on Center, unlimited on Enterprise."
+          }
+        ],
+        "navLabel": "Coaches"
+      },
+      "professional-services": {
+        "metaTitle": "Appointment booking for lawyers, accountants and professional firms — Mawedly",
+        "metaDescription": "A booking page for professional consultations: real availability, instant confirmation, Arabic and English. A scheduling tool only — payment stays between you and your client.",
+        "h1": "Appointment booking for professional firms",
+        "lead": "Professional advice is sold by the hour and judged on trust. An appointment arranged over scattered messages reads as less disciplined than the work itself, and one that collides with a hearing or a review costs more than it was worth.",
+        "answer": "Mawedly is a booking page for lawyers, accountants and independent engineers: the client books a consultation in a genuinely open slot and it arrives confirmed, in Arabic or English. Mawedly does not verify professional licences.",
+        "problems": [
+          {
+            "t": "The appointment that hits the hearing",
+            "b": "A hearing runs two hours over and three appointments behind it collapse. With no single calendar, the day gets rebuilt by phone."
+          },
+          {
+            "t": "Reception as the middle layer",
+            "b": "Every booking passes through a third person who asks, replies and coordinates — operating cost on a simple appointment."
+          },
+          {
+            "t": "Short questions crowding long work",
+            "b": "A ten-minute question takes the same space as a full contract review, because nothing distinguishes them in advance."
+          }
+        ],
+        "solutions": [
+          {
+            "t": "Each consultation with its own length and fee",
+            "b": "A thirty-minute query and a two-hour review are two different service types booking two different amounts of space."
+          },
+          {
+            "t": "Self-service booking, no middle layer",
+            "b": "The client sees what is open and books it; the firm receives a finished appointment instead of a coordination thread."
+          },
+          {
+            "t": "Licence details shown openly",
+            "b": "Your licence number and issuing body appear on your page — verifying them is the client's responsibility, and Mawedly says so plainly."
+          }
+        ],
+        "faq": [
+          {
+            "q": "Does Mawedly verify my professional licence?",
+            "a": "No. Mawedly is a technical scheduling tool: it does not verify credentials or guarantee service quality. The badge displays what you entered, and checking it is the client's responsibility."
+          },
+          {
+            "q": "Is my clients' data protected?",
+            "a": "Data is used to run scheduling only. It is not shared with third parties and not sold. The privacy policy and data processing addendum set out the PDPL commitments in full."
+          },
+          {
+            "q": "Can several lawyers in one firm use it?",
+            "a": "Yes. Each is added as a provider with their own hours. The Center plan supports up to five, Enterprise has no limit."
+          }
+        ],
+        "navLabel": "Professional firms"
+      }
+    }
+  },
+  "Alternatives": {
+    "calendly": {
+      "eyebrow": "Comparison",
+      "metaTitle": "Calendly alternative for Arabic-speaking businesses — Mawedly vs Calendly",
+      "metaDescription": "An honest comparison of Mawedly and Calendly: Arabic and RTL, flat SAR pricing versus per-seat USD, and the cases where Calendly is the better choice.",
+      "h1": "Mawedly vs Calendly",
+      "lead": "Calendly is a strong scheduling product and is broader than Mawedly in plenty of ways. This page sets out where the two actually differ, and where Calendly — not Mawedly — is the right call.",
+      "answer": "The core difference: Calendly is built for teams scheduling meetings, in English, priced per seat in USD. Mawedly is built for Gulf businesses selling appointments, with a full right-to-left Arabic interface and flat SAR pricing. Calendly collects payments through Stripe and PayPal; Mawedly never handles money at all.",
+      "asOf": "The figures below were taken from Calendly's own pages on 6 August 2026. Prices change — check theirs before deciding anything.",
+      "diffTitle": "Where they actually differ",
+      "diffs": [
+        {
+          "t": "Arabic and text direction",
+          "b": "Mawedly is Arabic and English from the ground up, with a full RTL layout. Calendly offers its site in five languages — English, French, Spanish, German and Portuguese — and Arabic is not among them. On Calendly's own community forum (22 October 2025), a Community Manager answered a request for Arabic and RTL support by saying he had \"no timeline or a roadmap\" for it. If most of your customers read Arabic, this is not cosmetic: half of the booking page reaches them in another language."
+        },
+        {
+          "t": "Pricing: flat SAR versus per-seat USD",
+          "b": "Calendly prices per seat: $10/month for Standard and $16 for Teams on annual billing, with Enterprise starting at $15,000 a year. Mawedly prices per business, not per seat: 99 SAR a month covers up to five providers. A salon with four stylists pays for four seats on Calendly."
+        },
+        {
+          "t": "The free tier",
+          "b": "Calendly's free plan allows one event type and one connected calendar. Mawedly's free plan allows 15 appointments a month and one provider — but an unlimited number of services. That matters if you sell more than one thing: a cut, a colour, a treatment."
+        },
+        {
+          "t": "Payments",
+          "b": "Calendly connects Stripe and PayPal to collect payment inside the booking flow, from the Standard plan up. Mawedly does not, and will not: you publish your own payment instructions and the customer pays you directly. That is a real constraint, not a feature — see below."
+        },
+        {
+          "t": "WhatsApp",
+          "b": "Mawedly builds a wa.me link into every booking, because WhatsApp is the channel customers in the Gulf actually use. Numbers are supported for six countries: Saudi Arabia, the UAE, Bahrain, Qatar, Kuwait and Oman."
+        },
+        {
+          "t": "Integrations and enterprise features",
+          "b": "Calendly wins this outright: Salesforce, HubSpot and Marketo, round-robin distribution, SSO, SAML and SCIM, an API with webhooks, mobile apps and browser extensions. Mawedly has none of it."
+        }
+      ],
+      "wrongTitle": "When Mawedly is the wrong choice",
+      "wrongLead": "These are not polite hedges. If one of them describes you, Calendly or something like it fits better, and we would rather say so than waste your time.",
+      "wrong": [
+        "You want to take payment inside the booking page. Mawedly never handles money — payment happens directly between you and your customer, and verifying the transfer is on you.",
+        "You need Salesforce or HubSpot, or round-robin distribution across a sales team. None of that exists in Mawedly.",
+        "You need two-way sync with Google Calendar or Outlook. Mawedly offers an add-to-calendar button and .ics files only, which is one direction.",
+        "You need SSO, SAML or an enterprise security review. Mawedly is a small tool for small businesses.",
+        "Most of your customers read English and do not use WhatsApp. In that case Mawedly's two strongest features are irrelevant to you."
+      ],
+      "fitTitle": "When Mawedly is the better fit",
+      "fit": [
+        "Most of your customers read Arabic, and you want a booking page that looks designed for them rather than translated for them.",
+        "You sell services with different durations and prices — not meetings of one fixed length.",
+        "You have more than one provider and prefer a flat price to a per-seat one.",
+        "WhatsApp is where your customers actually reach you.",
+        "You want to set your own payment terms instead of routing through a gateway."
+      ],
+      "sourcesTitle": "Sources",
+      "sourcesNote": "Direct links so you can check rather than take our word for it:",
+      "ctaTitle": "Try it before comparing on paper",
+      "ctaBody": "The free plan needs no card. Build your page in Arabic, share the link, and judge it yourself.",
+      "ctaButton": "Start free"
+    }
+  },
+  "Tools": {
+    "noShow": {
+      "eyebrow": "Free tool",
+      "metaTitle": "No-show cost calculator for appointment businesses — Mawedly",
+      "metaDescription": "Work out what missed appointments cost you per month and per year, using your own numbers. Free, no sign-up, in Arabic and English.",
+      "h1": "What do no-shows cost you?",
+      "lead": "Put in your own figures. We use no industry averages and no borrowed statistics — the only number worth anything here is yours.",
+      "answer": "Monthly no-show cost = appointments per month × no-show rate × average appointment price. This calculator applies that to your figures and adds the hours lost.",
+      "inputsTitle": "Your numbers",
+      "appointments": "Appointments per month",
+      "noShowRate": "No-show rate (%)",
+      "price": "Average appointment price (SAR)",
+      "duration": "Average appointment length (minutes)",
+      "resultsTitle": "Result",
+      "missedLabel": "Missed appointments a month",
+      "monthlyLabel": "Lost per month",
+      "yearlyLabel": "Lost per year",
+      "hoursLabel": "Empty hours a month",
+      "currency": "SAR",
+      "hoursUnit": "hrs",
+      "apptUnit": "appts",
+      "rateHint": "Don't know your rate? Count last month's appointments and divide the no-shows by the total. Guessing here invalidates everything below it.",
+      "methodTitle": "How this is calculated",
+      "methodBody": "Missed = monthly appointments × rate. Monthly loss = missed × average price. Yearly = monthly × 12. Hours = missed × length ÷ 60. No hidden coefficients, no extra assumptions.",
+      "honestTitle": "What this calculator does not tell you",
+      "honestBody": "Mawedly does not eliminate no-shows, and we do not know how far it would cut yours — anyone quoting you a figure for that is guessing. What it does is prevent clashes, show only genuinely open times, and let you ask for a holding amount before confirming. The commitment comes from the condition you set, not from the tool.",
+      "ctaTitle": "The next step",
+      "ctaBody": "If the number came out higher than you expected, start with the smallest change: a booking link that shows real availability and lets you ask for a hold.",
+      "ctaButton": "Start free",
+      "readMore": "Read about cutting no-shows"
+    }
+  },
+  "Demo": {
+    "eyebrow": "Live demo",
+    "metaTitle": "Try the booking page — live demo, no sign-up | Mawedly",
+    "metaDescription": "Try a Mawedly booking page exactly as your customer sees it: pick a service, pick a time, complete the booking. No account, no card, Arabic and English.",
+    "h1": "Try the booking page your customer sees",
+    "lead": "This demo runs entirely in your browser. It creates no account, books nothing real and sends nothing anywhere — click around as much as you like.",
+    "answer": "The demo mirrors a Mawedly booking page across its three steps: choose a service, choose an open time, then enter your details. It requires no sign-up and stores nothing.",
+    "sandboxNote": "Demo — nothing is saved and nothing is sent.",
+    "businessName": "Noura Al-Salem",
+    "businessType": "Business consulting",
+    "hours": "09:00–21:00",
+    "step1": "Choose a service",
+    "step2": "Choose a time",
+    "step3": "Your details",
+    "services": [
+      {
+        "name": "Business consultation",
+        "meta": "60 min · 300 SAR"
+      },
+      {
+        "name": "Business plan review",
+        "meta": "90 min · 450 SAR"
+      },
+      {
+        "name": "Short intro call",
+        "meta": "15 min · Free"
+      }
+    ],
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "phoneLabel": "Mobile number",
+    "phonePlaceholder": "05XXXXXXXX",
+    "submit": "Confirm booking",
+    "back": "Back",
+    "restart": "Start over",
+    "successTitle": "Booked",
+    "successBody": "On the real page the provider is notified instantly, and the customer sees a WhatsApp button plus whatever payment instructions the provider published.",
+    "successMeta": "Service: {service} · Time: {time}",
+    "paymentNote": "Mawedly never handles your money. The provider writes their own payment instructions, and the transfer happens directly between them and the customer.",
+    "ctaTitle": "Build your own page",
+    "ctaBody": "The same page, with your name, your services and your hours. Minutes to set up, no card.",
+    "ctaButton": "Start free"
   }
 }

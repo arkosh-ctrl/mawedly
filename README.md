@@ -1,7 +1,33 @@
 # Mawedly 
 
-Bilingual (ar/en) deposit-based appointment booking platform for Gulf salons.
-Domain: mawedly.com.
+Bilingual (ar/en) appointment scheduling for Gulf businesses — salons, tutors,
+consultants, coaches and professional firms. A scheduling tool only: Mawedly
+never handles money. Payment happens directly between provider and customer.
+Domain: mawedly.com (canonical host is **www**).
+
+## Required dashboard setup
+
+Two things live outside the repo and fail SILENTLY when missing — nothing in the
+app errors, the data simply never arrives.
+
+1. **Vercel Web Analytics must be enabled for the project.**
+   `src/components/analytics/web-analytics.tsx` loads Vercel's own
+   `/_vercel/insights/script.js` (no npm package), and fires a custom
+   `ai_referral_*` event when a visit arrives from ChatGPT, Perplexity, Claude,
+   Gemini or Copilot. Until Web Analytics is turned on in the Vercel dashboard
+   that script 404s and no answer-engine traffic is ever recorded — and a
+   baseline you did not capture cannot be reconstructed later.
+2. **`NEXT_PUBLIC_APP_URL` must be the www origin.** The apex 308s to www; if
+   this is unset or set to the apex, every canonical, hreflang and sitemap URL
+   points at a redirect.
+
+## AI crawlers
+
+`src/app/robots.ts` names GPTBot, OAI-SearchBot, PerplexityBot, ClaudeBot,
+Claude-SearchBot, Google-Extended and Applebot-Extended explicitly, allowed.
+Being cited inside AI answers is a goal here. **robots.txt is not the only
+place this can be undone** — a CDN or WAF rule blocking those user agents
+overrides it and is invisible from inside the app.
 
 > **Reference:** `docs/mawedly-master-spec-final.md` is the single source of truth
 > (Schema V3.2, RLS, i18n). Do not use any schema from memory.

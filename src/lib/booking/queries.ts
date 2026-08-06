@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BLOCKING_STATUSES } from "@/lib/appointments/status";
 import { isReservedSlug } from "./reserved-slugs";
@@ -47,7 +48,13 @@ export type PublicSocialLink = {
 // Resolve a slug to its (active) business. Returns ONLY non-sensitive fields —
 // bank details are never exposed here; they are fetched separately after a
 // successful booking.
-export async function getBusinessForBooking(
+//
+// WRAPPED IN cache(): generateMetadata and the page body both need the
+// business, and Next calls them as two separate invocations. Without this,
+// every booking page would issue the same Supabase query twice. React's cache()
+// dedupes per request — a plain Supabase call is not a fetch(), so Next's own
+// request-level deduplication does not cover it.
+export const getBusinessForBooking = cache(async function getBusinessForBooking(
   slug: string,
 ): Promise<PublicBusiness | null> {
   if (isReservedSlug(slug)) return null;
@@ -78,7 +85,7 @@ export async function getBusinessForBooking(
     brand_logo_path: data.brand_logo_path,
     brand_color: data.brand_color,
   };
-}
+});
 
 export async function getActiveServices(
   businessId: string,

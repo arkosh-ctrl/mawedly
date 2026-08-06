@@ -1,4 +1,12 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
+import {
+  SITE_URL,
+  breadcrumbSchema,
+  organizationSchema,
+  seoLocale,
+} from "@/lib/seo/site";
+import { JsonLd } from "@/components/json-ld";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PLANS, type PlanId } from "@/lib/billing/plans";
@@ -14,7 +22,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Pricing" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return pageMetadata({
+    locale: seoLocale(locale),
+    path: "/pricing",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  });
 }
 
 const PLAN_ORDER: PlanId[] = ["free", "pro_49", "center_99", "enterprise_299"];
@@ -83,11 +96,27 @@ export default async function PricingPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const loc = seoLocale(locale);
   const t = await getTranslations("Pricing");
+  const tNav = await getTranslations("Nav");
   const rows = buildRows();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
+      {/* The SoftwareApplication with its Offers lives on the home page, which
+          is the anchor for the product entity. Repeating it here would put two
+          nodes with the same @id in the index for no gain — this page just needs
+          a readable breadcrumb trail and the publisher. */}
+      <JsonLd
+        nodes={[
+          breadcrumbSchema([
+            { name: tNav("home"), url: `${SITE_URL}/${loc}` },
+            { name: tNav("pricing"), url: `${SITE_URL}/${loc}/pricing` },
+          ]),
+          organizationSchema(loc),
+        ]}
+      />
+
       <div className="flex flex-col items-center gap-3 text-center">
         <span className="eyebrow">{t("eyebrow")}</span>
         <h1 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">

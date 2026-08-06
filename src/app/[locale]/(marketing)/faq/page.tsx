@@ -1,4 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
+import {
+  SITE_URL,
+  breadcrumbSchema,
+  organizationSchema,
+  seoLocale,
+} from "@/lib/seo/site";
+import { faqPageSchema } from "@/lib/seo/schemas";
+import { JsonLd } from "@/components/json-ld";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
@@ -8,7 +17,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Faq" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return pageMetadata({
+    locale: seoLocale(locale),
+    path: "/faq",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  });
 }
 
 export default async function FaqPage({
@@ -18,28 +32,27 @@ export default async function FaqPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const loc = seoLocale(locale);
   const t = await getTranslations("Faq");
+  const tNav = await getTranslations("Nav");
 
+  // ONE array, rendered below AND passed to the schema — never two copies.
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((n) => ({
     q: t(`q${n}`),
     a: t(`a${n}`),
   }));
 
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: items.map((it) => ({
-      "@type": "Question",
-      name: it.q,
-      acceptedAnswer: { "@type": "Answer", text: it.a },
-    })),
-  };
-
   return (
     <div className="mx-auto max-w-3xl px-5 py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      <JsonLd
+        nodes={[
+          faqPageSchema(loc, items),
+          breadcrumbSchema([
+            { name: tNav("home"), url: `${SITE_URL}/${loc}` },
+            { name: tNav("faq"), url: `${SITE_URL}/${loc}/faq` },
+          ]),
+          organizationSchema(loc),
+        ]}
       />
 
       <header>

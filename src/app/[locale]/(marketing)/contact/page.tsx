@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { seoLocale } from "@/lib/seo/site";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildWhatsappLink } from "@/lib/whatsapp";
 
@@ -9,7 +11,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Contact" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return pageMetadata({
+    locale: seoLocale(locale),
+    path: "/contact",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  });
 }
 
 // Direct contact channels — no form and no database: mailto: and wa.me only.

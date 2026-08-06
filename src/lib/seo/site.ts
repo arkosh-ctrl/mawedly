@@ -27,6 +27,21 @@ export const SITE_NAME_EN = "Mawedly";
 export const SITE_NAME_AR = "موعدلي";
 export const SITE_EMAIL = "hello@mawedly.com";
 
+/** The support number rendered on /contact. Same value, one place. */
+export const SITE_PHONE = "+966591968557";
+
+/**
+ * The markets Mawedly actually serves, as ISO 3166-1 alpha-2.
+ *
+ * This is NOT an aspirational list. It mirrors GULF_DIAL_CODES in
+ * src/lib/whatsapp.ts — the only phone prefixes the product can turn into a
+ * working wa.me link. A customer outside these countries cannot be messaged
+ * through the booking flow, so claiming their market in schema would be a claim
+ * the product does not honour. Egypt in particular is absent for that reason:
+ * add "EG" here only when +20 is added there.
+ */
+export const AREA_SERVED = ["SA", "AE", "BH", "QA", "KW", "OM"] as const;
+
 /**
  * Verified profiles for the ORGANISATION. Fill these in — each one materially
  * strengthens entity resolution. Leave a line empty rather than guessing: a
@@ -54,11 +69,32 @@ const clean = (urls: string[]) => urls.filter((u) => u.trim().length > 0);
 
 export type SeoLocale = "ar" | "en";
 
+/**
+ * Narrow the route's `string` locale to the two the SEO helpers accept.
+ *
+ * The [locale] segment is already validated by the layout, so anything reaching
+ * here is "ar" or "en" — but the param is typed `string`. Falling back to
+ * Arabic keeps the helpers honestly typed without a cast, and Arabic is the
+ * default locale, so the fallback is the same answer next-intl would give.
+ */
+export function seoLocale(locale: string): SeoLocale {
+  return locale === "en" ? "en" : "ar";
+}
+
 export function siteName(locale: SeoLocale) {
   return locale === "ar" ? SITE_NAME_AR : SITE_NAME_EN;
 }
 
-/** The publisher entity, reused by every schema that needs one. */
+/**
+ * The publisher entity, reused by every schema that needs one.
+ *
+ * NOT LocalBusiness. That type describes a place customers physically visit
+ * during opening hours; Mawedly is SaaS. Marking it up as a local business
+ * invites a manual action and produces no local-pack listing anyway.
+ *
+ * No `address`: there is no registered address to state. In this market a real
+ * address is a genuine trust signal, but an invented one is worse than none.
+ */
 export function organizationSchema(locale: SeoLocale, description?: string) {
   const sameAs = clean(ORG_PROFILES);
   return {
@@ -69,14 +105,30 @@ export function organizationSchema(locale: SeoLocale, description?: string) {
     url: SITE_URL,
     ...(description ? { description } : {}),
     email: SITE_EMAIL,
-    areaServed: "GCC",
+    // Real ISO country codes rather than the bare string "GCC", which is not a
+    // place any parser can resolve. See AREA_SERVED for why this list is short.
+    areaServed: AREA_SERVED.map((code) => ({
+      "@type": "Country",
+      identifier: code,
+    })),
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: SITE_EMAIL,
+      telephone: SITE_PHONE,
+      // Both are first-class, not a translation of each other.
+      availableLanguage: ["Arabic", "English"],
+      areaServed: [...AREA_SERVED],
+    },
     logo: {
       "@type": "ImageObject",
       url: `${SITE_URL}/icon-512.png`,
       width: 512,
       height: 512,
     },
-    // Omitted entirely when empty — an empty array is noise in the graph.
+    // Omitted entirely when empty — an empty array is noise in the graph, and a
+    // sameAs pointing at a 404 or someone else's handle weakens the very link
+    // it exists to build.
     ...(sameAs.length ? { sameAs } : {}),
     ...(locale === "ar" ? { knowsLanguage: ["ar", "en"] } : {}),
   };

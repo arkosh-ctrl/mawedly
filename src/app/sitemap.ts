@@ -1,53 +1,39 @@
 import type { MetadataRoute } from "next";
-import { routing } from "@/i18n/routing";
 import { getPublishedSlugs } from "@/lib/blog/queries";
+import { SITE_URL } from "@/lib/seo/site";
+import {
+  LOCALIZED_PATHS,
+  absoluteUrl,
+  languageAlternates,
+} from "@/lib/seo/metadata";
 
 // Revalidated on the same cadence as the blog pages. Without this the sitemap
 // is frozen at build time and a post published afterwards never appears in it.
 export const revalidate = 300;
 
-// Base URL for all absolute links. Strip any trailing slash so we can safely
-// append "/<locale><path>" without producing double slashes.
-const baseUrl = (
-  process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
-).replace(/\/+$/, "");
-
-// Public marketing pages only. Protected routes (/dashboard, /login), the
-// dynamic booking route (/[slug]), and API/auth endpoints are intentionally
-// excluded. "" is the home page (served at /<locale>).
-const marketingPaths = [
-  "",
-  "/how-it-works",
-  "/pricing",
-  "/about",
-  "/contact",
-  "/faq",
-  "/blog",
-  "/privacy",
-  "/terms",
-] as const;
-
-// The home page carries the highest priority; the rest are slightly lower.
-function priorityFor(path: string): number {
-  if (path === "") return 1;
-  return path === "/blog" ? 0.9 : 0.8;
-}
-
+/**
+ * The static half of this file reads LOCALIZED_PATHS — the same list the
+ * hreflang tags come from. It used to keep its own parallel copy of "which
+ * pages exist", which is how a page ends up in the sitemap with no hreflang, or
+ * with hreflang and no sitemap entry. One list, one truth.
+ *
+ * Protected routes (/dashboard, /admin), the auth pages, the dynamic booking
+ * route (/[slug]) and the API endpoints are absent by construction: they are
+ * not in LOCALIZED_PATHS.
+ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
-  const staticEntries = marketingPaths.flatMap((path) => {
-    // hreflang alternates linking the ar/en versions of the same page. The URL
-    // shape matches next-intl's localePrefix: "always", so /<locale><path>.
-    const languages = Object.fromEntries(
-      routing.locales.map((locale) => [locale, `${baseUrl}/${locale}${path}`]),
-    ) as Record<(typeof routing.locales)[number], string>;
+  const staticEntries = LOCALIZED_PATHS.flatMap((entry) => {
+    // Both locales share ONE alternates map, so the pair is reciprocal by
+    // construction rather than by review.
+    const languages = languageAlternates(entry.path);
 
-    return routing.locales.map((locale) => ({
-      url: `${baseUrl}/${locale}${path}`,
+    return (["ar", "en"] as const).map((locale) => ({
+      url: absoluteUrl(locale, entry.path),
       lastModified,
-      changeFrequency: "weekly" as const,
-      priority: priorityFor(path),
+      changeFrequency: entry.changeFrequency,
+      priority: entry.priority,
       alternates: { languages },
     }));
   });
@@ -62,12 +48,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const languages = Object.fromEntries(
           entry.locales.map((locale) => [
             locale,
-            `${baseUrl}/${locale}/blog/${entry.slug}`,
+            `${SITE_URL}/${locale}/blog/${entry.slug}`,
           ]),
         );
 
         return entry.locales.map((locale) => ({
-          url: `${baseUrl}/${locale}/blog/${entry.slug}`,
+          url: `${SITE_URL}/${locale}/blog/${entry.slug}`,
           lastModified: new Date(entry.updated_at),
           changeFrequency: "monthly" as const,
           priority: 0.7,

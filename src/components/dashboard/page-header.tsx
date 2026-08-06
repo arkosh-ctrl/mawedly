@@ -1,5 +1,6 @@
-// Unified dashboard page header: mono eyebrow, Tajawal display title, optional
+// Unified dashboard page header: mono eyebrow, display-stack title, optional
 // mono subline. Closed with a hairline rule so every page opens the same way.
+// ("display" is the body face — see the font note in [locale]/layout.tsx.)
 export function PageHeader({
   eyebrow,
   title,

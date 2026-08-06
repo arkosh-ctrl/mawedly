@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { SITE_URL } from "@/lib/seo/site";
 import type { CalendarEvent } from "./ics";
 
 type Row = {
@@ -43,7 +44,9 @@ export async function getCalendarEvent(
   const serviceName = data.services.name;
   const businessName = data.businesses.name;
   const isVirtual = data.services.session_type === "virtual";
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://mawedly.com";
+  // SITE_URL, not a local fallback: the apex 308s to www, and this URL is
+  // baked into a calendar invite that outlives the redirect being cheap.
+  const appUrl = SITE_URL;
   const consultationUrl = `${appUrl}/${lang}/consultation/${appointmentId}`;
 
   const title =

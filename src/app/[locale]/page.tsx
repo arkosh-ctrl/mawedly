@@ -7,12 +7,18 @@ import { BookingPreview } from "@/components/marketing/booking-preview";
 import { HomePricing } from "@/components/marketing/home-pricing";
 import { Reveal, GlowCard } from "@/components/marketing/motion";
 import {
-  SITE_URL,
-  jsonLdGraph,
   organizationSchema,
   personSchema,
+  seoLocale,
   type SeoLocale,
 } from "@/lib/seo/site";
+import {
+  softwareApplicationSchema,
+  webSiteSchema,
+} from "@/lib/seo/schemas";
+import { JsonLd } from "@/components/json-ld";
+import { type PlanId } from "@/lib/billing/plans";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -21,7 +27,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Home" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return pageMetadata({
+    locale: seoLocale(locale),
+    // "" is the home page: /ar and /en. Its canonical is the locale root, NOT
+    // the apex — the apex 308s to /ar, and a canonical pointing at a redirect
+    // wastes crawl budget and splits the signal between two URLs.
+    path: "",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  });
 }
 
 export default async function HomePage({
@@ -33,21 +47,11 @@ export default async function HomePage({
   setRequestLocale(locale);
   // The route only ever serves the configured locales; narrowing here keeps the
   // schema helpers honestly typed instead of accepting any string.
-  const seoLocale: SeoLocale = locale === "en" ? "en" : "ar";
+  const loc: SeoLocale = seoLocale(locale);
   const t = await getTranslations("Home");
   const tBooking = await getTranslations("Booking");
   const tSignup = await getTranslations("Signup");
-
-  // Organization structured data for the home page.
-  const orgJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${SITE_URL}/#website`,
-    url: `${SITE_URL}/${locale}`,
-    name: locale === "ar" ? "موعدلي" : "Mawedly",
-    inLanguage: locale,
-    publisher: { "@id": `${SITE_URL}/#organization` },
-  };
+  const tPricing = await getTranslations("Pricing");
 
   const features = [
     { title: t("feature1Title"), body: t("feature1Body") },
@@ -75,15 +79,25 @@ export default async function HomePage({
 
   return (
     <MarketingShell>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: jsonLdGraph(
-            organizationSchema(seoLocale, t("metaDescription")),
-            orgJsonLd,
-            personSchema(seoLocale),
-          ),
-        }}
+      {/* One @graph: the organisation is the anchor entity, the website and the
+          product both point back at it by @id, and the founder is attached as a
+          named Person. Four separate scripts would leave a parser guessing that
+          these describe the same thing.
+
+          The plan names and feature labels come from the SAME translations the
+          pricing section below renders, and the prices from the same PLANS
+          config that enforces the limits — so the schema cannot claim a price
+          the page does not show. */}
+      <JsonLd
+        nodes={[
+          organizationSchema(loc, t("metaDescription")),
+          webSiteSchema(loc),
+          softwareApplicationSchema(loc, t("metaDescription"), {
+            name: (id: PlanId) => tPricing(`plans.${id}.name`),
+            feature: (key: string) => tPricing(`features.${key}`),
+          }),
+          personSchema(loc),
+        ]}
       />
 
       {/* Hero — headline as thesis, beside a working miniature of the real
@@ -111,6 +125,25 @@ export default async function HomePage({
             </h1>
             <p className="animate-fade-rise mt-6 max-w-xl text-lg leading-[1.6] text-muted [animation-delay:120ms]">
               {t("heroSubtitle")}
+            </p>
+
+            {/* THE ENTITY STATEMENT. One self-contained paragraph naming what
+                Mawedly is, who it serves, which markets and languages, and
+                that it does not process payments.
+
+                Answer engines resolve a brand to an entity before they will
+                cite it, and they lift specific attributable sentences, never a
+                headline. The hero copy above is written to persuade a reader;
+                this is written to be quotable, which is why it restates facts
+                the rest of the page only implies.
+
+                VISIBLE, deliberately. The obvious shortcut is sr-only — but
+                text served to crawlers and hidden from readers is cloaking, and
+                it is penalised precisely when it works. A reader landing cold
+                also benefits from one plain sentence saying what this is, so
+                there is no reason to hide it. */}
+            <p className="animate-fade-rise mt-5 max-w-xl border-s-2 border-line ps-4 text-sm leading-relaxed text-muted [animation-delay:150ms]">
+              {t("entityStatement")}
             </p>
             <div className="animate-fade-rise mt-10 flex w-full flex-col gap-3 sm:flex-row sm:items-center [animation-delay:180ms]">
               <Link
