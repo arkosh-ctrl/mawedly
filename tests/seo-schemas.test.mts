@@ -7,6 +7,8 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import {
   faqPageSchema,
   howToSchema,
@@ -113,12 +115,35 @@ test("areaServed is the real market list, and excludes Egypt", () => {
   assert.ok(!codes.includes("EG"), "Egypt claimed but +20 is not supported");
 });
 
-test("Organization has a bilingual contact point and no invented address", () => {
+test("Organization has a bilingual contact point", () => {
   const org = organizationSchema("ar", "d") as Record<string, unknown>;
   const contact = org.contactPoint as { availableLanguage: string[] };
   assert.deepEqual(contact.availableLanguage, ["Arabic", "English"]);
-  // An invented address is worse than none in this market.
-  assert.equal(org.address, undefined, "address must stay omitted until real");
+});
+
+test("the address is city-level only — no street, no postal code", () => {
+  // Precision beyond the city buys nothing for a SaaS product with no premises
+  // a customer visits, and publishes more than the business needs to. This
+  // guards against someone "completing" the address later out of tidiness.
+  for (const locale of ["ar", "en"] as const) {
+    const address = (organizationSchema(locale, "d") as Record<string, unknown>)
+      .address as Record<string, unknown>;
+    assert.ok(address, `no address for ${locale}`);
+    assert.equal(address["@type"], "PostalAddress");
+    assert.equal(address.streetAddress, undefined, "street address leaked in");
+    assert.equal(address.postalCode, undefined, "postal code leaked in");
+    assert.equal(address.addressCountry, "SA");
+    assert.ok(address.addressLocality, "city missing");
+    assert.ok(address.addressRegion, "region missing");
+  }
+
+  // The place is written in the reader's language, not transliterated once and
+  // reused — the same reason every other string on the site has two versions.
+  const ar = (organizationSchema("ar", "d") as Record<string, unknown>)
+    .address as Record<string, string>;
+  const en = (organizationSchema("en", "d") as Record<string, unknown>)
+    .address as Record<string, string>;
+  assert.notEqual(ar.addressLocality, en.addressLocality);
 });
 
 test("Organization omits sameAs entirely rather than shipping empty", () => {
@@ -131,6 +156,34 @@ test("Organization omits sameAs entirely rather than shipping empty", () => {
     assert.ok(sameAs.length > 0, "empty sameAs array is noise");
     sameAs.forEach((u) => assert.match(u, /^https:\/\//));
   }
+});
+
+test("the company and the founder keep separate sameAs profiles", () => {
+  // sameAs answers "which real-world entity is this?". A personal profile
+  // listed among a company's accounts asks a resolver to treat a person and an
+  // organisation as one entity, which weakens the link the field exists to
+  // build. The founder is tied to the company through Person.worksFor instead.
+  const org = organizationSchema("ar", "d") as { sameAs?: string[] };
+  const person = personSchema("ar") as { sameAs?: string[] };
+
+  for (const url of org.sameAs ?? []) {
+    assert.ok(
+      !/linkedin\.com\/in\//.test(url),
+      `personal LinkedIn profile in Organization.sameAs: ${url}`,
+    );
+  }
+  // And the reverse: a company page does not belong on the Person.
+  for (const url of person.sameAs ?? []) {
+    assert.ok(
+      !/linkedin\.com\/company\//.test(url),
+      `company page in Person.sameAs: ${url}`,
+    );
+  }
+  // No URL may appear on both entities.
+  const shared = (org.sameAs ?? []).filter((u) =>
+    (person.sameAs ?? []).includes(u),
+  );
+  assert.deepEqual(shared, [], "same profile claimed by two entities");
 });
 
 test("Mawedly is not marked up as a LocalBusiness", () => {
@@ -195,6 +248,47 @@ test("FAQPage mirrors the items given, in order", () => {
     assert.equal(entry.name, items[i].q);
     assert.equal(entry.acceptedAnswer.text, items[i].a);
   });
+});
+
+test("NAP: the phone and email exist in exactly one place in the source", () => {
+  // Name, Address, Phone consistency. A contact detail that differs between the
+  // visible page and the structured data reads as a trust signal against the
+  // site. These used to live in site.ts, in contact/page.tsx AND in both
+  // message catalogues — three copies that agreed only by coincidence.
+  //
+  // This scans the real source tree rather than trusting a convention, because
+  // a convention is exactly what failed here the first time.
+  const roots = ["src", "messages"];
+  const offenders: string[] = [];
+
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (!/\.(ts|tsx|json)$/.test(entry.name)) continue;
+      // site.ts is the single source and is allowed to contain both.
+      if (full.endsWith(join("lib", "seo", "site.ts"))) continue;
+
+      const body = readFileSync(full, "utf8");
+      if (body.includes("591968557")) offenders.push(`${full} (phone)`);
+      // A mailto: template or a doc comment naming the address is fine; a
+      // literal address rendered as content is not. Both current uses are in
+      // site.ts, so any hit outside it is a regression worth failing on.
+      if (/["']hello@mawedly\.com["']/.test(body)) {
+        offenders.push(`${full} (email)`);
+      }
+    }
+  };
+  roots.forEach(walk);
+
+  assert.deepEqual(
+    offenders,
+    [],
+    `contact details duplicated outside src/lib/seo/site.ts:\n${offenders.join("\n")}`,
+  );
 });
 
 test("locale-specific schemas differ between ar and en", () => {

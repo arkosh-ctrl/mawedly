@@ -31,6 +31,28 @@ export const SITE_EMAIL = "hello@mawedly.com";
 export const SITE_PHONE = "+966591968557";
 
 /**
+ * Business location, at city granularity only.
+ *
+ * NO streetAddress and NO postalCode, deliberately. A real location is a
+ * genuine trust signal in this market, but the precision that helps a search
+ * engine resolve an entity stops at the city — a street address adds nothing
+ * for a SaaS product with no premises customers visit, and publishes more than
+ * the business needs to.
+ *
+ * Source: the founder's LinkedIn states "Jiddah, Makkah, Saudi Arabia".
+ * Jeddah is the city; Makkah is the province containing it. The Facebook page
+ * writes the same place as "makkah, 21955" — same location, different wording.
+ * NAP consistency wants ONE form everywhere, so align the directories to this.
+ */
+export const SITE_ADDRESS = {
+  city: "Jeddah",
+  cityAr: "جدة",
+  region: "Makkah Province",
+  regionAr: "منطقة مكة المكرمة",
+  country: "SA",
+} as const;
+
+/**
  * The markets Mawedly actually serves, as ISO 3166-1 alpha-2.
  *
  * This is NOT an aspirational list. It mirrors GULF_DIAL_CODES in
@@ -48,10 +70,45 @@ export const AREA_SERVED = ["SA", "AE", "BH", "QA", "KW", "OM"] as const;
  * sameAs that 404s undermines the very trust it is meant to build.
  */
 const ORG_PROFILES: string[] = [
-  // "https://www.linkedin.com/company/mawedly/",
-  // "https://x.com/mawedly",
-  // "https://www.instagram.com/mawedly/",
+  "https://x.com/mawedly",
+  "https://www.facebook.com/profile.php?id=61593097349034",
 ];
+
+/*
+ * VERIFIED BEFORE LISTING, 2026-08-07. Both profiles carry Mawedly's name and
+ * mark, and both link BACK to mawedly.com — that reciprocity is what turns a
+ * sameAs from an assertion into something a resolver can confirm.
+ *
+ * The X account was deliberately held out of an earlier revision: its display
+ * name still read "Electro Insights" from a previous life, and sameAs is an
+ * identity claim, not a link list. Naming an account that calls itself
+ * something else does not merely fail to help — it answers "who is Mawedly?"
+ * incorrectly. It was added only once the name, bio and link were corrected.
+ *
+ * Apply the same test to anything added here: does the profile name the
+ * company, and does it link back? If not, leave it out. A gap is neutral; a
+ * mismatch is a wrong answer.
+ *
+ * TODO: a LinkedIn *company* page (/company/mawedly) and Instagram belong here
+ * when they exist. Worth replacing the Facebook profile.php?id= URL with a
+ * vanity URL once claimed — the numeric form resolves, but a named one is a
+ * stabler identifier.
+ */
+
+/*
+ * DELIBERATELY NOT HERE: the founder's personal LinkedIn.
+ *
+ * It lives in AUTHOR_PROFILES below, on the Person entity. sameAs exists to
+ * answer "which real-world entity is this?" — listing a personal profile among
+ * an organisation's accounts asks a resolver to treat a person and a company as
+ * the same thing, which weakens the very link the field is for. The founder is
+ * already connected to the company through Person.worksFor.
+ *
+ * TODO when they exist: a LinkedIn *company* page (/company/mawedly) and an
+ * Instagram account both belong here. Also worth replacing the Facebook
+ * profile.php?id= URL with a vanity URL once one is claimed — the numeric form
+ * still resolves, but a named URL is a stronger, more stable identifier.
+ */
 
 /** Verified profiles for the AUTHOR (the founder who writes the blog). */
 const AUTHOR_PROFILES: string[] = [
@@ -90,10 +147,13 @@ export function siteName(locale: SeoLocale) {
  *
  * NOT LocalBusiness. That type describes a place customers physically visit
  * during opening hours; Mawedly is SaaS. Marking it up as a local business
- * invites a manual action and produces no local-pack listing anyway.
+ * invites a manual action and produces no local-pack listing anyway. An
+ * Organization may still carry an address — that is a different claim from
+ * "customers come here during opening hours".
  *
- * No `address`: there is no registered address to state. In this market a real
- * address is a genuine trust signal, but an invented one is worse than none.
+ * The address is city-level (see SITE_ADDRESS). It was omitted entirely until
+ * a real, publicly stated location existed: in this market a genuine address is
+ * a trust signal, but an invented one is worse than none.
  */
 export function organizationSchema(locale: SeoLocale, description?: string) {
   const sameAs = clean(ORG_PROFILES);
@@ -119,6 +179,14 @@ export function organizationSchema(locale: SeoLocale, description?: string) {
       // Both are first-class, not a translation of each other.
       availableLanguage: ["Arabic", "English"],
       areaServed: [...AREA_SERVED],
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality:
+        locale === "ar" ? SITE_ADDRESS.cityAr : SITE_ADDRESS.city,
+      addressRegion:
+        locale === "ar" ? SITE_ADDRESS.regionAr : SITE_ADDRESS.region,
+      addressCountry: SITE_ADDRESS.country,
     },
     logo: {
       "@type": "ImageObject",

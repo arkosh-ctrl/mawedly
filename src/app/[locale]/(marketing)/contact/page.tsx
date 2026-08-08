@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { seoLocale } from "@/lib/seo/site";
+import { SITE_EMAIL, SITE_PHONE, seoLocale } from "@/lib/seo/site";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildWhatsappLink } from "@/lib/whatsapp";
 
@@ -20,8 +20,17 @@ export async function generateMetadata({
 }
 
 // Direct contact channels — no form and no database: mailto: and wa.me only.
-const CONTACT_EMAIL = "hello@mawedly.com";
-const CONTACT_WHATSAPP = "966591968557";
+//
+// The address and number come from @/lib/seo/site, NOT from local constants and
+// NOT from the translation catalogue. They used to live in both places, and the
+// email additionally in ar.json/en.json — three copies of one fact.
+//
+// This is NAP consistency (Name, Address, Phone): search engines treat a
+// contact detail that differs between the visible page and the structured data
+// as a trust signal against you. Three copies agree today by coincidence; the
+// first time the support number changes, two of them go stale silently. An
+// email address is a constant, not translatable content, so it has no business
+// in a message catalogue either.
 
 // Logical-direction arrow: points end-ward (→ in LTR, ← in RTL) because it
 // sits inside a [dir]-aware layout and is mirrored with the rtl: variant.
@@ -83,7 +92,9 @@ export default async function ContactPage({
   const t = await getTranslations("Contact");
 
   // null when the number can't be made into a valid wa.me link — hide the card.
-  const waLink = buildWhatsappLink(CONTACT_WHATSAPP, t("whatsappText"));
+  // SITE_PHONE is E.164 ("+966..."); normalizePhoneForWhatsapp strips every
+  // non-digit, so the same single constant serves both schema.org and wa.me.
+  const waLink = buildWhatsappLink(SITE_PHONE, t("whatsappText"));
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-16">
@@ -99,15 +110,16 @@ export default async function ContactPage({
 
       <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
         <a
-          href={`mailto:${CONTACT_EMAIL}`}
+          href={`mailto:${SITE_EMAIL}`}
           className="group flex flex-col gap-3 bg-paper p-8 transition-colors hover:bg-canvas"
         >
           <span className="text-pine" aria-hidden="true">
             <MailIcon />
           </span>
           <span className="eyebrow text-muted">{t("emailLabel")}</span>
+          {/* The address itself, not a translated copy of it. */}
           <span className="font-mono text-lg text-ink" dir="ltr">
-            {t("emailValue")}
+            {SITE_EMAIL}
           </span>
           <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-saffron">
             {t("emailAction")}

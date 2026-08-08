@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { getPublishedPosts } from "@/lib/blog/queries";
 import { JsonLd } from "@/components/json-ld";
 import { pageMetadata, type LocalizedPath } from "@/lib/seo/metadata";
 import {
@@ -43,10 +44,44 @@ function isVertical(value: string): value is Vertical {
   return (VERTICALS as readonly string[]).includes(value);
 }
 
+/**
+ * Which articles support which vertical.
+ *
+ * The article goes deep on the problem; this page catches the high-intent
+ * search. Linking them makes each stronger — unlinked, they compete with each
+ * other for the same terms.
+ *
+ * NOT every article belongs to a vertical. `clinic-no-show-appointments` is
+ * deliberately absent: the coaches page states outright that Mawedly is not
+ * suitable for medical clinics, so sending a clinic reader there would land
+ * them on a page that excludes them. `photographer-date-holds` has no vertical
+ * page at all. An honest gap beats a convenient mismatch.
+ */
+const VERTICAL_POSTS: Record<Vertical, readonly string[]> = {
+  salons: ["salon-last-minute-cancellations"],
+  tutors: ["private-tutor-rescheduling"],
+  consultants: [
+    "free-consultation-no-shows",
+    "counselling-cancellation-policy",
+  ],
+  coaches: ["physio-treatment-plan-attendance"],
+  "professional-services": [],
+};
+
 /** The LOCALIZED_PATHS entry for a vertical, so hreflang stays type-checked. */
 function pathFor(vertical: Vertical): LocalizedPath {
   return `/use-cases/${vertical}` as LocalizedPath;
 }
+
+/**
+ * ISR at the same cadence as the blog.
+ *
+ * Without this the page is frozen at build time, and an article scheduled for
+ * next week would never appear in the list below until someone happened to
+ * deploy. 300s means a post shows up here within five minutes of going live —
+ * the same rule that makes scheduled publishing work at all.
+ */
+export const revalidate = 300;
 
 // Every vertical, in every locale, prerendered. The set is fixed and small.
 export function generateStaticParams() {
@@ -93,6 +128,19 @@ export default async function UseCasePage({
   const faq = t.raw(`${key}.faq`) as { q: string; a: string }[];
 
   const url = `${SITE_URL}/${loc}${pathFor(vertical)}`;
+
+  // Only articles that are ACTUALLY published, in THIS locale.
+  // getPublishedPosts already filters on published_at <= now() and on the
+  // translation existing, so a post scheduled for next week is simply absent
+  // until its date passes — no 404, and no list to maintain by hand.
+  // Fails soft: a database hiccup hides the section rather than breaking the
+  // page, which exists to rank on its own content.
+  const wanted = VERTICAL_POSTS[vertical];
+  const postsResult = wanted.length ? await getPublishedPosts(loc) : null;
+  const relatedPosts =
+    postsResult?.ok
+      ? postsResult.data.filter((post) => wanted.includes(post.slug))
+      : [];
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-20">
@@ -184,6 +232,34 @@ export default async function UseCasePage({
           ))}
         </div>
       </section>
+
+      {/* Rendered only when something is actually published — an empty
+          "further reading" heading is worse than no heading. */}
+      {relatedPosts.length > 0 ? (
+        <section className="mt-14">
+          <h2 className="font-display text-xl font-bold text-ink">
+            {t("relatedTitle")}
+          </h2>
+          <ul className="mt-6 flex flex-col">
+            {relatedPosts.map((post) => (
+              <li
+                key={post.slug}
+                className="border-t border-line py-6 first:border-t-0"
+              >
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="font-display font-bold text-ink hover:text-primary"
+                >
+                  {post.title}
+                </Link>
+                <p className="mt-2 leading-relaxed text-muted">
+                  {post.excerpt}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* Internal links to the sibling verticals: a crawl path between all five
           that does not depend on the sitemap alone. */}
