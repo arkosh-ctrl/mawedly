@@ -112,7 +112,16 @@ const ORG_PROFILES: string[] = [
 
 /** Verified profiles for the AUTHOR (the founder who writes the blog). */
 const AUTHOR_PROFILES: string[] = [
-  "https://www.linkedin.com/in/abdullah-fadul-3660ba221/",
+  // Updated 2026-08-07 when the vanity URL changed from
+  // /in/abdullah-fadul-3660ba221. LinkedIn does NOT redirect a retired custom
+  // public-profile URL — it simply stops resolving — so the old value became a
+  // dead sameAs the moment the slug changed. Anything pointing at a personal
+  // LinkedIn must be re-checked whenever that URL is edited.
+  //
+  // NOTE the slug reads "mawedly" but this is still a PERSON profile
+  // (/in/, display name "Abdullah Fadul"). It belongs here, on the Person, and
+  // must never move to ORG_PROFILES — see the test that enforces exactly that.
+  "https://www.linkedin.com/in/mawedly/",
 ];
 
 export const AUTHOR = {
