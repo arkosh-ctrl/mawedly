@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { LocalizedPath } from "@/lib/seo/metadata";
+import { SOCIAL_LINKS } from "@/lib/seo/site";
+import { PlatformIcon } from "@/components/social/platform-icon";
 
 // Public marketing footer: brand tagline + grouped links + rights line.
 const PRODUCT_LINKS = [
@@ -44,6 +46,32 @@ export function SiteFooter() {
           <p className="max-w-xs text-sm leading-relaxed text-sage">
             {tFooter("tagline")}
           </p>
+
+          {/* Real links, not decoration: these are the same URLs claimed in
+              Organization.sameAs, and a followable <a> is how that claim gets
+              confirmed rather than merely asserted. No rel="nofollow" for the
+              same reason — these are our own verified profiles. */}
+          <div className="mt-1">
+            <span className="eyebrow text-sage">{tFooter("social")}</span>
+            <ul className="mt-3 flex items-center gap-2.5">
+              {SOCIAL_LINKS.map((link) => (
+                <li key={link.platform}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    // The platform name is a proper noun and stays untranslated;
+                    // an icon-only link needs it as the accessible name.
+                    aria-label={link.label}
+                    title={link.label}
+                    className="inline-flex size-9 items-center justify-center rounded-full border border-pine/50 text-sage transition-colors hover:border-paper hover:text-paper"
+                  >
+                    <PlatformIcon platform={link.platform} size={17} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <FooterCol title={tFooter("product")}>

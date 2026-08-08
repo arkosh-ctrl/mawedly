@@ -18,6 +18,7 @@ import {
 import {
   AREA_SERVED,
   SITE_URL,
+  SOCIAL_LINKS,
   jsonLdGraph,
   organizationSchema,
   personSchema,
@@ -184,6 +185,39 @@ test("the company and the founder keep separate sameAs profiles", () => {
     (person.sameAs ?? []).includes(u),
   );
   assert.deepEqual(shared, [], "same profile claimed by two entities");
+});
+
+test("every footer social link is claimed by exactly one entity in schema", () => {
+  // The footer row and the sameAs arrays are built from the same constants, so
+  // this cannot drift by accident — it can only drift if someone adds a link to
+  // one and not the other. A profile shown to readers but absent from schema
+  // wastes the confirmation an outbound link provides; a profile in schema with
+  // no link on the page is a claim with no path to verify it.
+  const org = (organizationSchema("ar", "d") as { sameAs?: string[] }).sameAs ?? [];
+  const person = (personSchema("ar") as { sameAs?: string[] }).sameAs ?? [];
+  const claimed = new Set([...org, ...person]);
+
+  for (const link of SOCIAL_LINKS) {
+    assert.ok(
+      claimed.has(link.url),
+      `footer links ${link.platform} but no schema entity claims it: ${link.url}`,
+    );
+    // The recorded owner must match where the URL actually sits.
+    const owner = org.includes(link.url) ? "organization" : "person";
+    assert.equal(
+      link.entity,
+      owner,
+      `${link.platform} is labelled ${link.entity} but lives on the ${owner}`,
+    );
+  }
+
+  // And nothing claimed in schema is hidden from readers.
+  for (const url of claimed) {
+    assert.ok(
+      SOCIAL_LINKS.some((l) => l.url === url),
+      `schema claims a profile the footer never links: ${url}`,
+    );
+  }
 });
 
 test("Mawedly is not marked up as a LocalBusiness", () => {

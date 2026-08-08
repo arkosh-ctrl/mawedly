@@ -69,10 +69,14 @@ export const AREA_SERVED = ["SA", "AE", "BH", "QA", "KW", "OM"] as const;
  * strengthens entity resolution. Leave a line empty rather than guessing: a
  * sameAs that 404s undermines the very trust it is meant to build.
  */
-const ORG_PROFILES: string[] = [
-  "https://x.com/mawedly",
-  "https://www.facebook.com/profile.php?id=61593097349034",
-];
+// One constant per profile. Everything that needs a URL derives from these —
+// the sameAs arrays below AND the footer icon row — so a handle can never be
+// updated in the schema and forgotten in the UI, or the reverse.
+const X_URL = "https://x.com/mawedly";
+const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61593097349034";
+const FOUNDER_LINKEDIN_URL = "https://www.linkedin.com/in/mawedly/";
+
+const ORG_PROFILES: string[] = [X_URL, FACEBOOK_URL];
 
 /*
  * VERIFIED BEFORE LISTING, 2026-08-07. Both profiles carry Mawedly's name and
@@ -121,7 +125,7 @@ const AUTHOR_PROFILES: string[] = [
   // NOTE the slug reads "mawedly" but this is still a PERSON profile
   // (/in/, display name "Abdullah Fadul"). It belongs here, on the Person, and
   // must never move to ORG_PROFILES — see the test that enforces exactly that.
-  "https://www.linkedin.com/in/mawedly/",
+  FOUNDER_LINKEDIN_URL,
 ];
 
 export const AUTHOR = {
@@ -130,6 +134,36 @@ export const AUTHOR = {
   jobTitleAr: "مؤسس موعدلي",
   jobTitleEn: "Founder, Mawedly",
 } as const;
+
+/**
+ * The footer's social row.
+ *
+ * Built from the same constants as the sameAs arrays, so schema and UI cannot
+ * disagree. The rendered <a> matters beyond navigation: sameAs asserts "these
+ * accounts are ours", and a real crawlable link to each is the path by which
+ * that assertion can be followed and confirmed. Schema alone is a claim; schema
+ * plus a link is a claim with evidence.
+ *
+ * `entity` records WHOSE profile each one is. The LinkedIn URL reads
+ * "/in/mawedly" but is the founder's personal profile, and it is listed here
+ * for readers while staying off Organization.sameAs — the two audiences want
+ * different things from the same link.
+ */
+export const SOCIAL_LINKS = [
+  { platform: "x", label: "X", url: X_URL, entity: "organization" },
+  {
+    platform: "facebook",
+    label: "Facebook",
+    url: FACEBOOK_URL,
+    entity: "organization",
+  },
+  {
+    platform: "linkedin",
+    label: "LinkedIn",
+    url: FOUNDER_LINKEDIN_URL,
+    entity: "person",
+  },
+] as const;
 
 const clean = (urls: string[]) => urls.filter((u) => u.trim().length > 0);
 
