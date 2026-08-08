@@ -74,9 +74,15 @@ export const AREA_SERVED = ["SA", "AE", "BH", "QA", "KW", "OM"] as const;
 // updated in the schema and forgotten in the UI, or the reverse.
 const X_URL = "https://x.com/mawedly";
 const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61593097349034";
+// Canonical profile URL. Instagram's share sheet hands out
+// "?igsh=<token>&utm_source=qr" — a share-session token plus a campaign tag.
+// Neither belongs here: sameAs should name the profile itself, and a utm tag on
+// a link that appears on every page would attribute all of that traffic to a QR
+// code that was never scanned, quietly corrupting the referral data.
+const INSTAGRAM_URL = "https://www.instagram.com/mawedly/";
 const FOUNDER_LINKEDIN_URL = "https://www.linkedin.com/in/mawedly/";
 
-const ORG_PROFILES: string[] = [X_URL, FACEBOOK_URL];
+const ORG_PROFILES: string[] = [X_URL, INSTAGRAM_URL, FACEBOOK_URL];
 
 /*
  * VERIFIED BEFORE LISTING, 2026-08-07. Both profiles carry Mawedly's name and
@@ -151,6 +157,12 @@ export const AUTHOR = {
  */
 export const SOCIAL_LINKS = [
   { platform: "x", label: "X", url: X_URL, entity: "organization" },
+  {
+    platform: "instagram",
+    label: "Instagram",
+    url: INSTAGRAM_URL,
+    entity: "organization",
+  },
   {
     platform: "facebook",
     label: "Facebook",

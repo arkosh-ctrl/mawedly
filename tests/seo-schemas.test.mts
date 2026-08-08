@@ -187,6 +187,27 @@ test("the company and the founder keep separate sameAs profiles", () => {
   assert.deepEqual(shared, [], "same profile claimed by two entities");
 });
 
+test("profile URLs are canonical — no tracking parameters", () => {
+  // Share sheets hand out decorated URLs: Instagram gives
+  // "?igsh=<session>&utm_source=qr", and it is tempting to paste one straight
+  // in. Two things break if you do. sameAs should name the profile itself, not
+  // one share session — and a utm tag on a link that renders on every page
+  // attributes all of that traffic to a campaign that never ran, quietly
+  // poisoning the referral data the whole GEO effort is measured by.
+  const urls = [
+    ...SOCIAL_LINKS.map((l) => l.url),
+    ...((organizationSchema("ar", "d") as { sameAs?: string[] }).sameAs ?? []),
+    ...((personSchema("ar") as { sameAs?: string[] }).sameAs ?? []),
+  ];
+  for (const url of urls) {
+    const query = new URL(url).search;
+    // Facebook's profile.php?id= is the profile's real address, not tracking.
+    if (url.includes("profile.php")) continue;
+    assert.equal(query, "", `tracking parameters on a profile URL: ${url}`);
+    assert.ok(!/utm_/.test(url), `utm tag on a sitewide link: ${url}`);
+  }
+});
+
 test("every footer social link is claimed by exactly one entity in schema", () => {
   // The footer row and the sameAs arrays are built from the same constants, so
   // this cannot drift by accident — it can only drift if someone adds a link to
