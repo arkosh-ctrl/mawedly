@@ -1,0 +1,21 @@
+{
+  "slug": "excel-notebook-to-booking-link",
+  "cover_image": "https://images.pexels.com/photos/6623901/pexels-photo-6623901.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-09-03T05:00:00.000Z",
+  "ar": {
+    "title": "من دفتر المواعيد أو إكسل إلى رابط حجز واحد",
+    "excerpt": "الدفتر لا 'يفشل' فجأة؛ النشاط يكبر إلى حجم لم يعد يتحمّله. ثلاث علامات تدل أن الوقت حان للتحول، وخطوات انتقال بسيطة لا تعطل أسبوعك ولا تفقد بياناتك.",
+    "seo_title": "الانتقال من دفتر المواعيد إلى رابط حجز",
+    "seo_description": "متى يكفي الدفتر أو إكسل فعلاً، وثلاث علامات تدل أن الوقت حان للتحول لنظام حجز إلكتروني، وخطوات انتقال بسيطة بلا فوضى أو فقدان بيانات.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "From a Paper Notebook or Spreadsheet to One Booking Link",
+    "excerpt": "A notebook doesn't suddenly 'fail' — the business grows past what it can handle. Three signs it's time to switch, and simple migration steps that don't disrupt your week or lose your data.",
+    "seo_title": "Moving From a Paper Notebook to a Booking Link",
+    "seo_description": "When a notebook or spreadsheet is genuinely enough, three signs it's time to switch to an electronic booking system, and a simple, low-risk migration process.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/planner%20notebook%20desk/"
+}

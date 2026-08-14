@@ -1,0 +1,21 @@
+{
+  "slug": "reminder-timing-and-wording",
+  "cover_image": "https://images.pexels.com/photos/6963181/pexels-photo-6963181.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-19T05:00:00.000Z",
+  "ar": {
+    "title": "تذكير الموعد: التوقيت والصياغة اللذان يقلّلان الغياب",
+    "excerpt": "التذكير قبل 24-48 ساعة يخفّض الغياب أكثر من قبل أسبوع أو قبل ساعة. لماذا الصياغة تهم أكثر من عدد المرات، ومتى تحتاج قناة تأكيد ثانية.",
+    "seo_title": "أفضل توقيت وصياغة لتذكير المواعيد",
+    "seo_description": "ما تقوله البيانات عن أفضل توقيت لتذكير المواعيد، ولماذا الصياغة أهم من التكرار، وقاعدة عملية بسيطة تناسب معظم الأنشطة.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Appointment Reminders: The Timing and Wording That Actually Cut No-Shows",
+    "excerpt": "Reminders sent 24-48 hours ahead cut no-shows more than a week ahead or an hour ahead. Why wording matters more than frequency, and when you need a second confirmation channel.",
+    "seo_title": "Best Timing and Wording for Appointment Reminders",
+    "seo_description": "What the evidence says about the best timing for appointment reminders, why wording matters more than frequency, and a simple rule that fits most businesses.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/phone%20alarm%20notification/"
+}

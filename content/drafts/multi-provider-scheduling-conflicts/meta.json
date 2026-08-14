@@ -1,0 +1,21 @@
+{
+  "slug": "multi-provider-scheduling-conflicts",
+  "cover_image": "https://images.pexels.com/photos/20263237/pexels-photo-20263237/free-photo-of-beauty-salon.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-20T05:00:00.000Z",
+  "ar": {
+    "title": "كيف تنظّم مواعيد فريق من عدة مقدّمي خدمة بلا تعارض",
+    "excerpt": "تعارض الحجوزات لا يحدث بسبب إهمال، بل بسبب غياب مصدر واحد للحقيقة. لماذا يجب أن يمنع النظام التعارض لا الموظف، وكيف تبدو صفحة حجز فريق صحيحة.",
+    "seo_title": "منع تعارض مواعيد فريق مقدمي الخدمة",
+    "seo_description": "لماذا تعارض الحجوزات بين عدة موظفين مشكلة نظام لا مشكلة انتباه، وكيف تبني صفحة حجز تمنع التعارض تلقائياً بغض النظر عن قناة الحجز.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "How to Schedule a Multi-Provider Team Without Conflicts",
+    "excerpt": "Booking conflicts don't happen from carelessness — they happen from the absence of one single source of truth. Why the system should prevent conflicts, not staff attention, and what a correct team booking page looks like.",
+    "seo_title": "Preventing Scheduling Conflicts Across a Team",
+    "seo_description": "Why booking conflicts across multiple staff are a systems problem, not an attention problem, and how to build a booking page that prevents overlaps automatically.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/hair%20salon%20team%20stylists/"
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "bank-transfer-vs-payment-gateway",
+  "cover_image": "https://images.pexels.com/photos/29502355/pexels-photo-29502355/free-photo-of-cash-app-displayed-on-smartphone-and-laptop.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-24T05:00:00.000Z",
+  "ar": {
+    "title": "التحويل البنكي بدل بوابة الدفع: متى يكون هذا هو الخيار الصحيح",
+    "excerpt": "بوابات الدفع تخصم 1.75-2.7% من كل معاملة تقريباً. مقارنة بالأرقام بين رسوم البوابة والوقت الذي تستغرقه مراجعة تحويل بنكي، ومتى تستحق البوابة رسومها فعلاً.",
+    "seo_title": "التحويل البنكي أم بوابة الدفع لنشاطك",
+    "seo_description": "كم تكلّف بوابات الدفع فعلياً في السعودية، ومقارنة رقمية مع التحويل البنكي مع مراجعة يدوية، ومتى تستحق البوابة رسومها رغم كل شيء.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Bank Transfer vs. Payment Gateway: When Each Is the Right Call",
+    "excerpt": "Payment gateways deduct roughly 1.75-2.7% of every transaction. A numbers-based comparison between gateway fees and the time a manually reviewed bank transfer takes, and when a gateway genuinely earns its fee.",
+    "seo_title": "Bank Transfer or Payment Gateway for Your Business",
+    "seo_description": "What payment gateways actually cost in Saudi Arabia, a numbers comparison against manually reviewed bank transfers, and when a gateway is worth the fee.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/bank%20transfer%20phone/"
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "booking-confirmation-message-wording",
+  "cover_image": "https://images.pexels.com/photos/7439136/pexels-photo-7439136.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-22T05:00:00.000Z",
+  "ar": {
+    "title": "كيف تكتب رسالة تأكيد حجز تُقرأ فعلاً",
+    "excerpt": "رسالة تأكيد فارغة تُنسى بعد يوم. الخمسة عناصر التي يجب أن تكون في كل رسالة، ولماذا يعتمد موعدلي الإيميل تحديداً كوثيقة تبقى لا رسالة سريعة تُدفن.",
+    "seo_title": "كتابة رسالة تأكيد حجز فعّالة",
+    "seo_description": "لماذا لا يقرأ العملاء رسائل التأكيد الفارغة، والعناصر الخمسة اللازمة في كل رسالة، ومقارنة عملية بين صياغة إدارية وصياغة واثقة.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "How to Write a Booking Confirmation Message People Actually Read",
+    "excerpt": "An empty confirmation message is forgotten within a day. The five elements every message needs, and why Mawedly relies on email specifically as a document that lasts, not a message that gets buried.",
+    "seo_title": "Writing an Effective Booking Confirmation Message",
+    "seo_description": "Why clients don't read empty confirmation messages, the five elements every message needs, and a practical before/after comparison.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/email%20inbox%20laptop/"
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "attendance-and-reviews-connection",
+  "cover_image": "https://images.pexels.com/photos/9821386/pexels-photo-9821386.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-09-04T05:00:00.000Z",
+  "ar": {
+    "title": "لماذا انتظام الحضور هو أساس تقييماتك لا عدد الحجوزات",
+    "excerpt": "عميل لم يحضر لا يمكنه ترك تقييم بالتعريف. القمع الذي لا يراه أغلب أصحاب الأنشطة بين الحجز والتقييم المنشور، ولماذا التوقيت بعد الموعد مباشرة يهم أكثر مما يُظن.",
+    "seo_title": "علاقة انتظام الحضور بتقييمات نشاطك",
+    "seo_description": "لماذا لا علاقة لعدد العملاء بعدد التقييمات، وكيف يخسر كل موعد فائت تقييماً محتملاً، ولماذا التوقيت بعد الموعد مباشرة يرفع جودة التقييمات.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Why Attendance, Not Booking Count, Is What Drives Your Reviews",
+    "excerpt": "A client who never showed up cannot, by definition, leave a review. The funnel most business owners never see between a booking and a published review, and why timing right after the appointment matters more than assumed.",
+    "seo_title": "How Attendance Connects to Your Business Reviews",
+    "seo_description": "Why client count doesn't determine review count, how every missed appointment loses a potential review, and why asking right after the appointment improves review quality.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/five%20star%20review%20rating/"
+}

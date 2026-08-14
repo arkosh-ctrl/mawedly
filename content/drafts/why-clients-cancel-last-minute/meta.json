@@ -1,0 +1,21 @@
+{
+  "slug": "why-clients-cancel-last-minute",
+  "cover_image": "https://images.pexels.com/photos/1587014/pexels-photo-1587014.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-14T05:00:00.000Z",
+  "ar": {
+    "title": "لماذا يلغي العميل موعده في آخر لحظة — وما الذي يغيّر السلوك فعلاً",
+    "excerpt": "الحجز المجاني يلزم النية لا الوقت. أربعة أسباب حقيقية وراء الإلغاء المتأخر، وتدخّلان أثبتا أثراً مقاساً لا افتراضياً: التذكير في توقيته، ومبلغ صغير يُدفع مقدّماً.",
+    "seo_title": "لماذا يلغي العملاء المواعيد في آخر لحظة",
+    "seo_description": "التكلفة النفسية للحجز المجاني مقابل الحجز المدفوع مقدماً. أربعة أسباب حقيقية للإلغاء المتأخر، ودراستان تثبتان أي تدخل يغيّر السلوك فعلاً.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Why Clients Cancel at the Last Minute — And What Actually Changes It",
+    "excerpt": "A free booking reserves intention, not time. Four real reasons behind late cancellations, and two interventions with measured — not assumed — effect on attendance.",
+    "seo_title": "Why Clients Cancel Appointments Last-Minute",
+    "seo_description": "The psychological cost of a free booking versus a paid one. Four real reasons behind late cancellations, and what the evidence says actually changes behaviour.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/frustrated%20phone%20call/"
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "whatsapp-booking-vs-booking-link",
+  "cover_image": "https://images.pexels.com/photos/46924/pexels-photo-46924.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-09-01T05:00:00.000Z",
+  "ar": {
+    "title": "حجز عبر واتساب مقابل رابط حجز إلكتروني: مقارنة بالأرقام",
+    "excerpt": "اختراق واتساب يتجاوز 80-90% في الخليج، لكن إدارة الحجز داخل المحادثة تنكسر بطرق مختلفة عن رابط حجز مباشر. مقارنة خطوة بخطوة، ولماذا الحل هو الجمع الصحيح بينهما لا الاختيار.",
+    "seo_title": "حجز واتساب أم رابط حجز إلكتروني",
+    "seo_description": "مقارنة عملية خطوة بخطوة بين الحجز عبر محادثة واتساب ورابط حجز مباشر، بالأرقام، ولماذا الجمع الصحيح بينهما أفضل من الاختيار بين الاثنين.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "WhatsApp Booking vs. a Booking Link: A Comparison by the Numbers",
+    "excerpt": "WhatsApp penetration exceeds 80-90% across the Gulf, but managing bookings inside a chat breaks down in ways a direct link doesn't. A step-by-step comparison, and why the fix is combining them correctly, not choosing one.",
+    "seo_title": "WhatsApp Booking or a Direct Booking Link",
+    "seo_description": "A step-by-step, numbers-based comparison between booking via WhatsApp chat and a direct booking link, and why combining them correctly beats choosing one.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/whatsapp%20chat%20phone/"
+}

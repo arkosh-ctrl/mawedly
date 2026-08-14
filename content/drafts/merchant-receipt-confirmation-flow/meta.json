@@ -1,0 +1,21 @@
+{
+  "slug": "merchant-receipt-confirmation-flow",
+  "cover_image": "https://images.pexels.com/photos/9588206/pexels-photo-9588206.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-23T05:00:00.000Z",
+  "ar": {
+    "title": "بعد أن يرفع العميل الإيصال: خطوات تأكيد التاجر خطوة بخطوة",
+    "excerpt": "الآلية الكاملة للتحويل البنكي مع رفع إيصال ومراجعة التاجر: ستة خطوات واضحة، ولماذا حالة 'بانتظار المراجعة' تحمي التاجر لا تُبطئه بلا داعٍ.",
+    "seo_title": "خطوات تأكيد الحجز بعد رفع إيصال التحويل",
+    "seo_description": "الآلية الكاملة خطوة بخطوة من اختيار الموعد إلى تأكيد التاجر، ولماذا مراجعة الإيصال ضرورية، وماذا تفعل إن كان الإيصال غير واضح.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "After the Client Uploads a Receipt: The Merchant Confirmation Steps",
+    "excerpt": "The full bank-transfer-plus-receipt mechanism: six clear steps, and why a 'pending review' status protects the merchant instead of slowing things down needlessly.",
+    "seo_title": "Merchant Steps After a Client Uploads a Receipt",
+    "seo_description": "The full step-by-step mechanism from booking to merchant confirmation, why receipt review matters, and what to do when a receipt is unclear.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/mobile%20banking%20app%20transfer/"
+}

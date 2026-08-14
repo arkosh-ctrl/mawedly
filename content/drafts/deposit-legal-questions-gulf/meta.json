@@ -1,0 +1,21 @@
+{
+  "slug": "deposit-legal-questions-gulf",
+  "cover_image": "https://images.pexels.com/photos/5668481/pexels-photo-5668481.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-27T05:00:00.000Z",
+  "ar": {
+    "title": "أسئلة قانونية شائعة عن قبول العربون في الخليج",
+    "excerpt": "هل تحتاج سجلاً تجارياً؟ هل للعميل حق استرجاع رغم سياستك؟ إجابات صادقة بحدود ما نعرفه، مع توضيح أن هذا ليس استشارة قانونية ولا يغني عن التحقق من الجهة الرسمية في بلدك.",
+    "seo_title": "أسئلة قانونية عن قبول العربون خليجياً",
+    "seo_description": "أسئلة شائعة عن السجل التجاري وحقوق استرجاع العربون في السعودية والإمارات والكويت، مع إجابات صادقة الحدود وتنويه قانوني واضح.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Common Legal Questions About Accepting Deposits in the Gulf",
+    "excerpt": "Do you need a commercial registration? Does a client have a refund right despite your policy? Honest answers within the limits of what we know, with a clear note that this is not legal advice.",
+    "seo_title": "Legal Questions on Accepting Deposits in the Gulf",
+    "seo_description": "Common questions about commercial registration and deposit refund rights in Saudi Arabia, the UAE, and Kuwait, with honestly bounded answers and a clear legal disclaimer.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/law%20office%20desk%20gavel/"
+}

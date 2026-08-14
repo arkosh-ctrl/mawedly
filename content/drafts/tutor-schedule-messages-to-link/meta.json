@@ -1,0 +1,21 @@
+{
+  "slug": "tutor-schedule-messages-to-link",
+  "cover_image": "https://images.pexels.com/photos/5311406/pexels-photo-5311406.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-30T05:00:00.000Z",
+  "ar": {
+    "title": "المعلّم الخصوصي وجدول لا يتّسع: من الرسائل إلى رابط واحد",
+    "excerpt": "خمس عشرة محادثة واتساب منفصلة تجعل 'دين الحصص المؤجلة' مهمة حسابية بالذاكرة لا سجلاً واضحاً. الأثر على استمرارية المنهج، وكيف يحل رابط حجز واحد لكل عائلة هذه الفوضى.",
+    "seo_title": "تنظيم جدول المعلّم الخصوصي برابط واحد",
+    "seo_description": "لماذا يصعب تتبع دين الحصص المؤجلة عبر محادثات واتساب متفرقة، وأثر التأجيل المتكرر على استمرارية المنهج، وكيف يحل رابط حجز واحد لكل عائلة هذه الفوضى.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "A Tutor's Overflowing Schedule: From Scattered Messages to One Link",
+    "excerpt": "Fifteen separate WhatsApp threads turn 'rescheduled session debt' into mental arithmetic instead of a clear record. The impact on curriculum continuity, and how one booking link per family fixes the chaos.",
+    "seo_title": "Organizing a Private Tutor's Schedule With One Link",
+    "seo_description": "Why rescheduled-session debt is hard to track across scattered WhatsApp threads, the impact of rescheduling on curriculum continuity, and the one-link fix.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/tutoring%20student%20notebook/"
+}

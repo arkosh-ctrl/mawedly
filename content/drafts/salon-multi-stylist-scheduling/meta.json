@@ -1,0 +1,21 @@
+{
+  "slug": "salon-multi-stylist-scheduling",
+  "cover_image": "https://images.pexels.com/photos/7195805/pexels-photo-7195805.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-29T05:00:00.000Z",
+  "ar": {
+    "title": "الصالون الذي يعمل بأربع كوافيرات: كيف تُوزّع المواعيد بلا تعارض",
+    "excerpt": "الفرق بين تسعير 'لكل مقعد' و'للنشاط ككل' يقرر فعلياً كم تدفعين شهرياً مقابل نفس الحاجة. كيف تمنعين تعارض المواعيد بين أربع كوافيرات، ومن يدير جدول من.",
+    "seo_title": "تنظيم مواعيد صالون بأكثر من كوافيرة",
+    "seo_description": "الفرق بالأرقام بين تسعير نظام الحجز لكل مقعد أو للنشاط ككل، وكيف تمنعين تعارض المواعيد بين عدة كوافيرات، وصلاحيات إدارة الجدول المناسبة.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "The Salon With Four Stylists: How to Schedule Without Conflicts",
+    "excerpt": "The difference between 'per seat' and 'per business' pricing actually decides how much you pay monthly for the same need. How to prevent scheduling conflicts across four stylists, and who should manage whose calendar.",
+    "seo_title": "Scheduling a Multi-Stylist Salon Without Conflicts",
+    "seo_description": "The numbers behind per-seat vs. per-business booking software pricing, how to prevent conflicts across multiple stylists, and the right calendar permissions.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/hair%20salon%20interior%20chairs/"
+}

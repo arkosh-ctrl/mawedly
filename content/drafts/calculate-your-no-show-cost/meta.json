@@ -1,0 +1,21 @@
+{
+  "slug": "calculate-your-no-show-cost",
+  "cover_image": "https://images.pexels.com/photos/5921494/pexels-photo-5921494.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-16T05:00:00.000Z",
+  "ar": {
+    "title": "كيف تحسب تكلفة عدم الحضور في نشاطك بنفسك",
+    "excerpt": "معادلة بسيطة بأرقامك أنت، لا إحصائية عامة. كيف تقيس نسبة الغياب الفعلية في أسبوعين، ومن أين تأتي أرقام حاسبة موعدلي، ولماذا نتيجتها حد أدنى للخسارة لا سقفاً لها.",
+    "seo_title": "احسب تكلفة عدم الحضور في نشاطك بنفسك",
+    "seo_description": "كيف تقيس نسبة الغياب الفعلية عندك خطوة بخطوة، وتشرح معادلة حاسبة تكلفة عدم الحضور المكشوفة بالكامل، ولماذا الرقم الناتج أقل من خسارتك الحقيقية.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "How to Calculate Your Own No-Show Cost",
+    "excerpt": "A simple equation using your own numbers, not an industry average. How to measure your real no-show rate in two weeks, where the calculator's numbers come from, and why its result is a floor, not a ceiling.",
+    "seo_title": "Calculate Your Business's No-Show Cost",
+    "seo_description": "Step-by-step on measuring your real no-show rate, how the fully transparent no-show cost calculator works, and why its result understates your true loss.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/calculator%20finance%20desk/"
+}

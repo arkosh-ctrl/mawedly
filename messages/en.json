@@ -554,6 +554,7 @@
     "metaDescription": "Book with {name} through a direct link: choose your service and a genuinely open time, in Arabic or English.",
     "subtitle": "Book your appointment in a few steps.",
     "hoursLabel": "Working hours",
+    "poweredBy": "Powered by Mawedly · Create your free booking page",
     "verify": {
       "verified": "License reviewed",
       "unverified": "License self-entered",
@@ -892,7 +893,7 @@
         "tagline": "No limits, your own identity",
         "f1": "Unlimited appointments",
         "f2": "Unlimited providers",
-        "f3": "Your logo & color on the booking page",
+        "f3": "Your logo & color on the booking page — no Mawedly badge",
         "f4": "Everything in Center",
         "f5": "Priority WhatsApp support"
       }
@@ -910,7 +911,7 @@
       "video": "Video calls",
       "social": "Customer reviews + social links",
       "analytics": "Private analytics & peak hours",
-      "branding": "Custom branding",
+      "branding": "Custom branding (removes the Mawedly badge)",
       "prioritySupport": "Priority support"
     },
     "reviewsNote": "Reviews appear only on your own booking page — Mawedly is not a public rating platform.",
@@ -1307,7 +1308,7 @@
     },
     "branding": {
       "title": "Branding",
-      "hint": "Your logo and color appear on the public booking page — an Enterprise feature.",
+      "hint": "Your logo and color appear on the public booking page, and the Mawedly badge is removed — an Enterprise feature.",
       "logoLabel": "Logo (PNG/JPG/WEBP/SVG up to 2MB)",
       "logoSet": "a logo is uploaded",
       "colorLabel": "Accent color",

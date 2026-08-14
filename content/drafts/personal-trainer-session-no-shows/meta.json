@@ -1,0 +1,21 @@
+{
+  "slug": "personal-trainer-session-no-shows",
+  "cover_image": "https://images.pexels.com/photos/6392833/pexels-photo-6392833.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-13T05:00:00.000Z",
+  "ar": {
+    "title": "حصة التمرين التي لا تُعوَّض: المدرب الشخصي وساعة السادسة صباحاً",
+    "excerpt": "ساعات المدرب الشخصي محدودة جداً يومياً، وحصة غائبة بلا إشعار لا يمكن تعويضها كما في الصالون أو العيادة. أربع خطوات عملية، ولماذا تناسب باقات التدريب دفعة كبيرة مقدّماً لا عربوناً رمزياً.",
+    "seo_title": "تقليل غياب المتدربين عند المدرب الشخصي",
+    "seo_description": "لماذا حصة التدريب الشخصي أصعب تعويضاً من موعد الصالون، وأربع خطوات عملية لتقليل الغياب، ولماذا تحتاج باقات التدريب دفعة أكبر مقدّماً.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "The Session That Can't Be Recovered: Personal Trainers and the 6 a.m. Slot",
+    "excerpt": "A personal trainer's sellable hours are genuinely limited, and a missed session cannot be recovered the way a salon or clinic slot can. Four practical steps, and why training packages suit a large upfront payment over a token deposit.",
+    "seo_title": "Reducing No-Shows for Personal Trainers",
+    "seo_description": "Why a personal training session is harder to recover than a salon slot, four practical steps to cut no-shows, and why training packages need a larger upfront payment.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/personal%20trainer%20session/"
+}

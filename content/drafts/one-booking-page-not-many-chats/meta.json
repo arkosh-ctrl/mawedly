@@ -1,0 +1,21 @@
+{
+  "slug": "one-booking-page-not-many-chats",
+  "cover_image": "https://images.pexels.com/photos/3850253/pexels-photo-3850253.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-21T05:00:00.000Z",
+  "ar": {
+    "title": "صفحة حجز واحدة بدل عشرات المحادثات: ماذا تضع فيها",
+    "excerpt": "المشكلة ليست في واتساب، بل في أن المحادثة غير المنظمة لا تصلح كسجل حجوزات. لماذا الحجز الذاتي يرفع نسبة الحضور 3.2 مرة، والحد الأدنى من الحقول الذي تحتاجه صفحتك فعلاً.",
+    "seo_title": "بناء صفحة حجز واحدة بدل محادثات متفرقة",
+    "seo_description": "لماذا يخسّرك 'أرسل لنا رسالة للحجز' عملاء لا تراهم، والحد الأدنى من الحقول اللازمة، وما الذي يبني ثقة عميل جديد في صفحة حجز لأول مرة.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "One Booking Page Instead of Dozens of Chats: What Belongs On It",
+    "excerpt": "The problem isn't WhatsApp — it's that an unstructured conversation doesn't work as a booking record. Why self-scheduling lifts show-up rates 3.2x, and the minimum fields your page actually needs.",
+    "seo_title": "Building One Booking Page Instead of Scattered Chats",
+    "seo_description": "Why 'message us to book' loses clients you never see, the minimum fields a booking page actually needs, and what builds a new client's trust on first visit.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/smartphone%20booking%20app/"
+}

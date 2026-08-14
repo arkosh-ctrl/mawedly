@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { dynamicPageMetadata } from "@/lib/seo/metadata";
-import { seoLocale } from "@/lib/seo/site";
+import { seoLocale, SITE_URL } from "@/lib/seo/site";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import {
   getBusinessForBooking,
@@ -253,8 +253,50 @@ export default async function BookingPage({
         <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-relaxed text-muted">
           {t("verify.disclaimer")}
         </p>
+
+        {/* Powered-by badge — the product's own acquisition loop: every one of a
+            merchant's customers passes through this page.
+            Hidden for Enterprise, which pays for custom branding here; removing
+            our mark is part of what that buys (see `branding` in plans.ts).
+            The link is SAME-ORIGIN, so this is a click-through channel and not a
+            backlink — the utm_* params are what make a resulting signup
+            attributable once signup-source capture lands. */}
+        {!brandingEnabled && (
+          <p className="mt-4 text-center">
+            <a
+              href={`${SITE_URL}/${locale}?utm_source=booking_page&utm_medium=product&utm_campaign=powered_by`}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-primary hover:text-primary"
+            >
+              <MawedlyMark />
+              {t("poweredBy")}
+            </a>
+          </p>
+        )}
       </div>
     </main>
+  );
+}
+
+// Small calendar glyph for the powered-by badge, matched to the stroke weight
+// used by the other inline icons on this page.
+function MawedlyMark() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="3" y="5" width="18" height="16" rx="3" />
+      <path d="M8 3v4M16 3v4M3 11h18" />
+    </svg>
   );
 }
 

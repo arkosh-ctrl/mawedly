@@ -1,0 +1,21 @@
+{
+  "slug": "deposit-vs-full-prepayment",
+  "cover_image": "https://images.pexels.com/photos/6353669/pexels-photo-6353669.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-18T05:00:00.000Z",
+  "ar": {
+    "title": "العربون مقابل الدفع الكامل مقدّماً — أيهما يناسب نشاطك",
+    "excerpt": "العربون الجزئي يحمي موعداً واحداً. الدفع الكامل يحمي التزاماً ممتداً بعدة جلسات. كيف تقرر أيهما يناسب كل خدمة عندك، ولماذا القرار يُتخذ لكل خدمة على حدة لا كسياسة واحدة.",
+    "seo_title": "العربون أم الدفع الكامل — أيهما لنشاطك",
+    "seo_description": "الفرق بين العربون الجزئي والدفع الكامل مقدماً ليس في المبلغ بل فيما يحميه كل خيار. متى يناسب كل منهما، وكيف تجمع بينهما حسب نوع الخدمة.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Deposit vs. Full Prepayment — Which Fits Your Business",
+    "excerpt": "A partial deposit protects a single appointment. Full prepayment protects an extended, multi-session commitment. How to decide per service, and why the decision is never one blanket policy.",
+    "seo_title": "Deposit or Full Prepayment — Which Is Right",
+    "seo_description": "The difference between a partial deposit and full prepayment is what each protects, not the amount. When each fits, and how to combine both by service type.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/mobile%20payment%20credit%20card/"
+}

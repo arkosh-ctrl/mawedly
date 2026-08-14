@@ -1,0 +1,21 @@
+{
+  "slug": "professional-office-consultation-scheduling",
+  "cover_image": "https://images.pexels.com/photos/12903339/pexels-photo-12903339.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-31T05:00:00.000Z",
+  "ar": {
+    "title": "المكتب المهني والموعد الذي يصطدم بالجلسة",
+    "excerpt": "استشارة أولى قصيرة ومراجعة طويلة ليستا فئة واحدة، ومعاملتهما كذلك تُنتج تأخيراً متراكماً. كيف تصنّف خدماتك بمدد فعلية تمنع الاصطدام، مع تذكير أن موعدلي لا يتحقق من التراخيص المهنية.",
+    "seo_title": "منع تعارض المواعيد في المكتب المهني",
+    "seo_description": "لماذا يجب فصل الاستشارة الأولى القصيرة عن الجلسة الطويلة في جدولة المكتب المهني، وكيف تمنع التأخير المتراكم بتصنيف دقيق للخدمات.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "The Professional Office and the Appointment That Collides With the Session",
+    "excerpt": "A short first consultation and a long review are not one category, and treating them as one produces cascading delays. How to categorize services by real duration, with a note that Mawedly does not verify professional licenses.",
+    "seo_title": "Preventing Scheduling Collisions in a Professional Office",
+    "seo_description": "Why a short first consultation must be separated from a long review session in professional office scheduling, and how precise service categorisation prevents cascading delays.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/office%20meeting%20consultation%20desk/"
+}

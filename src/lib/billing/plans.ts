@@ -19,7 +19,13 @@ export type PlanFeatures = {
   analytics: boolean;
   /** Add-to-calendar buttons + .ics email attachments. */
   calendar: boolean;
-  /** Custom branding (logo + accent color) on the public booking page. */
+  /**
+   * Custom branding on the public booking page: the merchant's logo + accent
+   * color, AND removal of the "Powered by Mawedly" badge that page renders for
+   * every other plan. The badge is our own acquisition loop, so white-labelling
+   * it away is deliberately the top tier only — see the badge in
+   * src/app/[locale]/[slug]/page.tsx, which gates on this flag.
+   */
   branding: boolean;
   /** Priority support. */
   prioritySupport: boolean;

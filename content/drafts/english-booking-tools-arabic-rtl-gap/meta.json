@@ -1,0 +1,21 @@
+{
+  "slug": "english-booking-tools-arabic-rtl-gap",
+  "cover_image": "https://images.pexels.com/photos/10347140/pexels-photo-10347140.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-28T05:00:00.000Z",
+  "ar": {
+    "title": "أدوات الحجز الإنجليزية وصفحة الحجز العربية: أين ينكسر التخطيط فعلاً",
+    "excerpt": "شكوى حقيقية على منتدى Calendly (22 أكتوبر 2025) وطلب ميزة مفتوح على Cal.com يكشفان لماذا RTL ليس عكس اتجاه النص فقط، بل بنية تصميم كاملة تنكسر بلا إعادة بناء حقيقية.",
+    "seo_title": "لماذا تنكسر أدوات الحجز الإنجليزية بالعربية",
+    "seo_description": "شكوى موثقة على Calendly وطلب ميزة مفتوح على Cal.com يوضحان أين تنكسر صفحات الحجز العربية فعلياً، ولماذا RTL أكبر من مجرد عكس النص.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "English Booking Tools and Arabic Pages: Where the Layout Actually Breaks",
+    "excerpt": "A real complaint on Calendly's forum (October 22, 2025) and an open Cal.com feature request show why RTL is not just flipping text direction — it's a whole design structure that breaks without a real rebuild.",
+    "seo_title": "Why English Booking Tools Break in Arabic",
+    "seo_description": "A documented Calendly complaint and an open Cal.com feature request show exactly where Arabic booking pages break, and why RTL is more than mirrored text.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/smartphone%20arabic%20text%20typing/"
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "deposit-refund-rules",
+  "cover_image": "https://images.pexels.com/photos/36021621/pexels-photo-36021621/free-photo-of-polish-zloty-on-office-desk-with-calculator.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+  "status": "scheduled",
+  "published_at": "2026-08-26T05:00:00.000Z",
+  "ar": {
+    "title": "استرجاع العربون: متى يستحقه العميل ومتى لا",
+    "excerpt": "القاعدة الأساسية تغطي 95% من الحالات. هذا المقال عن الـ5% الباقية: طوارئ حقيقية، أخطاء من جهتك، وضغط عاطفي بلا سبب فعلي — وسؤال واحد يحسم القرار بسرعة.",
+    "seo_title": "متى يُسترجع العربون ومتى لا",
+    "seo_description": "الحالات الرمادية في استرجاع العربون: طارئ صحي موثق، خطأ من النشاط، عميل يتذرع بالنسيان مراراً، وقاعدة عملية بسيطة لاتخاذ القرار بسرعة.",
+    "cover_image": null
+  },
+  "en": {
+    "title": "Deposit Refunds: When a Client Deserves One and When They Don't",
+    "excerpt": "The baseline rule covers 95% of cases. This article covers the remaining 5%: real emergencies, mistakes on your end, and emotional pressure with no real circumstance — plus one question that settles the decision fast.",
+    "seo_title": "When to Refund a Deposit and When Not To",
+    "seo_description": "The grey areas in deposit refunds: documented emergencies, business-side mistakes, a client who repeatedly claims to have forgotten, and a simple practical test.",
+    "cover_image": null
+  },
+  "cover_source": "https://www.pexels.com/search/cash%20money%20refund/"
+}
