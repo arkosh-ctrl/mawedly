@@ -46,6 +46,10 @@ export type Database = {
           license_verified_at: string | null;
           terms_accepted_at: string | null;
           marketing_consent: boolean;
+          signup_source: string | null;
+          signup_medium: string | null;
+          signup_campaign: string | null;
+          signup_referrer: string | null;
           work_start: string;
           work_end: string;
           trial_ends_at: string | null;
@@ -83,6 +87,10 @@ export type Database = {
           license_verified_at?: string | null;
           terms_accepted_at?: string | null;
           marketing_consent?: boolean;
+          signup_source?: string | null;
+          signup_medium?: string | null;
+          signup_campaign?: string | null;
+          signup_referrer?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;
@@ -120,6 +128,10 @@ export type Database = {
           license_verified_at?: string | null;
           terms_accepted_at?: string | null;
           marketing_consent?: boolean;
+          signup_source?: string | null;
+          signup_medium?: string | null;
+          signup_campaign?: string | null;
+          signup_referrer?: string | null;
           work_start?: string;
           work_end?: string;
           trial_ends_at?: string | null;

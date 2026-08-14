@@ -54,6 +54,10 @@ export async function signupAction(
       license_attestation: formData.get("license_attestation") === "on",
       terms_consent: formData.get("terms_consent") === "on",
       marketing_consent: formData.get("marketing_consent") === "on",
+      attr_source: formData.get("attr_source"),
+      attr_medium: formData.get("attr_medium"),
+      attr_campaign: formData.get("attr_campaign"),
+      attr_referrer: formData.get("attr_referrer"),
     });
     if (!parsed.success) {
       const key = parsed.error.issues[0]?.message ?? "messages.signupFailed";
@@ -128,6 +132,14 @@ export async function signupAction(
       license_issuer: needsLicense ? v.license_issuer || null : null,
       terms_accepted_at: new Date().toISOString(),
       marketing_consent: v.marketing_consent ?? false,
+      // First-touch attribution. Written ONCE, at creation, and never updated
+      // afterwards — the point of first-touch is that it does not move. Empty
+      // strings are stored as NULL so "we captured nothing" is distinguishable
+      // from a real empty-string source in the admin view.
+      signup_source: v.attr_source || null,
+      signup_medium: v.attr_medium || null,
+      signup_campaign: v.attr_campaign || null,
+      signup_referrer: v.attr_referrer || null,
     });
     if (insertError) {
       await supabase.auth.signOut();

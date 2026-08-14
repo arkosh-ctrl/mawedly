@@ -37,6 +37,7 @@ export default async function AdminBusinessesPage({
                 <th className="p-3 text-start">النوع</th>
                 <th className="p-3 text-start">الخطة</th>
                 <th className="p-3 text-start">الحالة</th>
+                <th className="p-3 text-start">المصدر</th>
                 <th className="p-3 text-start">أُنشئ</th>
                 {canManage && <th className="p-3 text-start">التفعيل</th>}
                 {canManage && <th className="p-3 text-start">الباقة المجانية</th>}
@@ -45,7 +46,7 @@ export default async function AdminBusinessesPage({
             <tbody>
               {businesses.length === 0 ? (
                 <tr>
-                  <td colSpan={canManage ? 8 : 6} className="p-8 text-center text-muted">
+                  <td colSpan={canManage ? 9 : 7} className="p-8 text-center text-muted">
                     لا أنشطة بعد.
                   </td>
                 </tr>
@@ -81,6 +82,27 @@ export default async function AdminBusinessesPage({
                         >
                           {b.is_active ? "نشط" : "معطّل"}
                         </span>
+                      </td>
+                      {/* First-touch attribution (migration 0030). Rows created
+                          before it exists simply show "—"; a missing source is
+                          not an error, it is an unattributed signup. */}
+                      <td className="p-3">
+                        {b.signup_source ? (
+                          <span className="flex flex-col gap-0.5" dir="ltr">
+                            <span className="font-mono text-xs text-ink">
+                              {b.signup_source}
+                            </span>
+                            {(b.signup_campaign || b.signup_medium) && (
+                              <span className="font-mono text-[10px] text-muted">
+                                {[b.signup_medium, b.signup_campaign]
+                                  .filter(Boolean)
+                                  .join(" · ")}
+                              </span>
+                            )}
+                          </span>
+                        ) : (
+                          <span className="text-muted">—</span>
+                        )}
                       </td>
                       <td className="p-3 font-mono text-xs text-muted" dir="ltr">
                         {b.created_at?.slice(0, 10) ?? "—"}

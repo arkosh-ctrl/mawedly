@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { PWARegister } from "@/components/pwa-register";
 import { WebAnalytics } from "@/components/analytics/web-analytics";
+import { AttributionCapture } from "@/components/attribution-capture";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import {
@@ -114,6 +115,10 @@ export default async function LocaleLayout({
             lands — a blog post and a use-case page are likelier entry points
             than the home page. */}
         <WebAnalytics />
+        {/* Mounted sitewide for the same reason as WebAnalytics: the landing
+            page carrying the campaign tag is usually a blog post, not /signup,
+            and the tag is gone by the time the merchant reaches the form. */}
+        <AttributionCapture />
       </body>
     </html>
   );

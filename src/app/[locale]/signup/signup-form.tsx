@@ -11,6 +11,10 @@ import {
   LICENSE_ISSUERS,
 } from "@/lib/verification/professions";
 import { initialSignupState } from "./types";
+import {
+  readAttribution,
+  type Attribution,
+} from "@/components/attribution-capture";
 
 type SlugStatus = "idle" | "checking" | "available" | "taken" | "reserved" | "invalid";
 
@@ -33,6 +37,14 @@ export function SignupForm({ next }: { next: string }) {
   const suggestedIssuer = defaultIssuer(type);
   // Explicit consent — mandatory to enable submit.
   const [termsConsent, setTermsConsent] = useState(false);
+
+  // First-touch attribution written by AttributionCapture on the landing page.
+  // Read in an effect, never during render: localStorage does not exist on the
+  // server, and touching it while rendering would break hydration.
+  const [attribution, setAttribution] = useState<Attribution | null>(null);
+  useEffect(() => {
+    setAttribution(readAttribution());
+  }, []);
 
   // Debounced live availability check. A monotonically increasing request id
   // (guarded by AbortController) ensures only the latest response is applied,
@@ -83,6 +95,27 @@ export function SignupForm({ next }: { next: string }) {
   return (
     <form action={formAction} className="flex w-full flex-col gap-3">
       <input type="hidden" name="next" value={next} />
+
+      {/* Attribution — invisible to the merchant, validated again server-side.
+          Rendered only once the effect has read storage, so the server-rendered
+          markup and the first client render agree. Empty when storage is
+          unavailable or the visit had no campaign tag and no referrer. */}
+      {attribution && (
+        <>
+          <input type="hidden" name="attr_source" value={attribution.source} />
+          <input type="hidden" name="attr_medium" value={attribution.medium} />
+          <input
+            type="hidden"
+            name="attr_campaign"
+            value={attribution.campaign}
+          />
+          <input
+            type="hidden"
+            name="attr_referrer"
+            value={attribution.referrer}
+          />
+        </>
+      )}
 
       <label className={labelClass}>
         <span>{t("emailLabel")}</span>

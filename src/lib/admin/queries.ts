@@ -92,6 +92,10 @@ export type BusinessRow = {
   subscription_status: string;
   is_active: boolean;
   created_at: string | null;
+  signup_source: string | null;
+  signup_medium: string | null;
+  signup_campaign: string | null;
+  signup_referrer: string | null;
 };
 
 /** All businesses (no bank/financial fields selected). */
@@ -99,7 +103,9 @@ export async function getPlatformBusinesses(): Promise<BusinessRow[]> {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("businesses")
-    .select("id, name, slug, type, plan, subscription_status, is_active, created_at")
+    .select(
+      "id, name, slug, type, plan, subscription_status, is_active, created_at, signup_source, signup_medium, signup_campaign, signup_referrer",
+    )
     .order("created_at", { ascending: false })
     .returns<BusinessRow[]>();
   return data ?? [];

@@ -16,6 +16,16 @@ import { PROFESSION_TYPES, LICENSE_ISSUERS } from "@/lib/verification/profession
 // truth). Legacy values ("consulting") remain valid in existing rows.
 export { PROFESSION_TYPES as BUSINESS_TYPES };
 
+// One attribution token: coerced, sanitised, capped, and always valid. It never
+// rejects — a malformed value becomes "" rather than blocking a real signup.
+const attrToken = z
+  .unknown()
+  .transform((v) =>
+    typeof v === "string"
+      ? v.toLowerCase().replace(/[^a-z0-9_.-]/g, "").slice(0, 64)
+      : "",
+  );
+
 export const signupSchema = z.object({
   email: z.string().trim().toLowerCase().email("messages.invalidEmail"),
   // 8-char minimum agreed for this project (matches login/schema.ts). Supabase
@@ -66,6 +76,20 @@ export const signupSchema = z.object({
   }),
   // Optional consent to booking notifications/reminders.
   marketing_consent: z.boolean().optional(),
+  // First-touch attribution, supplied by hidden fields the browser fills from
+  // localStorage (see src/components/attribution-capture.tsx).
+  //
+  // These are the ONLY fields on this form whose value the merchant never sees
+  // or types, which makes them the ones most worth distrusting: anyone can put
+  // whatever they like in ?utm_source and it lands here. `attrToken` re-applies
+  // the client's normalisation server-side — lowercase, narrow allowlist, hard
+  // length cap — so a crafted URL can never write markup or an essay into the
+  // database or the admin table. They are analytics only and never gate
+  // anything, so a bad value is dropped rather than failing the signup.
+  attr_source: attrToken,
+  attr_medium: attrToken,
+  attr_campaign: attrToken,
+  attr_referrer: attrToken,
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;
