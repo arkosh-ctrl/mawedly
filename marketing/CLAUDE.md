@@ -58,6 +58,18 @@
 ⚠️ **جمهور LinkedIn ليس الصالونات** (قرار صريح). الصالونات على إنستغرام برسالة مختلفة تماماً.
 ⚠️ لا تنشر نفس النص على القناتين — لكل منهما ألمها ولغتها.
 
+**قرارات إنستغرام (معتمدة 2026-08-15):**
+
+- **الكابشنات بصيغة المؤنث** — الجمهور شخصية «سارة» صاحبة الصالون في
+  `context/ideal-customer-profile.md`. «جرّبي»، «راجعي»، «ابدئي».
+- **رابط البايو الثابت:**
+  `https://www.mawedly.com/ar?utm_source=instagram&utm_medium=bio&utm_campaign=ig_bio`
+  الكابشنات بلا روابط بقاعدة المنصة، فالبايو هو **نقطة الإسناد الوحيدة** للقناة
+  كلها — بدونه يظهر كل ما يأتي من إنستغرام مجهول المصدر في `/admin/businesses`.
+
+**إعادة توظيف المقالات:** خريطة القناة لكل مقال في `repurpose/README.md`
+(ليس كل مقال يستحق القناتين)، والقالب المعتمد في `repurpose/batch-2026-08-15.md`.
+
 ---
 
 ## 4. اصطلاح UTM — إلزامي في كل رابط منشور
@@ -75,6 +87,7 @@ https://www.mawedly.com/ar/<path>?utm_source=<source>&utm_medium=<medium>&utm_ca
 | مقالة LinkedIn | `linkedin` | `article` | `li_article_<YYYYMM>` |
 | تعليق LinkedIn | `linkedin` | `comment` | `li_comment_<YYYYMM>` |
 | بايو إنستغرام | `instagram` | `bio` | `ig_bio` |
+| منشور مشتق من مقال | `linkedin` | `social` | `repurpose_<YYYY-MM-DD>` ← تاريخ **نشر المنشور** لا المقال |
 | منشور إنستغرام | `instagram` | `social` | `ig_post_<YYYYMM>` |
 | ستوري إنستغرام | `instagram` | `story` | `ig_story_<YYYYMM>` |
 | رسالة مباشرة | `dm` | `outreach` | `dm_<القطاع>` |
