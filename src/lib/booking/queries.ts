@@ -169,6 +169,22 @@ export async function providerBelongsToBusiness(
   return Boolean(data);
 }
 
+/**
+ * Raised when a booking query fails at the database level. Carries the Postgres
+ * SQLSTATE so callers can separate bad input (e.g. 22007 — an invalid date
+ * literal that passed the shape check) from a genuine outage, instead of
+ * silently reading both as "nothing is booked".
+ */
+export class BookingQueryError extends Error {
+  readonly pgCode: string | undefined;
+
+  constructor(message: string, pgCode?: string) {
+    super(message);
+    this.name = "BookingQueryError";
+    this.pgCode = pgCode;
+  }
+}
+
 // Blocking appointments for a provider on a date, as minute ranges.
 // `excludeAppointmentId` drops one appointment from the result — used when
 // rescheduling so the appointment being moved doesn't block its own slot (and
@@ -190,7 +206,10 @@ export async function getBookedRanges(
   if (options?.excludeAppointmentId) {
     query = query.neq("id", options.excludeAppointmentId);
   }
-  const { data } = await query;
+  const { data, error } = await query;
+  // Never swallow this: an empty result and a failed query look identical to
+  // the availability grid, and "no bookings" wrongly reads as "all free".
+  if (error) throw new BookingQueryError(error.message, error.code);
 
   return (data ?? []).map((a) => ({
     start: timeToMinutes(a.start_time),
