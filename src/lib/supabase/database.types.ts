@@ -489,18 +489,23 @@ export type Database = {
           id: string;
           ip: string | null;
           slug: string | null;
+          // HMAC of the customer phone (migration 0031) — the IP-independent
+          // rate-limit dimension. Never a raw number, never read back.
+          phone_hash: string | null;
           created_at: string | null;
         };
         Insert: {
           id?: string;
           ip?: string | null;
           slug?: string | null;
+          phone_hash?: string | null;
           created_at?: string | null;
         };
         Update: {
           id?: string;
           ip?: string | null;
           slug?: string | null;
+          phone_hash?: string | null;
           created_at?: string | null;
         };
         Relationships: [];

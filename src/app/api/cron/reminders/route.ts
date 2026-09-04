@@ -153,12 +153,48 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  // Housekeeping: the public booking rate-limit log only needs the last 10
+  // minutes; 24h keeps a short forensic tail and nothing more. This rides the
+  // existing daily cron on purpose — Vercel Hobby allows one schedule.
+  // Fully best-effort: a failed prune changes neither the reminders nor the
+  // response.
+  let attemptsPruned = 0;
+  try {
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: pruned, error: pruneError } = await supabase
+      .from("booking_attempts")
+      .delete()
+      .lt("created_at", cutoff)
+      .select("id");
+    if (pruneError) {
+      await logSystemEvent({
+        scope: "cron_reminders",
+        event: "booking_attempts prune failed",
+        level: "warn",
+        meta: { error: pruneError.message.slice(0, 300) },
+      });
+    } else {
+      attemptsPruned = pruned?.length ?? 0;
+    }
+  } catch (e) {
+    await logSystemEvent({
+      scope: "cron_reminders",
+      event: "booking_attempts prune failed",
+      level: "warn",
+      meta: { error: (e instanceof Error ? e.message : String(e)).slice(0, 300) },
+    });
+  }
+
   // Heartbeat: lets the admin health monitor confirm the cron actually ran.
   await logSystemEvent({
     scope: "cron_reminders",
     event: "reminder scan completed",
     level: "info",
-    meta: { scanned: data?.length ?? 0, created },
+    meta: {
+      scanned: data?.length ?? 0,
+      created,
+      booking_attempts_pruned: attemptsPruned,
+    },
   });
 
   return NextResponse.json({ ok: true, scanned: data?.length ?? 0, created });
